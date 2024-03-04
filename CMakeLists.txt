@@ -17,8 +17,8 @@ find_package(Threads REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(Chess
-    mainwindow.ui
-    mainwindow.cpp
+    widget.ui
+    widget.cpp
     main.cpp
     # resources.qrc
 )

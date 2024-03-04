@@ -1,9 +1,10 @@
-#include "mainwindow.h"
+#include "widget.h"
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     
-    MainWindow window;
+    Widget window;
+
     window.show();
 
     return app.exec();
