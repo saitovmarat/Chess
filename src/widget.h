@@ -1,11 +1,13 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+#include <QtGui>
 #include <QWidget>
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include "ui_widget.h"
 
 
 class QVBoxLayout;
@@ -23,7 +25,6 @@ class Widget : public QWidget
 public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
-    void buttonClickedSlot();
 private:
     Ui::Widget* ui;
 

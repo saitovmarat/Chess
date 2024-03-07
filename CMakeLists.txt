@@ -1,30 +1,17 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-project(Chess VERSION 1.0.0 LANGUAGES CXX)
+project(chess VERSION 1.0)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+# Global CMake options
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 
-if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif()
+# Configure Qt
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Test REQUIRED)
 
-find_package(Threads REQUIRED)
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+# Testing configuration
+enable_testing()
+set(TEST_LINK_LIBRARIES Qt5::Test)
 
-add_executable(Chess
-    widget.ui
-    widget.cpp
-    main.cpp
-    # resources.qrc
-)
-
-target_link_libraries(Chess 
-    PRIVATE
-        Qt5::Widgets
-        Threads::Threads
-        )
+add_subdirectory(src)
