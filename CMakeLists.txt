@@ -4,7 +4,6 @@ project(chess VERSION 1.0)
 
 # Global CMake options
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
 
 # Configure Qt
 find_package(Qt5Widgets REQUIRED)

@@ -1,14 +1,22 @@
-file(GLOB_RECURSE UI_FILES *.ui)
-file(GLOB_RECURSE CODE_FILES *.cpp)
-
-qt5_wrap_ui(UI_HEADERS ${UI_FILES})
-
-add_executable(${CMAKE_PROJECT_NAME}
-  ${UI_HEADERS}
-  ${CODE_FILES}
-  ${RESOURCE_FILES}
-  ${WINDOWS_RES_FILE}
+set(SRC_FILES
+  chessPiece/chessPiece.cpp
+  square/square.cpp
+  main.cpp
 )
-target_link_libraries(${CMAKE_PROJECT_NAME}
+
+set(HEADERS
+  chessPiece/chessPiece.h
+  square/square.h
+  main.h
+)
+
+
+
+add_executable(${PROJECT_NAME}
+  ${HEADERS}
+  ${SRC_FILES}
+  
+)
+target_link_libraries(${PROJECT_NAME}
   Qt5::Widgets
 )
