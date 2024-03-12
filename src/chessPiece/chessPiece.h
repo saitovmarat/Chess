@@ -1,15 +1,21 @@
-#include "main.h"
-//#include "square.h"
+#ifndef CHESS_PIECE_H
+#define CHESS_PIECE_H
 
+#include "main.h"
+#include "square.h"
+
+class Square;
 class ChessPiece:public QGraphicsPixmapItem
 {
 public:
     ChessPiece(QString item = "", QGraphicsItem* parent = nullptr);
     bool firstMove;
 
-private:
+protected:
+    Square* currentBox;
     QString side;
     bool isPlaced;
-    //QList <Square*> location;
+    QList <Square*> location;
 };
 
+#endif

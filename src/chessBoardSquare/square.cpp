@@ -5,7 +5,7 @@ Square::Square(QGraphicsRectItem* parent){
     brush.setStyle(Qt::SolidPattern);
     setZValue(-1);
     setPieceColor("NONE");
-    //currentPiece = NULL;
+    currentPiece = NULL;
 }
 
 Square::~Square(){

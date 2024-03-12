@@ -1,21 +1,30 @@
-#include "main.h"
-//#include "chessPiece.h"
+#ifndef CHESS_SQUARE_H
+#define CHESS_SQUARE_H
 
+#include "main.h"
+#include "chessPiece.h"
+
+class ChessPiece;
 class Square : public QGraphicsRectItem
 {
 public:
 
     // Constructors
-    Square(QGraphicsRectItem* parent = nullptr);
+    Square(QGraphicsRectItem* parent = 0);
     ~Square();
 
-    void setColor(QColor color);
-    //void setHasChessPiece(bool value, Piece *piece = 0);
     void setPieceColor(QString value);
-    //Piece* currentPiece;
+
+    int rowLoc;
+    int colLoc;
+
+    ChessPiece* currentPiece;
 
 private:
     QBrush brush;
+    QColor originalColor;
     bool hasChessPiece;
     QString chessPieceColor;
 };
+
+#endif
