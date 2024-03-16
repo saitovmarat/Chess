@@ -9,12 +9,10 @@ int main(int argc, char* argv[]) {
     ChessBoard* board = new ChessBoard();
 
     board->drawBoxes(scene);
-    
 
     // add a view
     QGraphicsView* view = new QGraphicsView(scene);
-
-    view->show();
+    view->showMaximized();
 
     return app.exec();
 }

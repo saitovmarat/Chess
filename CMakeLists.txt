@@ -12,8 +12,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
     src/main.cpp
@@ -27,28 +26,11 @@ set(PROJECT_SOURCES
     resources/images.qrc
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(${TARGET_NAME}
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-else()
-    if(ANDROID)
-        add_library(${TARGET_NAME} SHARED
-            ${PROJECT_SOURCES}
-        )
-    else()
-        add_executable(${TARGET_NAME}
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+add_executable(${TARGET_NAME}
+    ${PROJECT_SOURCES}
+)
 
-target_link_libraries(${TARGET_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(${TARGET_NAME})
-endif()
+target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Widgets)
 
 target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
