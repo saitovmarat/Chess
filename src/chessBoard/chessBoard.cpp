@@ -5,6 +5,27 @@ ChessBoard::ChessBoard(QWidget* parent): QWidget{parent}
 
 void ChessBoard::drawBoxes(QGraphicsScene* scene)
 {
+    // Отрисовка уголков поля
+    QGraphicsRectItem* rectLeftTop = new  QGraphicsRectItem();
+    QGraphicsRectItem* rectLeftBottom = new  QGraphicsRectItem();
+    QGraphicsRectItem* rectRightTop = new  QGraphicsRectItem();
+    QGraphicsRectItem* rectRightBottom = new  QGraphicsRectItem();
+
+    rectLeftTop->setRect(50, 50, 50, 50);
+    rectLeftBottom->setRect(50, 900, 50, 50);
+    rectRightTop->setRect(900, 50, 50, 50);
+    rectRightBottom->setRect(900, 900, 50, 50);
+
+    rectLeftTop->setBrush(QColor("white"));
+    rectLeftBottom->setBrush(QColor("white"));
+    rectRightTop->setBrush(QColor("white"));
+    rectRightBottom->setBrush(QColor("white"));
+
+    scene->addItem(rectLeftTop);
+    scene->addItem(rectLeftBottom);
+    scene->addItem(rectRightTop);
+    scene->addItem(rectRightBottom);
+
     int shift = 100;
     // Отрисовка ячеек для координат
     for(int i = 0; i < 8; i++){
@@ -13,10 +34,10 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
         QGraphicsRectItem* rectTop = new  QGraphicsRectItem();
         QGraphicsRectItem* rectBottom = new  QGraphicsRectItem();
 
-        rectLeft->setRect(70, 100+shift*i, 30, 100);
-        rectRight->setRect(900, 100+shift*i, 30, 100);
-        rectTop->setRect(100+shift*i, 70, 100, 30);
-        rectBottom->setRect(100+shift*i, 900, 100, 30);
+        rectLeft->setRect(50, 100+shift*i, 50, 100);
+        rectRight->setRect(900, 100+shift*i, 50, 100);
+        rectTop->setRect(100+shift*i, 50, 100, 50);
+        rectBottom->setRect(100+shift*i, 900, 100, 50);
 
         rectLeft->setBrush(QColor("white"));
         rectRight->setBrush(QColor("white"));
@@ -35,6 +56,7 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
             rect->setRect(100+shift*j, 100+shift*i, 100, 100);
             if((i+j)%2 == 0){
                 rect->setBrush(QColor("lightgray"));
+                
             }
             else{
                 rect->setBrush(QColor("gray"));
@@ -43,10 +65,11 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
         }
     }
 }
-void ChessBoard::paintImage(characterCord character, numCord number, pieceType type, pieceColor color){
-    QImage figureImage = QImage(":/images/White_Pawn.png");
-    QRect rect(0,0,100,100);
-    QPainter painter(this);
-    painter.setPen(QPen(Qt::transparent, 1, Qt::SolidLine, Qt::RoundCap));
-    painter.drawImage(rect, figureImage);
+void ChessBoard::paintEvent(QPaintEvent* event){
+    QPainter painter;
+    painter.begin(this);
+
+    painter.drawRect(0,0, 100,100);
+
+    painter.end();
 }

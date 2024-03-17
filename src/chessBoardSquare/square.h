@@ -8,23 +8,21 @@ class ChessPiece;
 class Square : public QGraphicsRectItem
 {
 public:
+    Square(int x, int y, int w, int h, 
+        const QString imagePath, QGraphicsItem* parent = nullptr);
+    Square(QGraphicsItem* parent = nullptr);
+    
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    // Constructors
-    Square(QGraphicsRectItem* parent = 0);
-    ~Square();
-
-    void setPieceColor(QString value);
-
-    int rowLoc;
-    int colLoc;
-
-    ChessPiece* currentPiece;
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-    QBrush brush;
-    QColor originalColor;
-    bool hasChessPiece;
-    QString chessPieceColor;
+    int _x, _y, _w, _h = 0;
+    QString _imagePath = "";
+    bool pressed;
 };
 
 #endif

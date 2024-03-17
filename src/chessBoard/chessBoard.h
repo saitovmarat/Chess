@@ -12,13 +12,14 @@ public:
 
     void drawBoxes(QGraphicsScene* scene);
     void getParameters(float *dx, float *dy, float *sizeBoard, float *rectX, float *rectY, QVector<char> *character, QVector<char> *numbers);
+    void paintImage(QGraphicsScene* scene);
 
+    void paintEvent(QPaintEvent* event);
 
     void setUpWhite();
     void setUpBlack();
 
 private:
-    void paintImage(characterCord character, numCord number, pieceType type, pieceColor color);
 
     QList <ChessPiece *> white;
     QList <ChessPiece *> black;

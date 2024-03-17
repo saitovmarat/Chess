@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) {
     ChessBoard* board = new ChessBoard();
 
     board->drawBoxes(scene);
+    //board->paintImage(scene);
 
     // add a view
     QGraphicsView* view = new QGraphicsView(scene);

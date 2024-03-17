@@ -15,6 +15,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
+    src/mainwindow.cpp
+    src/mainwindow.ui
     src/main.cpp
     src/main.h
     src/chessBoard/chessBoard.cpp
