@@ -3,7 +3,7 @@
 ChessBoard::ChessBoard(QWidget* parent): QWidget{parent}
 {}
 
-void ChessBoard::drawBoxes(QGraphicsScene* scene)
+void ChessBoard::drawBoard(QGraphicsScene* scene)
 {
     // Отрисовка уголков поля
     Square* rectLeftTop = new Square(50, 50, 50, 50);
@@ -31,10 +31,10 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
         Square* rectTop = new Square(100+shift*i, 50, 100, 50);
         Square* rectBottom = new Square(100+shift*i, 900, 100, 50);
 
-        rectLeft->setCord(QString(charCords[i]));
-        rectRight->setCord(QString(charCords[i]));
-        rectTop->setCord(QString(numCords[i]));
-        rectBottom->setCord(QString(numCords[i]));
+        rectLeft->setCord(QString(numCords[7-i]));
+        rectRight->setCord(QString(numCords[7-i]));
+        rectTop->setCord(QString(charCords[i]));
+        rectBottom->setCord(QString(charCords[i]));
 
         rectLeft->setBackColor("white");
         rectRight->setBackColor("white");

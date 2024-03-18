@@ -10,7 +10,7 @@ public:
 
     explicit ChessBoard(QWidget* parent = nullptr);
 
-    void drawBoxes(QGraphicsScene* scene);
+    void drawBoard(QGraphicsScene* scene);
     void getParameters(float *dx, float *dy, float *sizeBoard, float *rectX, float *rectY, QVector<char> *character, QVector<char> *numbers);
     void paintImage(QGraphicsScene* scene);
 

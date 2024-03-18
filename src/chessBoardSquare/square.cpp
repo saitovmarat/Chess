@@ -37,9 +37,8 @@ void Square::paint(QPainter *painter,
 
 void Square::drawCord(QPainter *painter){
     if (!_cord.isNull()){
-        QString cord = QString(_cord);
         painter->drawText(
-            boundingRect().toRect(), Qt::AlignCenter, cord);
+            boundingRect().toRect(), Qt::AlignCenter, _cord);
     }
 }
 void Square::drawImage(QPainter *painter){

@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     QGraphicsScene* scene = new QGraphicsScene();
     ChessBoard* board = new ChessBoard();
 
-    board->drawBoxes(scene);
+    board->drawBoard(scene);
 
     // add a view
     QGraphicsView* view = new QGraphicsView(scene);
