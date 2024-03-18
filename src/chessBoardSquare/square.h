@@ -3,25 +3,40 @@
 
 #include "main.h"
 #include "chessPiece.h"
+#include <QVector>
+
 
 class ChessPiece;
 class Square : public QGraphicsRectItem
 {
 public:
     Square(int x, int y, int w, int h, 
-        const QString imagePath, QGraphicsItem* parent = nullptr);
+        QGraphicsItem* parent = nullptr);
     Square(QGraphicsItem* parent = nullptr);
-    
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    void drawImage(QPainter *painter);
+    void drawCord(QPainter *painter);
+
+    void setBackColor(QString color);
+    void setImage(QString imagePath);
+    void setCord(QString cord);
 
 protected:
+    void paint(QPainter *painter, 
+        const QStyleOptionGraphicsItem *option,
+        QWidget *widget);
+    QRectF boundingRect() const;
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-    int _x, _y, _w, _h = 0;
-    QString _imagePath = "";
+    int _x;
+    int _y;
+    int _w;
+    int _h;
+    QString backgroundColor = "white";
+    QString _image = "";
+    QString _cord = NULL;
     bool pressed;
 };
 

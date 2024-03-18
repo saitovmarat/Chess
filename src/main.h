@@ -9,7 +9,6 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QBrush>
-
 #include <iostream>
 
 enum pieceColor{
@@ -24,4 +23,5 @@ enum characterCord{
 enum numCord{
     num1, num2, num3, num4, num5, num6, num7, num8
 };
+
 #endif // MAIN_H

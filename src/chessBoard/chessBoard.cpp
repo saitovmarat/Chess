@@ -6,20 +6,15 @@ ChessBoard::ChessBoard(QWidget* parent): QWidget{parent}
 void ChessBoard::drawBoxes(QGraphicsScene* scene)
 {
     // Отрисовка уголков поля
-    QGraphicsRectItem* rectLeftTop = new  QGraphicsRectItem();
-    QGraphicsRectItem* rectLeftBottom = new  QGraphicsRectItem();
-    QGraphicsRectItem* rectRightTop = new  QGraphicsRectItem();
-    QGraphicsRectItem* rectRightBottom = new  QGraphicsRectItem();
+    Square* rectLeftTop = new Square(50, 50, 50, 50);
+    Square* rectLeftBottom = new Square(50, 900, 50, 50);
+    Square* rectRightTop = new Square(900, 50, 50, 50);
+    Square* rectRightBottom = new Square(900, 900, 50, 50);
 
-    rectLeftTop->setRect(50, 50, 50, 50);
-    rectLeftBottom->setRect(50, 900, 50, 50);
-    rectRightTop->setRect(900, 50, 50, 50);
-    rectRightBottom->setRect(900, 900, 50, 50);
-
-    rectLeftTop->setBrush(QColor("white"));
-    rectLeftBottom->setBrush(QColor("white"));
-    rectRightTop->setBrush(QColor("white"));
-    rectRightBottom->setBrush(QColor("white"));
+    rectLeftTop->setBackColor("white");
+    rectLeftBottom->setBackColor("white");
+    rectRightTop->setBackColor("white");
+    rectRightBottom->setBackColor("white");
 
     scene->addItem(rectLeftTop);
     scene->addItem(rectLeftBottom);
@@ -27,22 +22,24 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
     scene->addItem(rectRightBottom);
 
     int shift = 100;
+    QVector<char> charCords = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+    QVector<char> numCords = {'1', '2', '3', '4', '5', '6', '7', '8'};
     // Отрисовка ячеек для координат
     for(int i = 0; i < 8; i++){
-        QGraphicsRectItem* rectLeft = new  QGraphicsRectItem();
-        QGraphicsRectItem* rectRight = new  QGraphicsRectItem();
-        QGraphicsRectItem* rectTop = new  QGraphicsRectItem();
-        QGraphicsRectItem* rectBottom = new  QGraphicsRectItem();
+        Square* rectLeft = new Square(50, 100+shift*i, 50, 100);
+        Square* rectRight = new Square(900, 100+shift*i, 50, 100);
+        Square* rectTop = new Square(100+shift*i, 50, 100, 50);
+        Square* rectBottom = new Square(100+shift*i, 900, 100, 50);
 
-        rectLeft->setRect(50, 100+shift*i, 50, 100);
-        rectRight->setRect(900, 100+shift*i, 50, 100);
-        rectTop->setRect(100+shift*i, 50, 100, 50);
-        rectBottom->setRect(100+shift*i, 900, 100, 50);
+        rectLeft->setCord(QString(charCords[i]));
+        rectRight->setCord(QString(charCords[i]));
+        rectTop->setCord(QString(numCords[i]));
+        rectBottom->setCord(QString(numCords[i]));
 
-        rectLeft->setBrush(QColor("white"));
-        rectRight->setBrush(QColor("white"));
-        rectTop->setBrush(QColor("white"));
-        rectBottom->setBrush(QColor("white"));
+        rectLeft->setBackColor("white");
+        rectRight->setBackColor("white");
+        rectTop->setBackColor("white");
+        rectBottom->setBackColor("white");
 
         scene->addItem(rectLeft);
         scene->addItem(rectRight);
@@ -52,14 +49,39 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
     // Отрисовка ячеек игрового поля
     for(int i = 0; i < 8; i++){
         for (int j = 0; j < 8; j++){
-            QGraphicsRectItem* rect = new  QGraphicsRectItem();
-            rect->setRect(100+shift*j, 100+shift*i, 100, 100);
+            Square* rect = new  Square(
+                100+shift*j, 100+shift*i, 100, 100);
+            // Ячейки для белых фигур
+            if(i == 6) 
+                rect->setImage(":/Chess/images/White_Pawn.png");
+            else if((j == 0 || j == 7) && (i == 7)) 
+                rect->setImage(":/Chess/images/White_Rook.png");
+            else if((j == 1 || j == 6) && (i == 7)) 
+                rect->setImage(":/Chess/images/White_Knight.png");
+            else if((j == 2 || j == 5) && (i == 7)) 
+                rect->setImage(":/Chess/images/White_Bishop.png");
+            else if((j == 3) && (i == 7)) 
+                rect->setImage(":/Chess/images/White_Queen.png");
+            else if((j == 4) && (i == 7)) 
+                rect->setImage(":/Chess/images/White_King.png");
+            // Ячейки для черных фигур
+            else if(i == 1) 
+                rect->setImage(":/Chess/images/Black_Pawn.png");
+            else if((j == 0 || j == 7) && (i == 0)) 
+                rect->setImage(":/Chess/images/Black_Rook.png");
+            else if((j == 1 || j == 6) && (i == 0)) 
+                rect->setImage(":/Chess/images/Black_Knight.png");
+            else if((j == 2 || j == 5) && (i == 0)) 
+                rect->setImage(":/Chess/images/Black_Bishop.png");
+            else if((j == 3) && (i == 0)) 
+                rect->setImage(":/Chess/images/Black_Queen.png");
+            else if((j == 4) && (i == 0)) 
+                rect->setImage(":/Chess/images/Black_King.png");
             if((i+j)%2 == 0){
-                rect->setBrush(QColor("lightgray"));
-                
+                rect->setBackColor("lightgray");
             }
             else{
-                rect->setBrush(QColor("gray"));
+                rect->setBackColor("gray");
             }
             scene->addItem(rect);
         }
@@ -68,8 +90,6 @@ void ChessBoard::drawBoxes(QGraphicsScene* scene)
 void ChessBoard::paintEvent(QPaintEvent* event){
     QPainter painter;
     painter.begin(this);
-
     painter.drawRect(0,0, 100,100);
-
     painter.end();
 }
