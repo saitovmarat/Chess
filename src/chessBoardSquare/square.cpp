@@ -1,11 +1,15 @@
 #include "square.h"
 
-Square::Square(int x, int y, int w, int h, QGraphicsRectItem* parent) 
-: QGraphicsRectItem(parent){
+Square::Square(QGraphicsItem* parent)
+: QGraphicsItem(parent){}
+
+Square::Square(int x, int y, int w, int h, QGraphicsItem* parent) 
+: QGraphicsItem(parent){
     _x = x;
     _y = y;
     _w = w;
     _h = h;
+    Pressed = false;
 }
 void Square::setBackColor(QString color){
     backgroundColor = QColor(color);
@@ -21,10 +25,17 @@ QRectF Square::boundingRect() const{
 }
 void Square::paint(QPainter *painter, 
     const QStyleOptionGraphicsItem *option, 
-    QWidget *widget){    
-    painter->setBrush(backgroundColor);
+    QWidget *widget)
+{  
+    if(Pressed){
+        painter->setBrush(QColor(0, 174, 88));
+    }
+    else{
+        painter->setBrush(backgroundColor);
+        Pressed = false;
+    }
     painter->setPen(Qt::NoPen);
-    painter->drawRect(_x, _y, _w, _h);
+    painter->drawRect(boundingRect());
     drawImage(painter);
 }
 
@@ -36,15 +47,11 @@ void Square::drawImage(QPainter *painter){
 }
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    pressed = true;
+    if(Pressed) Pressed = false;
+    else if(!Pressed && !_image.isNull()) Pressed = true;
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
-void Square::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
-    pressed = false;
-    update();
-    QGraphicsItem::mouseReleaseEvent(event);
-}
 
 
