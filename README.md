@@ -1,2 +1,2 @@
 # Chess
-Chess game development on c++ using qt
+Chess game development on C++ using Qt
