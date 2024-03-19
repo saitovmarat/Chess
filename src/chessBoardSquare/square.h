@@ -11,15 +11,14 @@ class Square : public QGraphicsRectItem
 {
 public:
     Square(int x, int y, int w, int h, 
-        QGraphicsItem* parent = nullptr);
-    Square(QGraphicsItem* parent = nullptr);
+        QGraphicsRectItem* parent = nullptr);
 
     void drawImage(QPainter *painter);
-    void drawCord(QPainter *painter);
 
     void setBackColor(QString color);
+    void setBackColor(int r, int g, int b);
+
     void setImage(QString imagePath);
-    void setCord(QString cord);
 
 protected:
     void paint(QPainter *painter, 
@@ -34,9 +33,8 @@ private:
     int _y;
     int _w;
     int _h;
-    QString backgroundColor = "white";
-    QString _image = "";
-    QString _cord = NULL;
+    QColor backgroundColor;
+    QString _image;
     bool pressed;
 };
 

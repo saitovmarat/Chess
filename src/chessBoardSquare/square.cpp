@@ -1,27 +1,20 @@
 #include "square.h"
 
-Square::Square(int x, int y, int w, int h, QGraphicsItem* parent) 
+Square::Square(int x, int y, int w, int h, QGraphicsRectItem* parent) 
 : QGraphicsRectItem(parent){
     _x = x;
     _y = y;
     _w = w;
     _h = h;
 }
-Square::Square(QGraphicsItem* parent)
-: QGraphicsRectItem(parent){
-    _x = 0;
-    _y = 0;
-    _w = 100;
-    _h = 100;
-}
 void Square::setBackColor(QString color){
-    backgroundColor = color;
+    backgroundColor = QColor(color);
+}
+void Square::setBackColor(int r, int g, int b){
+    backgroundColor = QColor(r, g, b);
 }
 void Square::setImage(QString imagePath){
     _image = imagePath;
-}
-void Square::setCord(QString cord){
-    _cord = cord;
 }
 QRectF Square::boundingRect() const{
     return QRectF(_x, _y, _w, _h);
@@ -29,18 +22,12 @@ QRectF Square::boundingRect() const{
 void Square::paint(QPainter *painter, 
     const QStyleOptionGraphicsItem *option, 
     QWidget *widget){    
-    painter->setBrush(QColor(backgroundColor));
+    painter->setBrush(backgroundColor);
+    painter->setPen(Qt::NoPen);
     painter->drawRect(_x, _y, _w, _h);
     drawImage(painter);
-    drawCord(painter);
 }
 
-void Square::drawCord(QPainter *painter){
-    if (!_cord.isNull()){
-        painter->drawText(
-            boundingRect().toRect(), Qt::AlignCenter, _cord);
-    }
-}
 void Square::drawImage(QPainter *painter){
     QPixmap image(_image);
     if(!image.isNull())

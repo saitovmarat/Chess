@@ -3,52 +3,45 @@
 ChessBoard::ChessBoard(QWidget* parent): QWidget{parent}
 {}
 
-void ChessBoard::drawBoard(QGraphicsScene* scene)
-{
-    // Отрисовка уголков поля
-    Square* rectLeftTop = new Square(50, 50, 50, 50);
-    Square* rectLeftBottom = new Square(50, 900, 50, 50);
-    Square* rectRightTop = new Square(900, 50, 50, 50);
-    Square* rectRightBottom = new Square(900, 900, 50, 50);
-
-    rectLeftTop->setBackColor("white");
-    rectLeftBottom->setBackColor("white");
-    rectRightTop->setBackColor("white");
-    rectRightBottom->setBackColor("white");
-
-    scene->addItem(rectLeftTop);
-    scene->addItem(rectLeftBottom);
-    scene->addItem(rectRightTop);
-    scene->addItem(rectRightBottom);
-
-    int shift = 100;
-    QVector<char> charCords = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
-    QVector<char> numCords = {'1', '2', '3', '4', '5', '6', '7', '8'};
-    // Отрисовка ячеек для координат
+void ChessBoard::drawBorders(QGraphicsScene* scene){
     for(int i = 0; i < 8; i++){
         Square* rectLeft = new Square(50, 100+shift*i, 50, 100);
         Square* rectRight = new Square(900, 100+shift*i, 50, 100);
         Square* rectTop = new Square(100+shift*i, 50, 100, 50);
         Square* rectBottom = new Square(100+shift*i, 900, 100, 50);
 
-        rectLeft->setCord(QString(numCords[7-i]));
-        rectRight->setCord(QString(numCords[7-i]));
-        rectTop->setCord(QString(charCords[i]));
-        rectBottom->setCord(QString(charCords[i]));
-
-        rectLeft->setBackColor("white");
-        rectRight->setBackColor("white");
-        rectTop->setBackColor("white");
-        rectBottom->setBackColor("white");
+        rectLeft->setBackColor(111, 78, 55);
+        rectRight->setBackColor(111, 78, 55);
+        rectTop->setBackColor(111, 78, 55);
+        rectBottom->setBackColor(111, 78, 55);
 
         scene->addItem(rectLeft);
         scene->addItem(rectRight);
         scene->addItem(rectTop);
         scene->addItem(rectBottom);
     }
-    // Отрисовка ячеек игрового поля
-    for(int i = 0; i < 8; i++){
-        for (int j = 0; j < 8; j++){
+    // Отрисовка уголков
+    Square* rectLeftTop = new Square(50, 50, 50, 50);
+    Square* rectLeftBottom = new Square(50, 900, 50, 50);
+    Square* rectRightTop = new Square(900, 50, 50, 50);
+    Square* rectRightBottom = new Square(900, 900, 50, 50);
+
+    rectLeftTop->setBackColor(111, 78, 55);
+    rectLeftBottom->setBackColor(111, 78, 55);
+    rectRightTop->setBackColor(111, 78, 55);
+    rectRightBottom->setBackColor(111, 78, 55);
+
+    scene->addItem(rectLeftTop);
+    scene->addItem(rectLeftBottom);
+    scene->addItem(rectRightTop);
+    scene->addItem(rectRightBottom);
+}
+
+void ChessBoard::drawBoard(QGraphicsScene* scene)
+{
+    drawBorders(scene);
+    for(int i = 0; i < 8; i++){ // Номер строки 
+        for (int j = 0; j < 8; j++){ // Номер столбца
             Square* rect = new  Square(
                 100+shift*j, 100+shift*i, 100, 100);
             // Ячейки для белых фигур
@@ -77,19 +70,14 @@ void ChessBoard::drawBoard(QGraphicsScene* scene)
                 rect->setImage(":/Chess/images/Black_Queen.png");
             else if((j == 4) && (i == 0)) 
                 rect->setImage(":/Chess/images/Black_King.png");
+            
             if((i+j)%2 == 0){
-                rect->setBackColor("lightgray");
+                rect->setBackColor(255, 250, 250);
             }
             else{
-                rect->setBackColor("gray");
+                rect->setBackColor(138, 98, 74);
             }
             scene->addItem(rect);
         }
     }
-}
-void ChessBoard::paintEvent(QPaintEvent* event){
-    QPainter painter;
-    painter.begin(this);
-    painter.drawRect(0,0, 100,100);
-    painter.end();
 }

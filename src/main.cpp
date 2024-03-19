@@ -6,6 +6,7 @@ int main(int argc, char* argv[]) {
     
     // create a scene
     QGraphicsScene* scene = new QGraphicsScene();
+    scene->setBackgroundBrush(QBrush(QColor("lightblue")));
     ChessBoard* board = new ChessBoard();
 
     board->drawBoard(scene);

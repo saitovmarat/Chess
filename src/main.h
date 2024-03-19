@@ -11,6 +11,8 @@
 #include <QBrush>
 #include <iostream>
 
+#define shift 100
+
 enum pieceColor{
     white, black
 };
