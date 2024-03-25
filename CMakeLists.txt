@@ -17,12 +17,30 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 set(PROJECT_SOURCES
     src/main.cpp
     src/main.h
-    src/chessBoard/chessBoard.cpp
-    src/chessBoard/chessBoard.h
-    src/chessBoardSquare/square.h
-    src/chessBoardSquare/square.cpp
-    src/chessPiece/chessPiece.cpp
-    src/chessPiece/chessPiece.h
+
+    src/square/square.h
+    src/square/square.cpp
+
+    src/board/board.cpp
+    src/board/board.h
+    src/boardRenderer/boardRenderer.cpp
+    src/boardRenderer/boardRenderer.h
+
+    src/piece/piece.cpp
+    src/piece/piece.h
+    src/piece/bishop/bishop.cpp
+    src/piece/bishop/bishop.h
+    src/piece/king/king.cpp
+    src/piece/king/king.h
+    src/piece/knight/knight.cpp
+    src/piece/knight/knight.h
+    src/piece/pawn/pawn.cpp
+    src/piece/pawn/pawn.h
+    src/piece/queen/queen.cpp
+    src/piece/queen/queen.h
+    src/piece/rook/rook.cpp
+    src/piece/rook/rook.h
+
     resources/images.qrc
 )
 
@@ -35,9 +53,16 @@ target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Widgets)
 target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/chessBoard
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/chessBoardSquare
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/chessPiece
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/board
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/boardRenderer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/square
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/bishop
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/king
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/knight
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/pawn
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/queen
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/rook
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/images
 )

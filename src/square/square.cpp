@@ -11,6 +11,12 @@ Square::Square(int x, int y, int w, int h, QGraphicsItem* parent)
     _h = h;
     Pressed = false;
 }
+
+void Square::setPiece(Piece* piece){
+    _piece = piece;
+    _image = _piece->_image;
+}
+
 void Square::setBackColor(QString color){
     backgroundColor = QColor(color);
 }
@@ -18,15 +24,14 @@ void Square::setBackColor(int r, int g, int b){
     backgroundColor = QColor(r, g, b);
 }
 void Square::setImage(QString imagePath){
-    _image = imagePath;
+    _image = QPixmap(imagePath);
 }
 QRectF Square::boundingRect() const{
     return QRectF(_x, _y, _w, _h);
 }
 void Square::paint(QPainter *painter, 
     const QStyleOptionGraphicsItem *option, 
-    QWidget *widget)
-{  
+    QWidget *widget){  
     if(Pressed){
         painter->setBrush(QColor(0, 174, 88));
     }
@@ -40,10 +45,9 @@ void Square::paint(QPainter *painter,
 }
 
 void Square::drawImage(QPainter *painter){
-    QPixmap image(_image);
-    if(!image.isNull())
+    if(!_image.isNull())
         painter->drawPixmap(boundingRect().toRect(), 
-            image.scaled(_w, _h, Qt::KeepAspectRatio));
+            _image.scaled(_w, _h, Qt::KeepAspectRatio));
 }
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){

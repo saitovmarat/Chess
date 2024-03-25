@@ -1,5 +1,8 @@
 #include "main.h"
-#include "chessBoard.h"
+#include "board.h"
+#include "boardRenderer.h"
+
+// TODO: include only needed libs
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
@@ -7,9 +10,11 @@ int main(int argc, char* argv[]) {
     // create a scene
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor("lightblue")));
-    ChessBoard* board = new ChessBoard();
 
-    board->drawBoard(scene);
+    Board* board = new Board();
+    board->setUpBoard();
+
+    BoardRenderer::render(board, scene);
 
     // add a view
     QGraphicsView* view = new QGraphicsView(scene);
