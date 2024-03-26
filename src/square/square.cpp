@@ -20,14 +20,8 @@ void Square::setPiece(Piece* piece){
     _image = _piece->_image;
 }
 
-void Square::setBackColor(QString color){
-    backgroundColor = QColor(color);
-}
 void Square::setBackColor(int r, int g, int b){
     backgroundColor = QColor(r, g, b);
-}
-void Square::setImage(QString imagePath){
-    _image = QPixmap(imagePath);
 }
 QRectF Square::boundingRect() const{
     return QRectF(_x, _y, _w, _h);
@@ -40,7 +34,6 @@ void Square::paint(QPainter *painter,
     }
     else{
         painter->setBrush(backgroundColor);
-        Pressed = false;
     }
     painter->setPen(Qt::NoPen);
     painter->drawRect(boundingRect());
@@ -52,22 +45,20 @@ void Square::drawImage(QPainter *painter){
         painter->drawPixmap(boundingRect().toRect(), 
             _image.scaled(_w, _h, Qt::KeepAspectRatio));
 }
+
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    if(Pressed && board->Pressed){
+    if(Pressed && board->isAnySquarePressed){
         board->clearTurns();
         Pressed = false;
     } 
-    else if(!Pressed && board->Pressed){
-        board->clearTurns();
-        board->Pressed = true;
-        Pressed = true;
-    }
-    else if(!Pressed && !_image.isNull()) {
-        board->Pressed = true;
+    else if(!Pressed && !_image.isNull() && _piece->_color == board->currentMoveColor) {
+        if(board->isAnySquarePressed) board->clearTurns();
+
+        board->isAnySquarePressed = true;
         Pressed = true;
     }
     update();
-    QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(event); // Возможно не надо
 }
 
 

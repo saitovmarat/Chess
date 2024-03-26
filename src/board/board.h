@@ -18,12 +18,11 @@ class Board : public QWidget{
 public:
     Board(QWidget *parent = nullptr);
 
-    void setSquare(Square* square);
     void setUpBoard();
-
     void clearTurns();
 
-    bool Pressed = false;
+    Color currentMoveColor;
+    bool isAnySquarePressed;
     Square* squares[8][8];
 
 };

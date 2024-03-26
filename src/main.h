@@ -10,10 +10,6 @@
 #include <QGraphicsView>
 #include <QWidget>
 
-#include <iostream>
-
-#define shift 100
-
 enum Color { white, black };
 enum pieceType { pawn, knight, bishop, rook, queen, king };
 enum Row { A, B, C, D, E, F, G, H };

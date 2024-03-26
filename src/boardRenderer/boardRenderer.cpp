@@ -1,6 +1,8 @@
 #include "boardRenderer.h"
 #include "square.h"
 
+#define shift 100
+
 void BoardRenderer::drawBorders(QGraphicsScene* scene){
     for(int i = 0; i < 8; i++){
         QGraphicsRectItem* rectLeft = new QGraphicsRectItem(50, 100+shift*i, 50, 100);

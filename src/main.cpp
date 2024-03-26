@@ -3,6 +3,7 @@
 #include "boardRenderer.h"
 
 // TODO: include only needed libs
+
 Board* board;
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);

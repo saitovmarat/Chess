@@ -1,19 +1,16 @@
 #include "board.h"
 
+#define shift 100
 
-Board::Board(QWidget* parent) : QWidget(parent = nullptr){
+Board::Board(QWidget* parent) : QWidget(parent){
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             Square* square = new Square();
             squares[row][column] = square;
         }
     }
-}
-
-void Board::setSquare(Square* square){
-    int row = (square->_y - 100) / shift;
-    int column = (square->_x - 100) / shift;
-    squares[row][column] = square;
+    currentMoveColor = Color::white;
+    isAnySquarePressed = false;
 }
 
 void Board::setUpBoard(){
@@ -80,6 +77,7 @@ void Board::setUpBoard(){
         }
     }
 }
+
 void Board::clearTurns(){
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
@@ -88,6 +86,6 @@ void Board::clearTurns(){
             
         }
     }
-    Pressed = false;
+    isAnySquarePressed = false;
 }
 

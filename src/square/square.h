@@ -1,8 +1,6 @@
 #ifndef CHESS_SQUARE_H
 #define CHESS_SQUARE_H
 
-#include <QVector>
-
 #include "piece.h"
 #include "main.h"
 
@@ -15,11 +13,8 @@ public:
 
   void drawImage(QPainter *painter);
 
-  void setBackColor(QString color);
   void setBackColor(int r, int g, int b);
-
   void setPiece(Piece* piece);
-  void setImage(QString imagePath);
 
   // Поля
   bool Pressed;
