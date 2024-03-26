@@ -1,4 +1,7 @@
 #include "square.h"
+#include "board.h"
+
+extern Board *board;
 
 Square::Square(QGraphicsItem* parent)
 : QGraphicsItem(parent){}
@@ -49,10 +52,20 @@ void Square::drawImage(QPainter *painter){
         painter->drawPixmap(boundingRect().toRect(), 
             _image.scaled(_w, _h, Qt::KeepAspectRatio));
 }
-
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    if(Pressed) Pressed = false;
-    else if(!Pressed && !_image.isNull()) Pressed = true;
+    if(Pressed && board->Pressed){
+        board->clearTurns();
+        Pressed = false;
+    } 
+    else if(!Pressed && board->Pressed){
+        board->clearTurns();
+        board->Pressed = true;
+        Pressed = true;
+    }
+    else if(!Pressed && !_image.isNull()) {
+        board->Pressed = true;
+        Pressed = true;
+    }
     update();
     QGraphicsItem::mousePressEvent(event);
 }

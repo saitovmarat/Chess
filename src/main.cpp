@@ -3,7 +3,7 @@
 #include "boardRenderer.h"
 
 // TODO: include only needed libs
-
+Board* board;
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
     
@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor("lightblue")));
 
-    Board* board = new Board();
+    board = new Board();
     board->setUpBoard();
 
     BoardRenderer::render(board, scene);

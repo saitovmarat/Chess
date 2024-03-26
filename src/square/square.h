@@ -7,7 +7,6 @@
 #include "main.h"
 
 class Piece;
-
 class Square : public QGraphicsItem {
 public:
   Square(QGraphicsItem *parent = nullptr);

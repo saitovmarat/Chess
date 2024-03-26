@@ -80,7 +80,14 @@ void Board::setUpBoard(){
         }
     }
 }
-
-void Board::mousePressEvent(QMouseEvent *event) {
-    std::cout << "lala" << std::endl;
+void Board::clearTurns(){
+    for(int row = 0; row < 8; row++){
+        for(int column = 0; column < 8; column++){
+            squares[row][column]->Pressed = false;
+            squares[row][column]->update();
+            
+        }
+    }
+    Pressed = false;
 }
+

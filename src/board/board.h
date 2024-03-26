@@ -21,8 +21,9 @@ public:
     void setSquare(Square* square);
     void setUpBoard();
 
-    void mousePressEvent(QMouseEvent *event) override;
+    void clearTurns();
 
+    bool Pressed = false;
     Square* squares[8][8];
 
 };
