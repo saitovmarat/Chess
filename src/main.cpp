@@ -4,6 +4,11 @@
 
 // TODO: include only needed libs
 
+// Костыльные конструкции:
+// board.cpp 71
+// Square::deletePiece()
+
+
 Board* board;
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
@@ -12,7 +17,7 @@ int main(int argc, char* argv[]) {
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor("lightblue")));
 
-    board = new Board();
+    board = new Board(scene);
     board->setUpBoard();
 
     BoardRenderer::render(board, scene);

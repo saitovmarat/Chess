@@ -16,15 +16,20 @@ class Square;
 class Board : public QWidget{
     Q_OBJECT
 public:
-    Board(QWidget *parent = nullptr);
+    Board(QGraphicsScene* scene, QWidget *parent = nullptr);
 
     void setUpBoard();
     void clearTurns();
 
+    void clearPrevPressedSquare();
+
     Color currentMoveColor;
     bool isAnySquarePressed;
-    Square* squares[8][8];
 
+    Square* prevPressedSquare;
+    QGraphicsScene* _scene;
+    Square* squares[8][8];
+    QList<QGraphicsEllipseItem*> turns;
 };
 
 #endif

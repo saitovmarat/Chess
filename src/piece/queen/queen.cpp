@@ -1,5 +1,6 @@
 #include "queen.h"
 
+
 Queen::Queen(int row, int column, Color color) : Piece(row, column, color){
     _row = row;
     _column = column;
@@ -9,3 +10,7 @@ Queen::Queen(int row, int column, Color color) : Piece(row, column, color){
     else 
         _image = QPixmap(":/Chess/images/Black_Queen.png");
 }   
+
+// void Queen::setMoves(){
+//     std::cout << "lsls";
+// }

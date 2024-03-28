@@ -4,4 +4,6 @@
 class King:public Piece{
 public:
     King(int row, int column, Color color);
+
+    //void setMoves() override;
 };

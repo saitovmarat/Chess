@@ -1,9 +1,7 @@
 #include "piece.h"
 
 Piece::Piece(){
-    _row = 123;
-    _column = 123;
-    _color = Color::white;
+    _color = Color::nonExisted; 
 }
 
 Piece::Piece(int row, int column, Color color){

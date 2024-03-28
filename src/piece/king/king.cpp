@@ -1,5 +1,6 @@
 #include "king.h"
 
+
 King::King(int row, int column, Color color) : Piece(row, column, color){
     _row = row;
     _column = column;
@@ -9,3 +10,7 @@ King::King(int row, int column, Color color) : Piece(row, column, color){
     else 
         _image = QPixmap(":/Chess/images/Black_King.png");
 }   
+
+// void King::setMoves(){
+//     std::cout << "lsls";
+// }

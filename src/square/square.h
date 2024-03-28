@@ -8,21 +8,23 @@ class Piece;
 class Square : public QGraphicsItem {
 public:
   Square(QGraphicsItem *parent = nullptr);
-  Square(int x, int y, int w, int h, 
-        QGraphicsItem *parent = nullptr);
+  Square(int column, int row, QGraphicsItem *parent = nullptr);
 
   void drawImage(QPainter *painter);
 
   void setBackColor(int r, int g, int b);
+
   void setPiece(Piece* piece);
+  void deletePiece();
 
   // Поля
   bool Pressed;
-  Piece* _piece;
-  int _x;
-  int _y;
-  int _w;
-  int _h;
+  Piece* _piece = nullptr;
+  QGraphicsEllipseItem* turnMarker = nullptr;
+  int _row;
+  int _column;
+  const int _w = 100;
+  const int _h = 100;
   QColor backgroundColor;
   QPixmap _image;
 

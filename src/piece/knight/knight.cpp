@@ -9,3 +9,7 @@ Knight::Knight(int row, int column, Color color) : Piece(row, column, color){
     else 
         _image = QPixmap(":/Chess/images/Black_Knight.png");
 }   
+
+// void Knight::setMoves(){
+//     std::cout << "lsls";
+// }
