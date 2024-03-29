@@ -1,5 +1,7 @@
 #include "king.h"
+#include "board.h"
 
+extern Board* board;
 
 King::King(int row, int column, Color color) : Piece(row, column, color){
     _row = row;
@@ -11,6 +13,36 @@ King::King(int row, int column, Color color) : Piece(row, column, color){
         _image = QPixmap(":/Chess/images/Black_King.png");
 }   
 
-// void King::setMoves(){
-//     std::cout << "lsls";
-// }
+bool King::isValidMove(int row, int column){
+    if(row < 0 || row > 7 || column < 0 || column > 7)
+        return false;
+    return true;
+}
+void King::setMoves(QGraphicsScene* scene){
+    int dx[8] = { -1, -1, -1, 1, 1, 1, 0, 0 };
+    int dy[8] = { -1, 0, 1, -1, 0, 1, -1, 1 };
+
+    for(int i = 0; i < 8; i++){
+        int new_row = _row + dx[i];
+        int new_column = _column + dy[i];
+        if(isValidMove(new_row, new_column)){
+            Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
+            if(currentMovePiece->_color == Color::nonExisted){
+                QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
+                    88+new_column*100, 88+new_row*100, 25, 25);
+                turn->setBrush(QColor(0, 174, 88));
+                turn->setPen(Qt::NoPen);
+                board->squares[new_row][new_column]->turnMarker = turn;
+                board->turns.append(turn);
+                scene->addItem(turn);
+            }
+            else if (currentMovePiece->_color != _color){
+                currentMovePiece->isTarget = true;
+                board->squares[new_row][new_column]->update();
+            }
+            
+            
+        }
+        
+    }
+}

@@ -88,6 +88,8 @@ void Board::clearTurns(){
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             squares[row][column]->Pressed = false;
+            squares[row][column]->turnMarker = nullptr;
+            squares[row][column]->_piece->isTarget = false;
             squares[row][column]->update();
         }
     }

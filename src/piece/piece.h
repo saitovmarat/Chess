@@ -10,12 +10,17 @@ public:
     Piece();
     Piece(int row, int column, Color color);
 
-    virtual void setWhiteMoves(QGraphicsScene* scene) {}
-    virtual void setBlackMoves(QGraphicsScene* scene) {}
+    virtual void setMoves(QGraphicsScene* scene) {}
+    virtual bool isValidMove(int row, int column) { return true; }
+    
     int _row;
     int _column;
     Color _color; 
     QPixmap _image;
+
+    bool isTarget = false;
+
+    // Pawn and King feature 
     bool _firstMove = true; 
 };
 

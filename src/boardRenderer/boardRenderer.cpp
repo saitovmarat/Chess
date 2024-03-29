@@ -5,10 +5,10 @@
 
 void BoardRenderer::drawBorders(QGraphicsScene* scene){
     for(int i = 0; i < 8; i++){
-        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(50, 100+shift*i, 50, 100);
-        QGraphicsRectItem* rectRight = new QGraphicsRectItem(900, 100+shift*i, 50, 100);
-        QGraphicsRectItem* rectTop = new QGraphicsRectItem(100+shift*i, 50, 100, 50);
-        QGraphicsRectItem* rectBottom = new QGraphicsRectItem(100+shift*i, 900, 100, 50);
+        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(0, 50+shift*i, 50, 100);
+        QGraphicsRectItem* rectRight = new QGraphicsRectItem(850, 50+shift*i, 50, 100);
+        QGraphicsRectItem* rectTop = new QGraphicsRectItem(50+shift*i, 0, 100, 50);
+        QGraphicsRectItem* rectBottom = new QGraphicsRectItem(50+shift*i, 850, 100, 50);
 
         rectLeft->setPen(Qt::NoPen);
         rectRight->setPen(Qt::NoPen);
@@ -26,10 +26,10 @@ void BoardRenderer::drawBorders(QGraphicsScene* scene){
         scene->addItem(rectBottom);
     }
     // Отрисовка уголков
-    QGraphicsRectItem* rectLeftTop = new QGraphicsRectItem(50, 50, 50, 50);
-    QGraphicsRectItem* rectLeftBottom = new QGraphicsRectItem(50, 900, 50, 50);
-    QGraphicsRectItem* rectRightTop = new QGraphicsRectItem(900, 50, 50, 50);
-    QGraphicsRectItem* rectRightBottom = new QGraphicsRectItem(900, 900, 50, 50);
+    QGraphicsRectItem* rectLeftTop = new QGraphicsRectItem(0, 0, 50, 50);
+    QGraphicsRectItem* rectLeftBottom = new QGraphicsRectItem(0, 850, 50, 50);
+    QGraphicsRectItem* rectRightTop = new QGraphicsRectItem(850, 0, 50, 50);
+    QGraphicsRectItem* rectRightBottom = new QGraphicsRectItem(850, 850, 50, 50);
 
     rectLeftTop->setPen(Qt::NoPen);
     rectLeftBottom->setPen(Qt::NoPen);

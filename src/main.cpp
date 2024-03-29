@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor("lightblue")));
 
+    
     board = new Board(scene);
     board->setUpBoard();
 

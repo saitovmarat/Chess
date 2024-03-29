@@ -13,9 +13,13 @@ public:
   void drawImage(QPainter *painter);
 
   void setBackColor(int r, int g, int b);
+  void setBackColor(QColor color);
 
   void setPiece(Piece* piece);
   void deletePiece();
+
+  void turnMarker_pressEvent();
+  void eatingTarget_pressEvent();
 
   // Поля
   bool Pressed;
@@ -25,6 +29,7 @@ public:
   int _column;
   const int _w = 100;
   const int _h = 100;
+
   QColor backgroundColor;
   QPixmap _image;
 
