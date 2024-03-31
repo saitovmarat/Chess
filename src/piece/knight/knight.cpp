@@ -24,7 +24,7 @@ void Knight::setMoves(QGraphicsScene* scene){
         int new_column = _column + dy[i];
         if(isValidMove(new_row, new_column)){
             Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-            if(currentMovePiece->_color == Color::nonExisted){
+            if(currentMovePiece->_color == Color::nonExistent){
                 QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                     88+new_column*100, 88+new_row*100, 25, 25);
                 turn->setBrush(QColor(0, 174, 88));

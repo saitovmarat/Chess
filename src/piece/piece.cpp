@@ -1,7 +1,7 @@
 #include "piece.h"
 
 Piece::Piece(){
-    _color = Color::nonExisted; 
+    _color = Color::nonExistent; 
 }
 
 Piece::Piece(int row, int column, Color color){
