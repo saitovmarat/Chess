@@ -2,6 +2,9 @@
 #include "board.h"
 #include "boardRenderer.h"
 
+#include "formMainMenu.h"
+#include "formMenuChooseColor.h"
+
 // TODO: include only needed libs
 
 // Костыльные конструкции:
@@ -16,8 +19,6 @@ int main(int argc, char* argv[]) {
     // create a scene
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor("lightblue")));
-
-    
     board = new Board(scene);
     board->setUpBoard();
 
@@ -26,6 +27,15 @@ int main(int argc, char* argv[]) {
     // add a view
     QGraphicsView* view = new QGraphicsView(scene);
     view->showMaximized();
+
+
+    QWidget windowChooseMode;
+    Ui::formMenuChooseMode ui_ChooseMode;
+    ui_ChooseMode.setupUi(&windowChooseMode);
+    windowChooseMode.show();
+
+
+
 
     return app.exec();
 }
