@@ -12,5 +12,6 @@
         <file>images/White_Pawn.png</file>
         <file>images/White_Queen.png</file>
         <file>images/White_Rook.png</file>
+        <file>images/ChessLogo.png</file>
     </qresource>
 </RCC>

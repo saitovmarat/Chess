@@ -41,6 +41,12 @@ set(PROJECT_SOURCES
     src/piece/rook/rook.cpp
     src/piece/rook/rook.h
 
+    src/menu/formMainMenu.cpp
+    src/menu/formMainMenu.h
+
+    src/menu/formMenuChooseColor.cpp
+    src/menu/formMenuChooseColor.h
+
     resources/images.qrc
 )
 
@@ -65,4 +71,5 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/rook
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/images
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu
 )
