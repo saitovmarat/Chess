@@ -7,7 +7,6 @@
 class Piece;
 class Square : public QGraphicsItem {
 public:
-  Square(QGraphicsItem *parent = nullptr);
   Square(int column, int row, QGraphicsItem *parent = nullptr);
 
   void drawImage(QPainter *painter);
@@ -16,10 +15,12 @@ public:
   void setBackColor(QColor color);
 
   void setPiece(Piece* piece);
-  void deletePiece();
 
   void turnMarker_pressEvent();
   void eatingTarget_pressEvent();
+  void castling_pressEvent();
+
+  void endTurn();
 
   // Поля
   bool Pressed;
@@ -39,11 +40,6 @@ protected:
             QWidget *widget) override;
   QRectF boundingRect() const override;
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-
-
-private:
-
-
 };
 
 #endif

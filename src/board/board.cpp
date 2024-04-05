@@ -90,6 +90,7 @@ void Board::clearTurns(){
             squares[row][column]->Pressed = false;
             squares[row][column]->turnMarker = nullptr;
             squares[row][column]->_piece->isTarget = false;
+            squares[row][column]->_piece->castlingAvailable = false;
             squares[row][column]->update();
         }
     }

@@ -18,6 +18,17 @@ bool King::isValidMove(int row, int column){
         return false;
     return true;
 }
+
+bool King::castlingAvailable(){
+    if(board->squares[7][5]->_piece->_color == Color::nonExistent
+    && board->squares[7][6]->_piece->_color == Color::nonExistent
+    && _firstMove == true
+    && board->squares[7][7]->_piece->_firstMove == true
+    && dynamic_cast<Rook*>(board->squares[7][7]->_piece) != nullptr)
+        return true;
+    return false;
+}
+
 void King::setMoves(QGraphicsScene* scene){
     int dx[8] = { -1, -1, -1, 1, 1, 1, 0, 0 };
     int dy[8] = { -1, 0, 1, -1, 0, 1, -1, 1 };
@@ -40,9 +51,10 @@ void King::setMoves(QGraphicsScene* scene){
                 currentMovePiece->isTarget = true;
                 board->squares[new_row][new_column]->update();
             }
-            
-            
-        }
-        
+        } 
+    }
+    if(castlingAvailable()){
+        board->squares[7][7]->_piece->castlingAvailable = true;
+        board->squares[7][7]->update();
     }
 }

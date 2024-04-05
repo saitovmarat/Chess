@@ -22,6 +22,9 @@ public:
 
     // Pawn and King feature 
     bool _firstMove = true; 
+
+    // Rook feature
+    bool castlingAvailable = false;
 };
 
 #endif
