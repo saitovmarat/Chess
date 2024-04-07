@@ -12,6 +12,7 @@
 
 #include <iostream>
 
+
 enum Color { white, black, nonExisted};
 enum pieceType { pawn, knight, bishop, rook, queen, king };
 enum Row { A, B, C, D, E, F, G, H };
