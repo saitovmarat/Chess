@@ -9,7 +9,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_formMenuChooseMode
+class Ui_FormMenuChooseMode
 {
 public:
     QPushButton *btnPlayWithFriend;
@@ -20,11 +20,13 @@ public:
     void setupUi(QWidget *Widget);
 
     void retranslateUi(QWidget *Widget);
-
+private slots:
+    void onBtnPlayWithFriendClicked();
 };
 
+
 namespace Ui {
-    class formMenuChooseMode: public Ui_formMenuChooseMode {};
+    class FormMenuChooseMode: public Ui_FormMenuChooseMode {};
 } // namespace Ui
 
 QT_END_NAMESPACE
