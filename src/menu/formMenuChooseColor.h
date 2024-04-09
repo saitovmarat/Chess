@@ -10,22 +10,22 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_formMenuChooseColor
+class Ui_FormMenuChooseColor
 {
 public:
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_4;
-    QPushButton *pushButton_5;
-    QLabel *label_2;
+    QPushButton *btnChooseRandomColor;
+    QPushButton *btnChooseBlackColor;
+    QPushButton *btnChooseWhiteColor;
+    QLabel *lblPlayWithComputer;
 
-    void setupUi(QWidget *Form123);
+    void setupUi(QWidget *FormChooseColor);
 
-    void retranslateUi(QWidget *Form123);
+    void retranslateUi(QWidget *FormChooseColor);
 
 };
 
 namespace Ui {
-    class formMenuChooseColor: public Ui_formMenuChooseColor {};
+    class formMenuChooseColor: public Ui_FormMenuChooseColor {};
 } // namespace Ui
 
 QT_END_NAMESPACE

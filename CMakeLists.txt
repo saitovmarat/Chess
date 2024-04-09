@@ -43,9 +43,10 @@ set(PROJECT_SOURCES
 
     src/menu/formMainMenu.cpp
     src/menu/formMainMenu.h
-
     src/menu/formMenuChooseColor.cpp
     src/menu/formMenuChooseColor.h
+    src/menu/formEndGame.cpp
+    src/menu/formEndGame.h
 
     resources/images.qrc
 )
@@ -72,4 +73,5 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/images
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu
+    
 )
