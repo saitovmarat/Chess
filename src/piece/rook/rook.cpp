@@ -15,7 +15,7 @@ bool Rook::isValidMove(int row, int column){
         return false;
     return true;
 }
-void Rook::setMoves(QGraphicsScene* scene){
+void Rook::setLineMoves(QGraphicsScene* scene){
     int new_row = _row;
     int new_column = _column;
 
@@ -24,7 +24,7 @@ void Rook::setMoves(QGraphicsScene* scene){
     while(isValidMove(new_row, _column)){
         Piece* currentMovePiece = board->squares[new_row][_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -46,7 +46,7 @@ void Rook::setMoves(QGraphicsScene* scene){
     while(isValidMove(new_row, _column)){
         Piece* currentMovePiece = board->squares[new_row][_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -69,7 +69,7 @@ void Rook::setMoves(QGraphicsScene* scene){
     while(isValidMove(_row, new_column)){
         Piece* currentMovePiece = board->squares[_row][new_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -91,7 +91,7 @@ void Rook::setMoves(QGraphicsScene* scene){
     while(isValidMove(_row, new_column)){
         Piece* currentMovePiece = board->squares[_row][new_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -107,4 +107,8 @@ void Rook::setMoves(QGraphicsScene* scene){
             break;
         }
     }
+}
+
+void Rook::setMoves(QGraphicsScene* scene){
+    setLineMoves(scene);
 }

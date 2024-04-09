@@ -12,10 +12,6 @@
 
 #include <iostream>
 
-
-enum Color { white, black, nonExisted};
-enum pieceType { pawn, knight, bishop, rook, queen, king };
-enum Row { A, B, C, D, E, F, G, H };
-enum numCord { num1, num2, num3, num4, num5, num6, num7, num8 };
+enum Color { white, black, nonExistent};
 
 #endif  // MAIN_H

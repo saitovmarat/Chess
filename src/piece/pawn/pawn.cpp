@@ -34,7 +34,7 @@ void Pawn::setWhiteMoves(QGraphicsScene* scene){
 
     int moves = _firstMove? 2: 1;
     for(int i = 1; i <= moves; i++){
-        if(board->squares[_row-i][_column]->_piece->_color != Color::nonExisted)
+        if(board->squares[_row-i][_column]->_piece->_color != Color::nonExistent)
             break;
         
         QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
@@ -64,7 +64,7 @@ void Pawn::setBlackMoves(QGraphicsScene* scene){
     }
     int moves = _firstMove? 2: 1;
     for(int i = 1; i <= moves; i++){
-        if(board->squares[_row+i][_column]->_piece->_color != Color::nonExisted)
+        if(board->squares[_row+i][_column]->_piece->_color != Color::nonExistent)
             break;
         QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
         88+_column*100, 88+(_row+i)*100, 25, 25);

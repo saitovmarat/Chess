@@ -8,6 +8,8 @@ class Bishop:public Piece{
 public:
     Bishop(int row, int column, Color color);
     
+    void setDiagonalMoves(QGraphicsScene* scene);
+
     void setMoves(QGraphicsScene* scene) override;
     bool isValidMove(int row, int column) override;
 

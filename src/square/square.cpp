@@ -5,9 +5,6 @@
 
 extern Board *board;
 
-Square::Square(QGraphicsItem* parent)
-: QGraphicsItem(parent){}
-
 Square::Square(int column, int row, QGraphicsItem* parent) 
 : QGraphicsItem(parent){
     _column = column;
@@ -17,12 +14,7 @@ Square::Square(int column, int row, QGraphicsItem* parent)
 
 void Square::setPiece(Piece* piece){
     _piece = piece;
-    _image = _piece->_image; // seg here
-}
-
-void Square::deletePiece(){
-    board->prevPressedSquare->_piece = new Piece();
-    board->prevPressedSquare->_image = QPixmap();
+    _image = _piece->_image;
 }
 
 void Square::setBackColor(int r, int g, int b){
@@ -47,6 +39,8 @@ void Square::paint(QPainter *painter,
     else{
         if(_piece->isTarget)
             painter->setBrush(QColor(155, 17, 30));
+        else if(_piece->castlingAvailable)
+            painter->setBrush(QColor(255, 255, 58));
         else
             painter->setBrush(backgroundColor);
     }
@@ -61,17 +55,21 @@ void Square::drawImage(QPainter *painter){
             _image.scaled(_w, _h, Qt::KeepAspectRatio));
 }
 
+void Square::endTurn(){
+    Pressed = false;
+    board->clearPrevPressedSquare();
+    board->clearTurns();
+    board->currentMoveColor = (board->currentMoveColor == Color::white)?
+        Color::black : Color::white;
+}
+
 void Square::turnMarker_pressEvent(){
     setPiece(board->prevPressedSquare->_piece);
     _piece->_row = _row;
     _piece->_column = _column;
     _piece->_firstMove = false;
-    board->clearPrevPressedSquare();
-    board->clearTurns();
-    board->currentMoveColor = (board->currentMoveColor == Color::white)?
-        Color::black : Color::white;
-    Pressed = false;
     turnMarker = nullptr;
+    endTurn();
 }
 
 void Square::eatingTarget_pressEvent(){
@@ -79,12 +77,24 @@ void Square::eatingTarget_pressEvent(){
     _piece->_row = _row;
     _piece->_column = _column;
     _piece->_firstMove = false;
-    board->clearPrevPressedSquare();
-    board->clearTurns();
-    board->currentMoveColor = (board->currentMoveColor == Color::white)?
-        Color::black : Color::white;
-    Pressed = false;
     _piece->isTarget = false;
+    endTurn();
+}
+
+void Square::castling_pressEvent(){
+    board->squares[7][5]->setPiece(_piece);
+    board->squares[7][5]->_piece->_row = 7;
+    board->squares[7][5]->_piece->_column = 5;
+    board->squares[7][5]->_piece->_firstMove = false;
+    setPiece(new Piece());
+
+    board->squares[7][6]->setPiece(board->squares[7][4]->_piece);
+    board->squares[7][6]->_piece->_row = 7;
+    board->squares[7][6]->_piece->_column = 6;
+    board->squares[7][6]->_piece->_firstMove = false;
+    board->squares[7][4]->setPiece(new Piece());
+
+    endTurn();
 }
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
@@ -95,6 +105,9 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     // Нажатие на ячейку с красным фоном
     else if(_piece->isTarget){
         eatingTarget_pressEvent();
+    }
+    else if(_piece->castlingAvailable){
+        castling_pressEvent();
     }
     // Нажатие на фигуру
     else if(!Pressed && !_image.isNull() && _piece->_color == board->currentMoveColor) {

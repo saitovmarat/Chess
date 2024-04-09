@@ -15,7 +15,7 @@ bool Bishop::isValidMove(int row, int column){
         return false;
     return true;
 }
-void Bishop::setMoves(QGraphicsScene* scene){
+void Bishop::setDiagonalMoves(QGraphicsScene* scene){
     int new_row = _row;
     int new_column = _column;
 
@@ -25,7 +25,7 @@ void Bishop::setMoves(QGraphicsScene* scene){
     while(isValidMove(new_row, new_column)){
         Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -49,7 +49,7 @@ void Bishop::setMoves(QGraphicsScene* scene){
     while(isValidMove(new_row, new_column)){
         Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -73,7 +73,7 @@ void Bishop::setMoves(QGraphicsScene* scene){
     while(isValidMove(new_row, new_column)){
         Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -97,7 +97,7 @@ void Bishop::setMoves(QGraphicsScene* scene){
     while(isValidMove(new_row, new_column)){
         Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
         if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExisted){
+        else if(currentMovePiece->_color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
@@ -114,4 +114,8 @@ void Bishop::setMoves(QGraphicsScene* scene){
             break;
         }
     }
+}
+
+void Bishop::setMoves(QGraphicsScene* scene){
+    setDiagonalMoves(scene);
 }
