@@ -82,17 +82,34 @@ void Square::eatingTarget_pressEvent(){
 }
 
 void Square::castling_pressEvent(){
-    board->squares[7][5]->setPiece(_piece);
-    board->squares[7][5]->_piece->_row = 7;
-    board->squares[7][5]->_piece->_column = 5;
-    board->squares[7][5]->_piece->_firstMove = false;
-    setPiece(new Piece());
+    //short castling
+    if(_column == 7){
+        // rook
+        board->squares[_row][5]->setPiece(_piece);
+        board->squares[_row][5]->_piece->_column = 5;
+        board->squares[_row][5]->_piece->_firstMove = false;
+        setPiece(new Piece());
 
-    board->squares[7][6]->setPiece(board->squares[7][4]->_piece);
-    board->squares[7][6]->_piece->_row = 7;
-    board->squares[7][6]->_piece->_column = 6;
-    board->squares[7][6]->_piece->_firstMove = false;
-    board->squares[7][4]->setPiece(new Piece());
+        // king
+        board->squares[_row][6]->setPiece(board->squares[_row][4]->_piece);
+        board->squares[_row][6]->_piece->_column = 6;
+        board->squares[_row][6]->_piece->_firstMove = false;
+        board->squares[_row][4]->setPiece(new Piece());
+    }
+    // long castling
+    else if(_column == 0){
+        // rook
+        board->squares[_row][3]->setPiece(_piece);
+        board->squares[_row][3]->_piece->_column = 3;
+        board->squares[_row][3]->_piece->_firstMove = false;
+        setPiece(new Piece());
+
+        // king
+        board->squares[_row][2]->setPiece(board->squares[_row][4]->_piece);
+        board->squares[_row][2]->_piece->_column = 2;
+        board->squares[_row][2]->_piece->_firstMove = false;
+        board->squares[_row][4]->setPiece(new Piece());
+    }
 
     endTurn();
 }
@@ -116,7 +133,7 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
         Pressed = true;
         board->prevPressedSquare = this;
     }
-    // Повторное нажатие на прошлую нажатую фигуру самую фигуру
+    // Повторное нажатие на прошлую нажатую фигуру
     else if((Pressed) && board->isAnySquarePressed){
         board->clearTurns();
         Pressed = false;

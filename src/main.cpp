@@ -32,23 +32,20 @@ int main(int argc, char* argv[]) {
     view->showMaximized();
 
 
-    QWidget windowChooseMode;
-    Ui_FormMenuChooseMode ui_chooseMode;
-    ui_chooseMode.setupUi(&windowChooseMode);
-    windowChooseMode.show();
+    // QWidget windowChooseMode;
+    // Ui_FormMenuChooseMode ui_chooseMode;
+    // ui_chooseMode.setupUi(&windowChooseMode);
+    // windowChooseMode.show();
 
-    QWidget windowEndGame;
-    Ui_FormEndGame ui_endGame;
-    ui_endGame.setupUi(&windowEndGame);
-    windowEndGame.show();
+    // QWidget windowEndGame;
+    // Ui_FormEndGame ui_endGame;
+    // ui_endGame.setupUi(&windowEndGame);
+    // windowEndGame.show();
 
-    QWidget windowChooseColor;
-    Ui_FormMenuChooseColor ui_chooseColor;
-    ui_chooseColor.setupUi(&windowChooseColor);
-    windowChooseColor.show();
-
-
-
+    // QWidget windowChooseColor;
+    // Ui_FormMenuChooseColor ui_chooseColor;
+    // ui_chooseColor.setupUi(&windowChooseColor);
+    // windowChooseColor.show();
 
     return app.exec();
 }

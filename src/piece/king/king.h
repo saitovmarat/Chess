@@ -8,7 +8,7 @@ class King:public Piece{
 public:
     King(int row, int column, Color color);
 
-    bool castlingAvailable();
+    void setCastlingMoves();
 
     void setMoves(QGraphicsScene* scene) override;
     bool isValidMove(int row, int column) override;
