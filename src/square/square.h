@@ -9,8 +9,6 @@ class Square : public QGraphicsItem {
 public:
   Square(int column, int row, QGraphicsItem *parent = nullptr);
 
-  void drawImage(QPainter *painter);
-
   void setBackColor(int r, int g, int b);
   void setBackColor(QColor color);
 
@@ -21,6 +19,8 @@ public:
   void castling_pressEvent();
 
   void endTurn();
+
+  void drawImage(QPainter *painter);
 
   // Поля
   bool Pressed;

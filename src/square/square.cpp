@@ -28,32 +28,6 @@ void Square::setBackColor(QColor color){
 QRectF Square::boundingRect() const{
     return QRectF(50+shift*_column, 50+shift*_row, _w, _h);
 }
-void Square::paint(QPainter *painter, 
-    const QStyleOptionGraphicsItem *option, 
-    QWidget *widget){  
-
-    if(Pressed){
-        painter->setBrush(QColor(0, 174, 88));
-        _piece->setMoves(board->_scene);
-    }
-    else{
-        if(_piece->isTarget)
-            painter->setBrush(QColor(155, 17, 30));
-        else if(_piece->castlingAvailable)
-            painter->setBrush(QColor(255, 255, 58));
-        else
-            painter->setBrush(backgroundColor);
-    }
-    painter->setPen(Qt::NoPen);
-    painter->drawRect(boundingRect());
-    drawImage(painter);
-}
-
-void Square::drawImage(QPainter *painter){
-    if(!_image.isNull())
-        painter->drawPixmap(boundingRect().toRect(), 
-            _image.scaled(_w, _h, Qt::KeepAspectRatio));
-}
 
 void Square::endTurn(){
     Pressed = false;
@@ -123,6 +97,7 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     else if(_piece->isTarget){
         eatingTarget_pressEvent();
     }
+    // Нажатие на ячейку с желтым фоном
     else if(_piece->castlingAvailable){
         castling_pressEvent();
     }
@@ -134,7 +109,7 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
         board->prevPressedSquare = this;
     }
     // Повторное нажатие на прошлую нажатую фигуру
-    else if((Pressed) && board->isAnySquarePressed){
+    else if(Pressed && board->isAnySquarePressed){
         board->clearTurns();
         Pressed = false;
     } 
@@ -142,5 +117,29 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     QGraphicsItem::mousePressEvent(event); // Возможно не надо
 }
 
+void Square::paint(QPainter *painter, 
+    const QStyleOptionGraphicsItem *option, 
+    QWidget *widget){  
+        
+    if(Pressed){
+        painter->setBrush(QColor(0, 174, 88));
+        _piece->setMoves(board->_scene);
+    }
+    else{
+        if(_piece->isTarget)
+            painter->setBrush(QColor(155, 17, 30));
+        else if(_piece->castlingAvailable)
+            painter->setBrush(QColor(255, 255, 58));
+        else
+            painter->setBrush(backgroundColor);
+    }
+    painter->setPen(Qt::NoPen);
+    painter->drawRect(boundingRect());
+    drawImage(painter);
+}
 
-
+void Square::drawImage(QPainter *painter){
+    if(!_image.isNull())
+        painter->drawPixmap(boundingRect().toRect(), 
+            _image.scaled(_w, _h, Qt::KeepAspectRatio));
+}
