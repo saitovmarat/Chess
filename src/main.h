@@ -9,8 +9,10 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QWidget>
-
+#include <QObject> 
+#include <QStackedWidget>
 #include <iostream>
+
 
 enum Color { white, black, nonExistent};
 

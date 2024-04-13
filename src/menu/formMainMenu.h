@@ -20,8 +20,6 @@ public:
     void setupUi(QWidget *Widget);
 
     void retranslateUi(QWidget *Widget);
-private slots:
-    void onBtnPlayWithFriendClicked();
 };
 
 

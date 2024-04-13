@@ -9,7 +9,7 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget)
         btnPlayWithFriend = new QPushButton(Widget);
         btnPlayWithFriend->setObjectName(QString::fromUtf8("btnPlayWithFriend"));
         btnPlayWithFriend->setGeometry(QRect(230, 230, 221, 61));
-        QObject::connect(btnPlayWithFriend, &QPushButton::clicked, [&](){slots onBtnPlayWithFriendClicked();});
+        // QObject::connect(btnPlayWithFriend, &QPushButton::clicked, [&](){slots onBtnPlayWithFriendClicked();});
 
         QFont font;
         font.setPointSize(12);
@@ -46,9 +46,3 @@ void Ui_FormMenuChooseMode::retranslateUi(QWidget *Widget)
     label->setText(QString());
     label_2->setText(QCoreApplication::translate("Widget", "<html><head/><body><p><span style=\" font-size:36pt;\">Chess</span></p></body></html>", nullptr));
 } // retranslateUi
-
-void Ui_FormMenuChooseMode::onBtnPlayWithFriendClicked()
-{
-    label_2->setText("123");
-    // Add your code here to be executed when the button is clicked
-}
