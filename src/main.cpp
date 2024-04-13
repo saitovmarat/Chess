@@ -24,13 +24,28 @@ int main(int argc, char* argv[]) {
 
     BoardRenderer::render(board, scene);
 
-    QGraphicsView* view = new QGraphicsView(scene);
-    view->showMaximized();
+    QGraphicsView* windowGame = new QGraphicsView(scene);
+    
+    // Создание стекового виджета
+    QStackedWidget *stackedWidget = new QStackedWidget;
 
-    // QWidget windowChooseMode;
-    // Ui_FormMenuChooseMode ui_chooseMode;
-    // ui_chooseMode.setupUi(&windowChooseMode);
-    // windowChooseMode.show();
+    Ui_FormMenuChooseMode ui_chooseMode;
+    QGraphicsView* windowChooseMode = new QGraphicsView();
+    ui_chooseMode.setupUi(windowChooseMode);
+
+    // Добавление окон в стековый виджет
+    stackedWidget->addWidget(windowChooseMode);
+    stackedWidget->addWidget(windowGame);
+    
+
+    // Установка начального окна для отображения
+    stackedWidget->setCurrentWidget(windowChooseMode);
+    stackedWidget->showMaximized();
+
+    //Подключение кнопки "Далее" для переключения на следующее окно
+    QObject::connect(windowChooseMode->findChild<QPushButton*>("btnPlayWithFriend"), &QPushButton::clicked, [stackedWidget](){
+        stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
+    });
 
     // QWidget windowEndGame;
     // Ui_FormEndGame ui_endGame;
