@@ -5,9 +5,9 @@ extern Board* board;
 
 Knight::Knight(int row, int column, Color color) : Piece(row, column, color){
     if(color == Color::white) 
-        _image = QPixmap(":/Chess/images/White_Knight.png");
+        image = QPixmap(":/Chess/images/White_Knight.png");
     else 
-        _image = QPixmap(":/Chess/images/Black_Knight.png");
+        image = QPixmap(":/Chess/images/Black_Knight.png");
 }   
 
 bool Knight::isValidMove(int row, int column){
@@ -20,20 +20,20 @@ void Knight::setMoves(QGraphicsScene* scene){
     int dy[8] = { -1, -2, -2, -1, 1, 2, 2, 1 };
 
     for(int i = 0; i < 8; i++){
-        int new_row = _row + dx[i];
-        int new_column = _column + dy[i];
+        int new_row = row + dx[i];
+        int new_column = column + dy[i];
         if(isValidMove(new_row, new_column)){
-            Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-            if(currentMovePiece->_color == Color::nonExistent){
+            Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
+            if(currentMovePiece->color == Color::nonExistent){
                 QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                     88+new_column*100, 88+new_row*100, 25, 25);
                 turn->setBrush(QColor(0, 174, 88));
                 turn->setPen(Qt::NoPen);
                 board->squares[new_row][new_column]->turnMarker = turn;
-                board->turns.append(turn);
+                turns.append(turn);
                 scene->addItem(turn);
             }
-            else if (currentMovePiece->_color != _color){
+            else if (currentMovePiece->color != color){
                 currentMovePiece->isTarget = true;
                 board->squares[new_row][new_column]->update();
             }
@@ -41,5 +41,12 @@ void Knight::setMoves(QGraphicsScene* scene){
             
         }
         
+    }
+}
+
+void Knight::clearTurns(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
     }
 }

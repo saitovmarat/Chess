@@ -1,8 +1,9 @@
 #ifndef CHESS_PIECE_H
 #define CHESS_PIECE_H
 
-#include "main.h"
 #include "square.h"
+#include "main.h"
+
 
 class Piece 
 {
@@ -12,19 +13,22 @@ public:
 
     virtual void setMoves(QGraphicsScene* scene) {}
     virtual bool isValidMove(int row, int column) { return true; }
+    virtual void clearTurns() {};
     
-    int _row;
-    int _column;
-    Color _color; 
-    QPixmap _image;
+    int row;
+    int column;
+    Color color; 
+    QPixmap image;
 
     bool isTarget = false;
 
     // Pawn and King feature 
-    bool _firstMove = true; 
+    bool firstMove = true; 
 
     // Rook feature
     bool castlingAvailable = false;
+
+    QList<QGraphicsEllipseItem*> turns;
 };
 
 #endif

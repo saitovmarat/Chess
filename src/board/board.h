@@ -13,10 +13,9 @@
 
 class Square;
 
-class Board : public QWidget{
-    Q_OBJECT
+class Board{
 public:
-    Board(QGraphicsScene* scene, QWidget *parent = nullptr);
+    Board(QGraphicsScene* scene, Color firstTurnColor);
 
     void setUpBoard();
     void clearTurns();
@@ -24,12 +23,13 @@ public:
     void clearPrevPressedSquare();
 
     Color currentMoveColor;
+    Color firstTurnColor;
+
     bool isAnySquarePressed;
 
     Square* prevPressedSquare;
-    QGraphicsScene* _scene;
+    QGraphicsScene* scene;
     Square* squares[8][8];
-    QList<QGraphicsEllipseItem*> turns;
 };
 
 #endif

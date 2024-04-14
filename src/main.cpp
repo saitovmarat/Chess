@@ -7,7 +7,9 @@
 #include "formEndGame.h"
 
 
-// TODO: include only needed libs
+// TODO: использовать только нужные библиотеки и хедеры в каждом файле
+// Узнать начсет структуры и как сделать адекватно взятие на проходе
+// Исправить отрисовку ходов учитывая не цвет фигур, а то какой цвет ходит первым. 
 
 // Костыльные конструкции:
 // board.cpp 71
@@ -19,7 +21,9 @@ int main(int argc, char* argv[]) {
     
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor("lightblue")));
-    board = new Board(scene);
+    
+    Color firstTurn_color = Color::white;
+    board = new Board(scene, firstTurn_color);
     board->setUpBoard();
 
     BoardRenderer::render(board, scene);

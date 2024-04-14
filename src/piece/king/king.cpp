@@ -4,13 +4,10 @@
 extern Board* board;
 
 King::King(int row, int column, Color color) : Piece(row, column, color){
-    _row = row;
-    _column = column;
-    _color = color;
     if(color == Color::white) 
-        _image = QPixmap(":/Chess/images/White_King.png");
+        image = QPixmap(":/Chess/images/White_King.png");
     else 
-        _image = QPixmap(":/Chess/images/Black_King.png");
+        image = QPixmap(":/Chess/images/Black_King.png");
 }   
 
 bool King::isValidMove(int row, int column){
@@ -20,49 +17,49 @@ bool King::isValidMove(int row, int column){
 }
 
 void King::setCastlingMoves(){
-    if(board->currentMoveColor == Color::white){
+    if(board->currentMoveColor == board->firstTurnColor){
         // short castling
-        if(board->squares[7][5]->_piece->_color == Color::nonExistent
-        && board->squares[7][6]->_piece->_color == Color::nonExistent
-        && _firstMove == true
-        && board->squares[7][7]->_piece->_firstMove == true
-        && dynamic_cast<Rook*>(board->squares[7][7]->_piece) != nullptr)
+        if(board->squares[7][5]->piece->color == Color::nonExistent
+        && board->squares[7][6]->piece->color == Color::nonExistent
+        && firstMove == true
+        && board->squares[7][7]->piece->firstMove == true
+        && dynamic_cast<Rook*>(board->squares[7][7]->piece) != nullptr)
         {
-            board->squares[7][7]->_piece->castlingAvailable = true;
+            board->squares[7][7]->piece->castlingAvailable = true;
             board->squares[7][7]->update();
         }
         // long castling
-        if(board->squares[7][3]->_piece->_color == Color::nonExistent
-        && board->squares[7][2]->_piece->_color == Color::nonExistent
-        && board->squares[7][1]->_piece->_color == Color::nonExistent
-        && _firstMove == true
-        && board->squares[7][0]->_piece->_firstMove == true
-        && dynamic_cast<Rook*>(board->squares[7][0]->_piece) != nullptr)
+        if(board->squares[7][3]->piece->color == Color::nonExistent
+        && board->squares[7][2]->piece->color == Color::nonExistent
+        && board->squares[7][1]->piece->color == Color::nonExistent
+        && firstMove == true
+        && board->squares[7][0]->piece->firstMove == true
+        && dynamic_cast<Rook*>(board->squares[7][0]->piece) != nullptr)
         {
-            board->squares[7][0]->_piece->castlingAvailable = true;
+            board->squares[7][0]->piece->castlingAvailable = true;
             board->squares[7][0]->update();
         }
     }
     else{
         // short castling
-        if(board->squares[0][5]->_piece->_color == Color::nonExistent
-        && board->squares[0][6]->_piece->_color == Color::nonExistent
-        && _firstMove == true
-        && board->squares[0][7]->_piece->_firstMove == true
-        && dynamic_cast<Rook*>(board->squares[0][7]->_piece) != nullptr)
+        if(board->squares[0][5]->piece->color == Color::nonExistent
+        && board->squares[0][6]->piece->color == Color::nonExistent
+        && firstMove == true
+        && board->squares[0][7]->piece->firstMove == true
+        && dynamic_cast<Rook*>(board->squares[0][7]->piece) != nullptr)
         {
-            board->squares[0][7]->_piece->castlingAvailable = true;
+            board->squares[0][7]->piece->castlingAvailable = true;
             board->squares[0][7]->update();
         }
         // long castling
-        if(board->squares[0][3]->_piece->_color == Color::nonExistent
-        && board->squares[0][2]->_piece->_color == Color::nonExistent
-        && board->squares[0][1]->_piece->_color == Color::nonExistent
-        && _firstMove == true
-        && board->squares[0][0]->_piece->_firstMove == true
-        && dynamic_cast<Rook*>(board->squares[0][0]->_piece) != nullptr)
+        if(board->squares[0][3]->piece->color == Color::nonExistent
+        && board->squares[0][2]->piece->color == Color::nonExistent
+        && board->squares[0][1]->piece->color == Color::nonExistent
+        && firstMove == true
+        && board->squares[0][0]->piece->firstMove == true
+        && dynamic_cast<Rook*>(board->squares[0][0]->piece) != nullptr)
         {
-            board->squares[0][0]->_piece->castlingAvailable = true;
+            board->squares[0][0]->piece->castlingAvailable = true;
             board->squares[0][0]->update();
         }
     }
@@ -73,20 +70,20 @@ void King::setMoves(QGraphicsScene* scene){
     int dy[8] = { -1, 0, 1, -1, 0, 1, -1, 1 };
 
     for(int i = 0; i < 8; i++){
-        int new_row = _row + dx[i];
-        int new_column = _column + dy[i];
+        int new_row = row + dx[i];
+        int new_column = column + dy[i];
         if(isValidMove(new_row, new_column)){
-            Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-            if(currentMovePiece->_color == Color::nonExistent){
+            Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
+            if(currentMovePiece->color == Color::nonExistent){
                 QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                     88+new_column*100, 88+new_row*100, 25, 25);
                 turn->setBrush(QColor(0, 174, 88));
                 turn->setPen(Qt::NoPen);
                 board->squares[new_row][new_column]->turnMarker = turn;
-                board->turns.append(turn);
+                turns.append(turn);
                 scene->addItem(turn);
             }
-            else if (currentMovePiece->_color != _color){
+            else if (currentMovePiece->color != color){
                 currentMovePiece->isTarget = true;
                 board->squares[new_row][new_column]->update();
             }
@@ -94,4 +91,11 @@ void King::setMoves(QGraphicsScene* scene){
     }
     // При возможности показывает ходы для рокировки
     setCastlingMoves();
+}
+
+void King::clearTurns(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }

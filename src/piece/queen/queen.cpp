@@ -4,37 +4,34 @@
 extern Board* board;
 
 Queen::Queen(int row, int column, Color color) : Piece(row, column, color){
-    _row = row;
-    _column = column;
-    _color = color;
     if(color == Color::white) 
-        _image = QPixmap(":/Chess/images/White_Queen.png");
+        image = QPixmap(":/Chess/images/White_Queen.png");
     else 
-        _image = QPixmap(":/Chess/images/Black_Queen.png");
+        image = QPixmap(":/Chess/images/Black_Queen.png");
 }   
 
-bool Queen::isValidMove(int row, int column){
-    if(row < 0 || row > 7 || column < 0 || column > 7)
+bool Queen::isValidMove(int _row, int _column){
+    if(_row < 0 || _row > 7 || _column < 0 || _column > 7)
         return false;
     return true;
 }
 void Queen::setDiagonalMoves(QGraphicsScene* scene){
-    int new_row = _row;
-    int new_column = _column;
+    int new_row = row;
+    int new_column = column;
     
     // Налево, вверх    
-    new_row = _row-1;
-    new_column = _column-1;
+    new_row = row-1;
+    new_column = column-1;
     while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
             board->squares[new_row][new_column]->turnMarker = turn;
-            board->turns.append(turn);
+            turns.append(turn);
             scene->addItem(turn);
             new_row--;
             new_column--;
@@ -47,18 +44,18 @@ void Queen::setDiagonalMoves(QGraphicsScene* scene){
     }
 
     // Налево, Вниз
-    new_row = _row+1;
-    new_column = _column-1;
+    new_row = row+1;
+    new_column = column-1;
     while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
             board->squares[new_row][new_column]->turnMarker = turn;
-            board->turns.append(turn);
+            turns.append(turn);
             scene->addItem(turn);
             new_row++;
             new_column--;
@@ -71,18 +68,18 @@ void Queen::setDiagonalMoves(QGraphicsScene* scene){
     }
 
     // Направо, вверх
-    new_row = _row-1;
-    new_column = _column+1;
+    new_row = row-1;
+    new_column = column+1;
     while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
             board->squares[new_row][new_column]->turnMarker = turn;
-            board->turns.append(turn);
+            turns.append(turn);
             scene->addItem(turn);
             new_row--;
             new_column++;
@@ -95,18 +92,18 @@ void Queen::setDiagonalMoves(QGraphicsScene* scene){
     }
 
     // Направо, Вниз
-    new_row = _row+1;
-    new_column = _column+1;
+    new_row = row+1;
+    new_column = column+1;
     while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+new_column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
             board->squares[new_row][new_column]->turnMarker = turn;
-            board->turns.append(turn);
+            turns.append(turn);
             scene->addItem(turn);
             new_row++;
             new_column++;
@@ -120,94 +117,94 @@ void Queen::setDiagonalMoves(QGraphicsScene* scene){
 }
 
 void Queen::setLineMoves(QGraphicsScene* scene){
-    int new_row = _row;
-    int new_column = _column;
+    int new_row = row;
+    int new_column = column;
 
     // Вниз    
-    new_row = _row+1;
-    while(isValidMove(new_row, _column)){
-        Piece* currentMovePiece = board->squares[new_row][_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+    new_row = row+1;
+    while(isValidMove(new_row, column)){
+        Piece* currentMovePiece = board->squares[new_row][column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+_column*100, 88+new_row*100, 25, 25);
+                88+column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
-            board->squares[new_row][_column]->turnMarker = turn;
-            board->turns.append(turn);
+            board->squares[new_row][column]->turnMarker = turn;
+            turns.append(turn);
             scene->addItem(turn);
             new_row++;
         }
         else{
             currentMovePiece->isTarget = true;
-            board->squares[new_row][_column]->update();
+            board->squares[new_row][column]->update();
             break;
         }
     }
 
     // Вверх
-    new_row = _row-1;
-    while(isValidMove(new_row, _column)){
-        Piece* currentMovePiece = board->squares[new_row][_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+    new_row = row-1;
+    while(isValidMove(new_row, column)){
+        Piece* currentMovePiece = board->squares[new_row][column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+_column*100, 88+new_row*100, 25, 25);
+                88+column*100, 88+new_row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
-            board->squares[new_row][_column]->turnMarker = turn;
-            board->turns.append(turn);
+            board->squares[new_row][column]->turnMarker = turn;
+            turns.append(turn);
             scene->addItem(turn);
             new_row--;
         }
         else{
-            board->squares[new_row][_column]->_piece->isTarget = true;
-            board->squares[new_row][_column]->update();
+            board->squares[new_row][column]->piece->isTarget = true;
+            board->squares[new_row][column]->update();
             break;
         }
 
     }
 
     // Направо
-    new_column = _column+1;
-    while(isValidMove(_row, new_column)){
-        Piece* currentMovePiece = board->squares[_row][new_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+    new_column = column+1;
+    while(isValidMove(row, new_column)){
+        Piece* currentMovePiece = board->squares[row][new_column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+_row*100, 25, 25);
+                88+new_column*100, 88+row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
-            board->squares[_row][new_column]->turnMarker = turn;
-            board->turns.append(turn);
+            board->squares[row][new_column]->turnMarker = turn;
+            turns.append(turn);
             scene->addItem(turn);
             new_column++;
         }
         else{
             currentMovePiece->isTarget = true;
-            board->squares[_row][new_column]->update();
+            board->squares[row][new_column]->update();
             break;
         }
     }
 
     // Налево
-    new_column = _column-1;
-    while(isValidMove(_row, new_column)){
-        Piece* currentMovePiece = board->squares[_row][new_column]->_piece;
-        if(currentMovePiece->_color == _color) break;
-        else if(currentMovePiece->_color == Color::nonExistent){
+    new_column = column-1;
+    while(isValidMove(row, new_column)){
+        Piece* currentMovePiece = board->squares[row][new_column]->piece;
+        if(currentMovePiece->color == color) break;
+        else if(currentMovePiece->color == Color::nonExistent){
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+_row*100, 25, 25);
+                88+new_column*100, 88+row*100, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
-            board->squares[_row][new_column]->turnMarker = turn;
-            board->turns.append(turn);
+            board->squares[row][new_column]->turnMarker = turn;
+            turns.append(turn);
             scene->addItem(turn);
             new_column--;
         }
         else{
             currentMovePiece->isTarget = true;
-            board->squares[_row][new_column]->update();
+            board->squares[row][new_column]->update();
             break;
         }
     }
@@ -216,4 +213,11 @@ void Queen::setLineMoves(QGraphicsScene* scene){
 void Queen::setMoves(QGraphicsScene* scene){
     setDiagonalMoves(scene);
     setLineMoves(scene);
+}
+
+void Queen::clearTurns(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }

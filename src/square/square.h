@@ -10,29 +10,32 @@ public:
   Square(int column, int row, QGraphicsItem *parent = nullptr);
 
   void setBackColor(int r, int g, int b);
-  void setBackColor(QColor color);
 
   void setPiece(Piece* piece);
+  void clearSquare();
+
 
   void turnMarker_pressEvent();
   void eatingTarget_pressEvent();
   void castling_pressEvent();
 
+  bool checkExist();
+  void blockPieces();
   void endTurn();
 
   void drawImage(QPainter *painter);
 
   // Поля
   bool Pressed;
-  Piece* _piece = nullptr;
+  Piece* piece = nullptr;
   QGraphicsEllipseItem* turnMarker = nullptr;
-  int _row;
-  int _column;
-  const int _w = 100;
-  const int _h = 100;
+  int row;
+  int column;
+  const int w = 100;
+  const int h = 100;
 
   QColor backgroundColor;
-  QPixmap _image;
+  QPixmap image;
 
 protected:
   void paint(QPainter *painter, 

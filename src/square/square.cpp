@@ -7,102 +7,131 @@ extern Board *board;
 
 Square::Square(int column, int row, QGraphicsItem* parent) 
 : QGraphicsItem(parent){
-    _column = column;
-    _row = row;
+    this->column = column;
+    this->row = row;
     Pressed = false;
 }
 
 void Square::setPiece(Piece* piece){
-    _piece = piece;
-    _image = _piece->_image;
+    this->piece = piece;
+    this->image = piece->image;
+}
+
+void Square::clearSquare(){
+    setPiece(new Piece());
 }
 
 void Square::setBackColor(int r, int g, int b){
     backgroundColor = QColor(r, g, b);
     update();
 }
-void Square::setBackColor(QColor color){
-    backgroundColor = color;
-    update();
-}
-QRectF Square::boundingRect() const{
-    return QRectF(50+shift*_column, 50+shift*_row, _w, _h);
-}
 
-void Square::endTurn(){
-    Pressed = false;
-    board->clearPrevPressedSquare();
-    board->clearTurns();
-    board->currentMoveColor = (board->currentMoveColor == Color::white)?
-        Color::black : Color::white;
+QRectF Square::boundingRect() const{
+    return QRectF(50+shift*column, 50+shift*row, w, h);
 }
 
 void Square::turnMarker_pressEvent(){
-    setPiece(board->prevPressedSquare->_piece);
-    _piece->_row = _row;
-    _piece->_column = _column;
-    _piece->_firstMove = false;
+    setPiece(board->prevPressedSquare->piece);
+    piece->row = row;
+    piece->column = column;
+    piece->firstMove = false;
     turnMarker = nullptr;
-    endTurn();
 }
 
 void Square::eatingTarget_pressEvent(){
-    setPiece(board->prevPressedSquare->_piece);
-    _piece->_row = _row;
-    _piece->_column = _column;
-    _piece->_firstMove = false;
-    _piece->isTarget = false;
-    endTurn();
+    setPiece(board->prevPressedSquare->piece);
+    piece->row = row;
+    piece->column = column;
+    piece->firstMove = false;
+    piece->isTarget = false;
 }
 
 void Square::castling_pressEvent(){
     //short castling
-    if(_column == 7){
+    if(column == 7){
         // rook
-        board->squares[_row][5]->setPiece(_piece);
-        board->squares[_row][5]->_piece->_column = 5;
-        board->squares[_row][5]->_piece->_firstMove = false;
-        setPiece(new Piece());
+        board->squares[row][5]->setPiece(piece);
+        board->squares[row][5]->piece->column = 5;
+        board->squares[row][5]->piece->firstMove = false;
+        clearSquare();
 
         // king
-        board->squares[_row][6]->setPiece(board->squares[_row][4]->_piece);
-        board->squares[_row][6]->_piece->_column = 6;
-        board->squares[_row][6]->_piece->_firstMove = false;
-        board->squares[_row][4]->setPiece(new Piece());
+        board->squares[row][6]->setPiece(board->squares[row][4]->piece);
+        board->squares[row][6]->piece->column = 6;
+        board->squares[row][6]->piece->firstMove = false;
+        board->squares[row][4]->clearSquare();
     }
     // long castling
-    else if(_column == 0){
+    else if(column == 0){
         // rook
-        board->squares[_row][3]->setPiece(_piece);
-        board->squares[_row][3]->_piece->_column = 3;
-        board->squares[_row][3]->_piece->_firstMove = false;
-        setPiece(new Piece());
+        board->squares[row][3]->setPiece(piece);
+        board->squares[row][3]->piece->column = 3;
+        board->squares[row][3]->piece->firstMove = false;
+        clearSquare();
 
         // king
-        board->squares[_row][2]->setPiece(board->squares[_row][4]->_piece);
-        board->squares[_row][2]->_piece->_column = 2;
-        board->squares[_row][2]->_piece->_firstMove = false;
-        board->squares[_row][4]->setPiece(new Piece());
+        board->squares[row][2]->setPiece(board->squares[row][4]->piece);
+        board->squares[row][2]->piece->column = 2;
+        board->squares[row][2]->piece->firstMove = false;
+        board->squares[row][4]->clearSquare();
     }
+}
 
-    endTurn();
+void Square::endTurn(){
+    Pressed = false;
+    if(checkExist()){
+        blockPieces();
+    }
+    board->clearTurns();
+    board->clearPrevPressedSquare();
+    board->currentMoveColor = (board->currentMoveColor == Color::white)?
+        Color::black : Color::white;
+}
+
+bool Square::checkExist(){
+    // Отрисовка всех ходов
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(board->squares[i][j]->piece->color == board->currentMoveColor){
+                board->squares[i][j]->piece->setMoves(board->scene);
+            }
+        }
+    }
+    // Поиск Короля
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(dynamic_cast<King*>(board->squares[i][j]->piece) 
+            && board->squares[i][j]->piece->color != board->currentMoveColor
+            && board->squares[i][j]->piece->isTarget){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Square::blockPieces(){
+    std::cout << "CHECK!\n";
 }
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     // Нажатие на маркер хода
     if(turnMarker != nullptr){
         turnMarker_pressEvent();
+        endTurn();
     }
     // Нажатие на ячейку с красным фоном
-    else if(_piece->isTarget){
+    else if(piece->isTarget){
         eatingTarget_pressEvent();
+        endTurn();
     }
     // Нажатие на ячейку с желтым фоном
-    else if(_piece->castlingAvailable){
+    else if(piece->castlingAvailable){
         castling_pressEvent();
+        endTurn();
     }
     // Нажатие на фигуру
-    else if(!Pressed && !_image.isNull() && _piece->_color == board->currentMoveColor) {
+    else if(!Pressed && !image.isNull() && piece->color == board->currentMoveColor) {
         if(board->isAnySquarePressed) board->clearTurns();
         board->isAnySquarePressed = true;
         Pressed = true;
@@ -113,7 +142,9 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
         board->clearTurns();
         Pressed = false;
     } 
+    
     update();
+
     QGraphicsItem::mousePressEvent(event); // Возможно не надо
 }
 
@@ -123,12 +154,12 @@ void Square::paint(QPainter *painter,
         
     if(Pressed){
         painter->setBrush(QColor(0, 174, 88));
-        _piece->setMoves(board->_scene);
+        piece->setMoves(board->scene);
     }
     else{
-        if(_piece->isTarget)
+        if(piece->isTarget)
             painter->setBrush(QColor(155, 17, 30));
-        else if(_piece->castlingAvailable)
+        else if(piece->castlingAvailable)
             painter->setBrush(QColor(255, 255, 58));
         else
             painter->setBrush(backgroundColor);
@@ -139,7 +170,7 @@ void Square::paint(QPainter *painter,
 }
 
 void Square::drawImage(QPainter *painter){
-    if(!_image.isNull())
+    if(!image.isNull())
         painter->drawPixmap(boundingRect().toRect(), 
-            _image.scaled(_w, _h, Qt::KeepAspectRatio));
+            image.scaled(w, h, Qt::KeepAspectRatio));
 }
