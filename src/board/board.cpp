@@ -1,4 +1,5 @@
 #include "board.h"
+#include <cxxabi.h>
 
 #define shift 100
 
@@ -104,4 +105,62 @@ void Board::clearTurns(){
 
 void Board::clearPrevPressedSquare(){
     prevPressedSquare->clearSquare();
+}
+
+void Board::outputFen(){
+    std::string fen;
+    for(int i = 0; i < 8; i++){
+        int emptyCount = 0;
+        for(int j = 0; j < 8; j++){
+            if(squares[i][j]->piece->color == Color::nonExistent){
+                emptyCount++;
+            }
+            else{
+                if(emptyCount > 0){
+                    fen += std::to_string(emptyCount);
+                    emptyCount = 0;
+                }
+                fen += getFenPieceSymbol(typeid(*squares[i][j]->piece).name(),
+                                        squares[i][j]->piece->color);   
+            }
+        }
+        if(emptyCount > 0){
+            fen += std::to_string(emptyCount);
+        }
+        fen += '/';
+    }
+    fen.pop_back();
+    fen += ' ';
+
+    char currentTurnColor_symb = (currentMoveColor == Color::white)? 'w': 'b';
+    fen += currentTurnColor_symb;
+
+    // Доделать этот момент
+    fen += " KQkq - 0 1";
+
+    std::cout << fen << std::endl;
+}
+
+char Board::getFenPieceSymbol(const char* pieceName, Color pieceColor){
+    // Удаления числа в начале строки 
+    int status;
+    char* demangledName = abi::__cxa_demangle(pieceName, nullptr, nullptr, &status);
+    std::string demangled_pieceName = (status == 0) ? demangledName : pieceName;
+    free(demangledName);
+
+    char pieceSymb;
+    if(demangled_pieceName == "Bishop")
+        pieceSymb = (pieceColor == Color::white)? 'B' : 'b';
+    else if(demangled_pieceName == "King")
+        pieceSymb = (pieceColor == Color::white)? 'K' : 'k';
+    else if(demangled_pieceName == "Knight")
+        pieceSymb = (pieceColor == Color::white)? 'N' : 'n';
+    else if(demangled_pieceName == "Pawn")
+        pieceSymb = (pieceColor == Color::white)? 'P' : 'p';
+    else if(demangled_pieceName == "Queen")
+        pieceSymb = (pieceColor == Color::white)? 'Q' : 'q';
+    else if(demangled_pieceName == "Rook")
+        pieceSymb = (pieceColor == Color::white)? 'R' : 'r';
+
+    return pieceSymb;
 }

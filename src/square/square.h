@@ -14,14 +14,16 @@ public:
   void setPiece(Piece* piece);
   void clearSquare();
 
-
   void turnMarker_pressEvent();
   void eatingTarget_pressEvent();
   void castling_pressEvent();
 
-  bool checkExist();
+  bool checkExists();
   void blockPieces();
   void endTurn();
+
+  void outputFen();
+  char getFenPieceSymbol(const char* pieceName, Color pieceColor);
 
   void drawImage(QPainter *painter);
 

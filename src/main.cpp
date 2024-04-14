@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
     Color firstTurn_color = Color::white;
     board = new Board(scene, firstTurn_color);
     board->setUpBoard();
+    board->outputFen();
 
     BoardRenderer::render(board, scene);
 
@@ -57,7 +58,7 @@ int main(int argc, char* argv[]) {
     });
 
 
-    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [stackedWidget](){
+    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseWhiteColor"), &QPushButton::clicked, [stackedWidget](){
         stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
     });
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [stackedWidget](){

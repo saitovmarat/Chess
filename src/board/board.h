@@ -20,7 +20,11 @@ public:
     void setUpBoard();
     void clearTurns();
 
+    void outputFen();
+    char getFenPieceSymbol(const char* pieceName, Color pieceColor);
+
     void clearPrevPressedSquare();
+    
 
     Color currentMoveColor;
     Color firstTurnColor;

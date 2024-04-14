@@ -79,16 +79,17 @@ void Square::castling_pressEvent(){
 
 void Square::endTurn(){
     Pressed = false;
-    if(checkExist()){
+    if(checkExists()){
         blockPieces();
     }
     board->clearTurns();
     board->clearPrevPressedSquare();
     board->currentMoveColor = (board->currentMoveColor == Color::white)?
         Color::black : Color::white;
+    board->outputFen();
 }
 
-bool Square::checkExist(){
+bool Square::checkExists(){
     // Отрисовка всех ходов
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
