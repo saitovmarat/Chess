@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [stackedWidget](){
         stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
     });
-    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseWhiteColor"), &QPushButton::clicked, [stackedWidget](){
+    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [stackedWidget](){
         stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
     });
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseBlackColor"), &QPushButton::clicked, [stackedWidget](){
