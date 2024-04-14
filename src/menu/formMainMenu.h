@@ -6,6 +6,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QLayout>
 
 QT_BEGIN_NAMESPACE
 
@@ -16,6 +20,7 @@ public:
     QPushButton *btnPlayWithComputer;
     QLabel *label;
     QLabel *label_2;
+    QLayout *mainLayout; 
 
     void setupUi(QWidget *Widget);
 
