@@ -37,8 +37,13 @@ int main(int argc, char* argv[]) {
     QGraphicsView* windowChooseMode = new QGraphicsView();
     ui_chooseMode.setupUi(windowChooseMode);
 
+    Ui_FormMenuChooseColor ui_chooseColor;
+    QGraphicsView* windowChooseColor = new QGraphicsView();
+    ui_chooseColor.setupUi(windowChooseColor);
+
     // Добавление окон в стековый виджет
     stackedWidget->addWidget(windowChooseMode);
+    stackedWidget->addWidget(windowChooseColor);
     stackedWidget->addWidget(windowGame);
     
 
@@ -51,15 +56,26 @@ int main(int argc, char* argv[]) {
         stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
     });
 
+
+    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [stackedWidget](){
+        stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
+    });
+    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [stackedWidget](){
+        stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
+    });
+    QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseBlackColor"), &QPushButton::clicked, [stackedWidget](){
+        stackedWidget->setCurrentIndex(stackedWidget->currentIndex() + 1);
+    });
+
+
+
+
+
     // QWidget windowEndGame;
     // Ui_FormEndGame ui_endGame;
     // ui_endGame.setupUi(&windowEndGame);
     // windowEndGame.show();
 
-    // QWidget windowChooseColor;
-    // Ui_FormMenuChooseColor ui_chooseColor;
-    // ui_chooseColor.setupUi(&windowChooseColor);
-    // windowChooseColor.show();
 
     return app.exec();
 }
