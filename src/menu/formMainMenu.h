@@ -18,8 +18,8 @@ class Ui_FormMenuChooseMode
 public:
     QPushButton *btnPlayWithFriend;
     QPushButton *btnPlayWithComputer;
-    QLabel *label;
-    QLabel *label_2;
+    QLabel *labelGameName;
+    QLabel *labelPicture;
     QLayout *mainLayout; 
 
     void setupUi(QWidget *Widget);
