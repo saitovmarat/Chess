@@ -23,27 +23,14 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget)
         btnPlayWithComputer->setLayoutDirection(Qt::LeftToRight);
         btnPlayWithComputer->setStyleSheet(QString::fromUtf8(""));
         btnPlayWithComputer->setFlat(false);
-        label = new QLabel(Widget);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(820, 324, 71, 75));
-        label->setPixmap(QPixmap(":/Chess/images/ChessLogo.png"));
-        label->setScaledContents(false);
-        label->setMargin(0);
-        label_2 = new QLabel(Widget);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(890, 340, 131, 81));
+        labelGameName = new QLabel(Widget);
+        labelGameName->setObjectName(QString::fromUtf8("label"));
+        labelGameName->setGeometry(QRect(820, 324, 71, 75));
+        labelGameName->setPixmap(QPixmap(":/Chess/images/ChessLogo.png"));
+        labelPicture = new QLabel(Widget);
+        labelPicture->setObjectName(QString::fromUtf8("label_2"));
+        labelPicture->setGeometry(QRect(890, 340, 131, 81));
         mainLayout = new QGridLayout;
-
-        // Добавление виджетов в центральную компоновку
-        // mainLayout->addWidget(btnPlayWithFriend);
-        // mainLayout->addWidget(btnPlayWithComputer);
-        // mainLayout->addWidget(label, 0, 1);
-        // mainLayout->addWidget(label_2, 0, 2);
-        // mainLayout->addItem(spacer1, 0, 0);
-        // mainLayout->addItem(spacer2, 0, 3);
-        // mainLayout->addItem(spacer3, 1, 0);
-        // mainLayout->addItem(spacer4, 1, 3);
-
 
         retranslateUi(Widget);
 
@@ -55,8 +42,8 @@ void Ui_FormMenuChooseMode::retranslateUi(QWidget *Widget)
     Widget->setWindowTitle(QCoreApplication::translate("Widget", "GameMenu", nullptr));
     btnPlayWithFriend->setText(QCoreApplication::translate("Widget", "Сыграть с другом", nullptr));
     btnPlayWithComputer->setText(QCoreApplication::translate("Widget", "Сыграть с компьютером", nullptr));
-    label->setText(QString());
-    label_2->setText(QCoreApplication::translate("Widget", "<html><head/><body><p><span style=\" font-size:36pt;\">Chess</span></p></body></html>", nullptr));
+    labelGameName->setText(QString());
+    labelPicture->setText(QCoreApplication::translate("Widget", "<html><head/><body><p><span style=\" font-size:36pt;\">Chess</span></p></body></html>", nullptr));
 
     Widget->setLayout(mainLayout);
 } // retranslateUi

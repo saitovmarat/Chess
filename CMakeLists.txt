@@ -47,6 +47,8 @@ set(PROJECT_SOURCES
     src/menu/formMenuChooseColor.h
     src/menu/formEndGame.cpp
     src/menu/formEndGame.h
+    src/menu/menuController.cpp
+    src/menu/menuController.h
 
     resources/images.qrc
 )

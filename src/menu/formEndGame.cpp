@@ -32,7 +32,7 @@ void Ui_FormEndGame::setupUi(QWidget *Form)
     void Ui_FormEndGame::retranslateUi(QWidget *Form)
     {
         Form->setWindowTitle(QCoreApplication::translate("Form", "Form", nullptr));
-        btnGoToMainMenu->setText(QCoreApplication::translate("Form", "\320\222 \320\263\320\273\320\260\320\262\320\275\320\276\320\265 \320\274\320\265\320\275\321\216", nullptr));
-        btnRestart->setText(QCoreApplication::translate("Form", "\320\240\320\265\320\262\320\260\320\275\321\210", nullptr));
-        lblWhoWin->setText(QCoreApplication::translate("Form", "<html><head/><body><p><span style=\" font-size:20pt; color:#ffffff;\">\320\221\320\265\320\273\321\213\320\265 \320\262\321\213\320\270\320\263\321\200\320\260\320\273\320\270</span></p></body></html>", nullptr));
+        btnGoToMainMenu->setText(QCoreApplication::translate("Form", "В главном меню", nullptr));
+        btnRestart->setText(QCoreApplication::translate("Form", "Реванш", nullptr));
+        lblWhoWin->setText(QCoreApplication::translate("Form", "<html><head/><body><p><span style=\" font-size:20pt; color:#ffffff;\">Белые выиграли</span></p></body></html>", nullptr));
     } // retranslateUi
