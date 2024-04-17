@@ -9,12 +9,14 @@ Square::Square(int column, int row, QGraphicsItem* parent)
 : QGraphicsItem(parent){
     this->column = column;
     this->row = row;
-    Pressed = false;
+    isPressed = false;
 }
 
-void Square::setPiece(Piece* piece){
-    this->piece = piece;
-    this->image = piece->image;
+void Square::setPiece(Piece* newPiece){
+    piece = newPiece;
+    image = newPiece->image;
+    piece->row = row;
+    piece->column = column;
 }
 
 void Square::clearSquare(){
@@ -30,55 +32,44 @@ QRectF Square::boundingRect() const{
     return QRectF(50+shift*column, 50+shift*row, w, h);
 }
 
-void Square::turnMarker_pressEvent(){
-    setPiece(board->prevPressedSquare->piece);
-    piece->row = row;
-    piece->column = column;
+void Square::turnMarkerPressEvent(){
+    Piece* prevPressedPiece = board->prevPressedSquare->piece;
+    setPiece(prevPressedPiece);
     piece->firstMove = false;
     turnMarker = nullptr;
 }
 
-void Square::eatingTarget_pressEvent(){
-    setPiece(board->prevPressedSquare->piece);
-    piece->row = row;
-    piece->column = column;
+void Square::consumeTarget() {
+    Piece* targetPiece = board->prevPressedSquare->piece;
+    setPiece(targetPiece);
     piece->firstMove = false;
     piece->isTarget = false;
 }
 
-void Square::castling_pressEvent(){
-    //short castling
-    if(column == 7){
-        // rook
-        board->squares[row][5]->setPiece(piece);
-        board->squares[row][5]->piece->column = 5;
-        board->squares[row][5]->piece->firstMove = false;
-        clearSquare();
+void Square::performCastling(){
+    const int rookColumn = (column == 7) ? 5 : 3;
+    const int kingDestColumn = (column == 7) ? 6 : 2;
+    const int kingSourceColumn = 4;
 
-        // king
-        board->squares[row][6]->setPiece(board->squares[row][4]->piece);
-        board->squares[row][6]->piece->column = 6;
-        board->squares[row][6]->piece->firstMove = false;
-        board->squares[row][4]->clearSquare();
-    }
-    // long castling
-    else if(column == 0){
-        // rook
-        board->squares[row][3]->setPiece(piece);
-        board->squares[row][3]->piece->column = 3;
-        board->squares[row][3]->piece->firstMove = false;
-        clearSquare();
+    Square* rookSquare = board->squares[row][rookColumn];
+    Square* kingSquare = board->squares[row][kingDestColumn];
+    Piece* rook = rookSquare->piece;
+    Piece* king = board->squares[row][kingSourceColumn]->piece;
+    
+    rookSquare->setPiece(piece);
+    rook->column = rookColumn;
+    rook->firstMove = false;
+    clearSquare();
 
-        // king
-        board->squares[row][2]->setPiece(board->squares[row][4]->piece);
-        board->squares[row][2]->piece->column = 2;
-        board->squares[row][2]->piece->firstMove = false;
-        board->squares[row][4]->clearSquare();
-    }
+    kingSquare->setPiece(king);
+    king->column = kingDestColumn;
+    king->firstMove = false;
+    board->squares[row][kingSourceColumn]->clearSquare();
 }
 
+
 void Square::endTurn(){
-    Pressed = false;
+    isPressed = false;
     if(checkExists()){
         blockPieces();
     }
@@ -118,32 +109,31 @@ void Square::blockPieces(){
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     // Нажатие на маркер хода
     if(turnMarker != nullptr){
-        turnMarker_pressEvent();
+        turnMarkerPressEvent();
         endTurn();
     }
     // Нажатие на ячейку с красным фоном
     else if(piece->isTarget){
-        eatingTarget_pressEvent();
+        consumeTarget();
         endTurn();
     }
     // Нажатие на ячейку с желтым фоном
     else if(piece->castlingAvailable){
-        castling_pressEvent();
+        performCastling();
         endTurn();
     }
     // Нажатие на фигуру
-    else if(!Pressed && !image.isNull() && piece->color == board->currentMoveColor) {
+    else if(!isPressed && !image.isNull() && piece->color == board->currentMoveColor) {
         if(board->isAnySquarePressed) board->clearTurns();
         board->isAnySquarePressed = true;
-        Pressed = true;
+        isPressed = true;
         board->prevPressedSquare = this;
     }
     // Повторное нажатие на прошлую нажатую фигуру
-    else if(Pressed && board->isAnySquarePressed){
+    else if(isPressed && board->isAnySquarePressed){
         board->clearTurns();
-        Pressed = false;
+        isPressed = false;
     } 
-    
     update();
 
     QGraphicsItem::mousePressEvent(event); // Возможно не надо
@@ -151,20 +141,22 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
 void Square::paint(QPainter *painter, 
     const QStyleOptionGraphicsItem *option, 
-    QWidget *widget){  
-        
-    if(Pressed){
-        painter->setBrush(QColor(0, 174, 88));
+    QWidget *widget)
+{  
+    QColor temp_backgroundColor;
+    if(isPressed){
+        temp_backgroundColor = QColor(0, 174, 88);
         piece->setMoves(board->scene);
     }
     else{
         if(piece->isTarget)
-            painter->setBrush(QColor(155, 17, 30));
+            temp_backgroundColor = QColor(155, 17, 30);
         else if(piece->castlingAvailable)
-            painter->setBrush(QColor(255, 255, 58));
+            temp_backgroundColor = QColor(255, 255, 58);
         else
-            painter->setBrush(backgroundColor);
+            temp_backgroundColor = backgroundColor;
     }
+    painter->setBrush(temp_backgroundColor);
     painter->setPen(Qt::NoPen);
     painter->drawRect(boundingRect());
     drawImage(painter);

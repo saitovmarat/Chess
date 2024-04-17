@@ -4,7 +4,10 @@
 #include "square.h"
 #include "main.h"
 
-
+struct Coordinates{
+    int row;
+    int column;
+};
 class Piece 
 {
 public:
@@ -14,11 +17,13 @@ public:
     virtual void setMoves(QGraphicsScene* scene) {}
     virtual bool isValidMove(int row, int column) { return true; }
     virtual void clearTurns() {};
+    //virtual void addPossibleMoveCords(int row, int column) {};
     
     int row;
     int column;
     Color color; 
     QPixmap image;
+
 
     bool isTarget = false;
 
@@ -28,6 +33,7 @@ public:
     // Rook feature
     bool castlingAvailable = false;
 
+    //std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;
 };
 

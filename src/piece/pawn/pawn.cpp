@@ -20,13 +20,13 @@ void Pawn::set_BottomPlayerMoves(QGraphicsScene* scene){
     Color enemyColor = (board->currentMoveColor == Color::white)? Color::black : Color::white;
     if(row-1 < 0) return;
 
-    if(isValidMove(row, column+1)){
+    if(isValidMove(row-1, column+1)){
         if(board->squares[row-1][column+1]->piece->color == enemyColor){
             board->squares[row-1][column+1]->piece->isTarget = true;
             board->squares[row-1][column+1]->update();
         }
     }
-    if(isValidMove(row, column-1)){
+    if(isValidMove(row-1, column-1)){
         if(board->squares[row-1][column-1]->piece->color == enemyColor){
             board->squares[row-1][column-1]->piece->isTarget = true;
             board->squares[row-1][column-1]->update();
@@ -86,6 +86,13 @@ void Pawn::setMoves(QGraphicsScene* scene){
         set_TopPlayerMoves(scene);
     }
 }
+
+// void Pawn::addPossibleMoveCords(int row, int column){
+//     Coordinates coords;
+//     coords.row = row;
+//     coords.column = column;
+//     possibleMovesCoords.emplace_back(coords);
+// }
 
 void Pawn::clearTurns(){
     while(!turns.isEmpty()) {

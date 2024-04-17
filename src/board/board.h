@@ -25,12 +25,12 @@ public:
 
     void clearPrevPressedSquare();
     
-
     Color currentMoveColor;
     Color firstTurnColor;
 
     bool isAnySquarePressed;
 
+    bool isCheck = false;
     Square* prevPressedSquare;
     QGraphicsScene* scene;
     Square* squares[8][8];
