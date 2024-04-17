@@ -14,21 +14,18 @@ public:
   void setPiece(Piece* piece);
   void clearSquare();
 
-  void turnMarker_pressEvent();
-  void eatingTarget_pressEvent();
-  void castling_pressEvent();
+  void turnMarkerPressEvent();
+  void consumeTarget();
+  void performCastling();
 
   bool checkExists();
   void blockPieces();
   void endTurn();
 
-  void outputFen();
-  char getFenPieceSymbol(const char* pieceName, Color pieceColor);
-
   void drawImage(QPainter *painter);
 
   // Поля
-  bool Pressed;
+  bool isPressed;
   Piece* piece = nullptr;
   QGraphicsEllipseItem* turnMarker = nullptr;
   int row;
