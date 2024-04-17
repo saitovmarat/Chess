@@ -29,17 +29,8 @@ void Ui_FormMenuChooseColor::setupUi(QWidget *FormChooseColor)
         btnChooseWhiteColor->setIconSize(QSize(55, 55));
         lblPlayWithComputer = new QLabel(FormChooseColor);
         lblPlayWithComputer->setObjectName(QString::fromUtf8("lblPlayWithComputer"));
-        lblPlayWithComputer->setEnabled(true);
         lblPlayWithComputer->setGeometry(QRect(770, 330, 271, 51));
-        lblPlayWithComputer->setAcceptDrops(false);
-        lblPlayWithComputer->setAutoFillBackground(false);
-        lblPlayWithComputer->setStyleSheet(QString::fromUtf8("background: transparent;\n"
-""));
-        lblPlayWithComputer->setFrameShadow(QFrame::Plain);
-        lblPlayWithComputer->setScaledContents(false);
-        lblPlayWithComputer->setWordWrap(false);
-        lblPlayWithComputer->setOpenExternalLinks(false);
-
+        lblPlayWithComputer->setStyleSheet(QString::fromUtf8("background: transparent;\n"""));
         retranslateUi(FormChooseColor);
 
         QMetaObject::connectSlotsByName(FormChooseColor);
