@@ -11,18 +11,7 @@ MenuController::MenuController(){
 }
 
 void MenuController::start(){
-    QGraphicsScene* scene = new QGraphicsScene();
-    scene->setBackgroundBrush(QBrush(QColor("lightblue")));
-
-    Color firstTurn_color = Color::white;
-    board = new Board(scene, firstTurn_color);
-    board->setUpBoard();
-    board->outputFen();
-
-    BoardRenderer::render(board, scene);
-
-    windowGame = new QGraphicsView(scene);
-    
+    windowGame = new QGraphicsView();
     // Создание стекового виджета
     stackedWidget = new QStackedWidget;
 

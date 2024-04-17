@@ -41,14 +41,14 @@ set(PROJECT_SOURCES
     src/piece/rook/rook.cpp
     src/piece/rook/rook.h
 
-    src/menu/formMainMenu.cpp
-    src/menu/formMainMenu.h
-    src/menu/formMenuChooseColor.cpp
-    src/menu/formMenuChooseColor.h
-    src/menu/formEndGame.cpp
-    src/menu/formEndGame.h
-    src/menu/menuController.cpp
-    src/menu/menuController.h
+    src/menu/formMainMenu/formMainMenu.cpp
+    src/menu/formMainMenu/formMainMenu.h
+    src/menu/formMenuChooseColor/formMenuChooseColor.cpp
+    src/menu/formMenuChooseColor/formMenuChooseColor.h
+    src/menu/formEndGame/formEndGame.cpp
+    src/menu/formEndGame/formEndGame.h
+    src/menu/menuController/menuController.cpp
+    src/menu/menuController/menuController.h
 
     resources/images.qrc
 )
@@ -74,6 +74,9 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/rook
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/images
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMainMenu
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMenuChooseColor
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formEndGame
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/menuController
     
 )

@@ -10,7 +10,10 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QLayout>
-
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsRectItem>
+#include <QPainter>
+#include <QPaintEvent>
 QT_BEGIN_NAMESPACE
 
 class Ui_FormMenuChooseMode
@@ -20,11 +23,14 @@ public:
     QPushButton *btnPlayWithComputer;
     QLabel *labelGameName;
     QLabel *labelPicture;
-    QLayout *mainLayout; 
+    QGraphicsScene *scene;
+    QPainter painter;
 
     void setupUi(QWidget *Widget);
-
+    
     void retranslateUi(QWidget *Widget);
+
+    void paint(QGraphicsView *window);
 };
 
 

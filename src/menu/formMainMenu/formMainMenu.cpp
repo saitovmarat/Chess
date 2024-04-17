@@ -17,12 +17,9 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget)
         btnPlayWithFriend->setFont(font);
         btnPlayWithComputer = new QPushButton(Widget);
         btnPlayWithComputer->setObjectName(QString::fromUtf8("btnPlayWithComputer"));
-        btnPlayWithComputer->setEnabled(true);
         btnPlayWithComputer->setGeometry(QRect(710, 530, 211, 61));
         btnPlayWithComputer->setFont(font);
-        btnPlayWithComputer->setLayoutDirection(Qt::LeftToRight);
-        btnPlayWithComputer->setStyleSheet(QString::fromUtf8(""));
-        btnPlayWithComputer->setFlat(false);
+
         labelGameName = new QLabel(Widget);
         labelGameName->setObjectName(QString::fromUtf8("label"));
         labelGameName->setGeometry(QRect(820, 324, 71, 75));
@@ -30,10 +27,14 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget)
         labelPicture = new QLabel(Widget);
         labelPicture->setObjectName(QString::fromUtf8("label_2"));
         labelPicture->setGeometry(QRect(890, 340, 131, 81));
-        mainLayout = new QGridLayout;
+
+        scene = new QGraphicsScene(Widget);
+        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(100, 50, 50, 100);
+        rectLeft->setPen(Qt::NoPen);
+        rectLeft->setBrush(QColor(111, 78, 55));
+        scene->addItem(rectLeft);
 
         retranslateUi(Widget);
-
         QMetaObject::connectSlotsByName(Widget);
     } // setupUi
 
@@ -45,5 +46,5 @@ void Ui_FormMenuChooseMode::retranslateUi(QWidget *Widget)
     labelGameName->setText(QString());
     labelPicture->setText(QCoreApplication::translate("Widget", "<html><head/><body><p><span style=\" font-size:36pt;\">Chess</span></p></body></html>", nullptr));
 
-    Widget->setLayout(mainLayout);
+    Widget->update();
 } // retranslateUi
