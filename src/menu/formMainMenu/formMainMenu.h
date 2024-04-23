@@ -16,7 +16,7 @@
 #include <QPaintEvent>
 QT_BEGIN_NAMESPACE
 
-class Ui_FormMenuChooseMode
+class Ui_FormMenuChooseMode 
 {
 public:
     QPushButton *btnPlayWithFriend;

@@ -8,7 +8,7 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget)
         Widget->setStyleSheet(QString::fromUtf8("background-color: rgb(173, 217, 230);"));
         btnPlayWithFriend = new QPushButton(Widget);
         btnPlayWithFriend->setObjectName(QString::fromUtf8("btnPlayWithFriend"));
-        btnPlayWithFriend->setGeometry(QRect(930, 530, 221, 61));
+        btnPlayWithFriend->setGeometry(QRect(980, 530, 220, 61));
         // QObject::connect(btnPlayWithFriend, &QPushButton::clicked, [&](){slots onBtnPlayWithFriendClicked();});
          
         QFont font;
@@ -17,16 +17,19 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget)
         btnPlayWithFriend->setFont(font);
         btnPlayWithComputer = new QPushButton(Widget);
         btnPlayWithComputer->setObjectName(QString::fromUtf8("btnPlayWithComputer"));
-        btnPlayWithComputer->setGeometry(QRect(710, 530, 211, 61));
+        btnPlayWithComputer->setGeometry(QRect(710, 530, 220, 61));
         btnPlayWithComputer->setFont(font);
 
         labelGameName = new QLabel(Widget);
         labelGameName->setObjectName(QString::fromUtf8("label"));
         labelGameName->setGeometry(QRect(820, 324, 71, 75));
         labelGameName->setPixmap(QPixmap(":/Chess/images/ChessLogo.png"));
+        labelGameName->setStyleSheet(QString::fromUtf8("background: transparent;\n"""));
+
         labelPicture = new QLabel(Widget);
         labelPicture->setObjectName(QString::fromUtf8("label_2"));
         labelPicture->setGeometry(QRect(890, 340, 131, 81));
+        labelPicture->setStyleSheet(QString::fromUtf8("background: transparent;\n"""));
 
         scene = new QGraphicsScene(Widget);
         QGraphicsRectItem* rectLeft = new QGraphicsRectItem(100, 50, 50, 100);

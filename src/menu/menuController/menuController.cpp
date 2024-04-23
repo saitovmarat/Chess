@@ -18,10 +18,12 @@ void MenuController::start(){
     Ui_FormMenuChooseMode ui_chooseMode;
     windowChooseMode = new QGraphicsView();
     ui_chooseMode.setupUi(windowChooseMode);
+    makeDesignForWindowChooseMode();
 
     Ui_FormMenuChooseColor ui_chooseColor;
     windowChooseColor = new QGraphicsView();
     ui_chooseColor.setupUi(windowChooseColor);
+    makeDesignForWindowChooseColor();
 
     // Добавление окон в стековый виджет
     stackedWidget->addWidget(windowChooseMode);
@@ -31,13 +33,12 @@ void MenuController::start(){
     // Установка начального окна для отображения
     stackedWidget->setCurrentWidget(windowChooseMode);
     stackedWidget->showMaximized();
-
     QObject::connect(windowChooseMode->findChild<QPushButton*>("btnPlayWithFriend"), &QPushButton::clicked, [&](){slots btn_OpenGameWithFriend_PressEvent();});
-
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseBlackColor"), &QPushButton::clicked, [&](){slots btn_BlackPieceColor_PressEvent();});
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseWhiteColor"), &QPushButton::clicked, [&](){slots btn_WhitePieceColor_PressEvent();});
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [&](){slots btn_RandomPieceColor_PressEvent();});
 }
+
 void MenuController::btn_OpenGameWithFriend_PressEvent(){
     stackedWidget->setCurrentWidget(windowChooseColor);
 }
@@ -64,6 +65,22 @@ void MenuController::btn_RandomPieceColor_PressEvent(){
 void MenuController::btn_BlackPieceColor_PressEvent(){
     makeGameWindow(Color::black);
     stackedWidget->setCurrentWidget(windowGame);
+}
+void MenuController::makeDesignForWindowChooseMode(){
+        QGraphicsScene* scene = new QGraphicsScene();
+        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(50, 50, 600, 500);
+        rectLeft->setPen(Qt::NoPen);
+        rectLeft->setBrush(QBrush(QColor(36,87,123)));
+        scene->addItem(rectLeft);
+        windowChooseMode->setScene(scene);
+}
+void MenuController::makeDesignForWindowChooseColor(){
+        QGraphicsScene* scene = new QGraphicsScene();
+        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(50, 50, 600, 500);
+        rectLeft->setPen(Qt::NoPen);
+        rectLeft->setBrush(QBrush(QColor(36,87,123)));
+        scene->addItem(rectLeft);
+        windowChooseColor->setScene(scene);
 }
 void MenuController::someoneWon(Color color){
     
