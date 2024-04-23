@@ -9,10 +9,14 @@ public:
 private:
     void makeGameWindow(Color color);
     void start();
+    void makeDesignForWindowGame();
+    void makeDesignForWindowChooseMode();
+    void makeDesignForWindowChooseColor();
     QStackedWidget *stackedWidget;
     QGraphicsView* windowGame;
     QGraphicsView* windowChooseMode;
     QGraphicsView* windowChooseColor;
+
 
 private slots:
     void btn_OpenGameWithFriend_PressEvent(); 

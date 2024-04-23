@@ -16,7 +16,7 @@ public:
     QPushButton *btnChooseRandomColor;
     QPushButton *btnChooseBlackColor;
     QPushButton *btnChooseWhiteColor;
-    QLabel *lblPlayWithComputer;
+    QLabel *lblChooseColor;
 
     void setupUi(QWidget *FormChooseColor);
 
