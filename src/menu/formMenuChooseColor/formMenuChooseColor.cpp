@@ -29,7 +29,7 @@ void Ui_FormMenuChooseColor::setupUi(QWidget *FormChooseColor)
         btnChooseWhiteColor->setIconSize(QSize(55, 55));
         lblChooseColor = new QLabel(FormChooseColor);
         lblChooseColor->setObjectName(QString::fromUtf8("lblChooseColor"));
-        lblChooseColor->setGeometry(QRect(830, 360, 271, 51));
+        lblChooseColor->setGeometry(QRect(860, 360, 271, 51));
         lblChooseColor->setStyleSheet(QString::fromUtf8("background: transparent;\n"""));
         retranslateUi(FormChooseColor);
 

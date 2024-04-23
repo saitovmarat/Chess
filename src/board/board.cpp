@@ -152,7 +152,7 @@ void Board::outputFen(){
                     fen += std::to_string(emptyCount);
                     emptyCount = 0;
                 }
-                fen += getFenPieceSymbol(typeid(*squares[i][j]->piece).name(),
+                fen += getFenPieceSymbol(squares[i][j]->piece,
                                         squares[i][j]->piece->color);   
             }
         }
@@ -173,25 +173,19 @@ void Board::outputFen(){
     std::cout << fen << std::endl;
 }
 
-char Board::getFenPieceSymbol(const char* pieceName, Color pieceColor){
-    // Удаления числа в начале строки 
-    int status;
-    char* demangledName = abi::__cxa_demangle(pieceName, nullptr, nullptr, &status);
-    std::string demangled_pieceName = (status == 0) ? demangledName : pieceName;
-    free(demangledName);
-
+char Board::getFenPieceSymbol(Piece* piece, Color pieceColor){
     char pieceSymb;
-    if(demangled_pieceName == "Bishop")
+    if(dynamic_cast<Bishop*>(piece))
         pieceSymb = (pieceColor == Color::white)? 'B' : 'b';
-    else if(demangled_pieceName == "King")
+    else if(dynamic_cast<King*>(piece))
         pieceSymb = (pieceColor == Color::white)? 'K' : 'k';
-    else if(demangled_pieceName == "Knight")
+    else if(dynamic_cast<Knight*>(piece))
         pieceSymb = (pieceColor == Color::white)? 'N' : 'n';
-    else if(demangled_pieceName == "Pawn")
+    else if(dynamic_cast<Pawn*>(piece))
         pieceSymb = (pieceColor == Color::white)? 'P' : 'p';
-    else if(demangled_pieceName == "Queen")
+    else if(dynamic_cast<Queen*>(piece))
         pieceSymb = (pieceColor == Color::white)? 'Q' : 'q';
-    else if(demangled_pieceName == "Rook")
+    else if(dynamic_cast<Rook*>(piece))
         pieceSymb = (pieceColor == Color::white)? 'R' : 'r';
 
     return pieceSymb;

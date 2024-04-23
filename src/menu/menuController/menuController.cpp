@@ -67,20 +67,18 @@ void MenuController::btn_BlackPieceColor_PressEvent(){
     stackedWidget->setCurrentWidget(windowGame);
 }
 void MenuController::makeDesignForWindowChooseMode(){
-        QGraphicsScene* scene = new QGraphicsScene();
-        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(50, 50, 600, 500);
-        rectLeft->setPen(Qt::NoPen);
-        rectLeft->setBrush(QBrush(QColor(36,87,123)));
-        scene->addItem(rectLeft);
-        windowChooseMode->setScene(scene);
+    QGraphicsScene* scene = new QGraphicsScene();
+    QGraphicsRectItem* rectLeft = new QGraphicsRectItem(0, 0, 600, 500);
+    rectLeft->setBrush(QBrush(QColor(255, 255, 255)));
+    scene->addItem(rectLeft);
+    windowChooseMode->setScene(scene);
 }
 void MenuController::makeDesignForWindowChooseColor(){
-        QGraphicsScene* scene = new QGraphicsScene();
-        QGraphicsRectItem* rectLeft = new QGraphicsRectItem(50, 50, 600, 500);
-        rectLeft->setPen(Qt::NoPen);
-        rectLeft->setBrush(QBrush(QColor(36,87,123)));
-        scene->addItem(rectLeft);
-        windowChooseColor->setScene(scene);
+    QGraphicsScene* scene = new QGraphicsScene();
+    QGraphicsRectItem* rectLeft = new QGraphicsRectItem(0, 0, 600, 500);
+    rectLeft->setBrush(QBrush(QColor(255, 255, 255)));
+    scene->addItem(rectLeft);
+    windowChooseColor->setScene(scene);
 }
 void MenuController::someoneWon(Color color){
     

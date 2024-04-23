@@ -21,7 +21,7 @@ public:
     void clearTurns();
 
     void outputFen();
-    char getFenPieceSymbol(const char* pieceName, Color pieceColor);
+    char getFenPieceSymbol(Piece* piece, Color pieceColor);
 
     bool isValidMove(Square* fromSquare, Square* toSquare);
     bool isCheck();
