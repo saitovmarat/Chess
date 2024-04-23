@@ -8,13 +8,15 @@ class Queen:public Piece{
 public:
     Queen(int row, int column, Color color);
 
-    void setDiagonalMoves(QGraphicsScene* scene);
-    void setLineMoves(QGraphicsScene* scene);
+    void setDiagonalMoves();
+    void setLineMoves();
 
-    void setMoves(QGraphicsScene* scene) override;
+    void setMoves() override;
+    void showMoves(QGraphicsScene* scene) override;
     bool isValidMove(int row, int column) override;
     void clearTurns() override;
 
+    std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;
 };
 

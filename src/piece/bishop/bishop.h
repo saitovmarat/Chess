@@ -8,12 +8,14 @@ class Bishop:public Piece{
 public:
     Bishop(int row, int column, Color color);
     
-    void setDiagonalMoves(QGraphicsScene* scene);
+    void setDiagonalMoves();
 
-    void setMoves(QGraphicsScene* scene) override;
+    void setMoves() override;
+    void showMoves(QGraphicsScene* scene) override;
     bool isValidMove(int row, int column) override;
     void clearTurns() override;
 
+    std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;
 };
 

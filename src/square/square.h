@@ -18,8 +18,6 @@ public:
   void consumeTarget();
   void performCastling();
 
-  bool checkExists();
-  void blockPieces();
   void endTurn();
 
   void drawImage(QPainter *painter);

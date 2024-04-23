@@ -14,17 +14,15 @@ public:
     Piece();
     Piece(int row, int column, Color color);
 
-    virtual void setMoves(QGraphicsScene* scene) {}
-    virtual bool isValidMove(int row, int column) { return true; }
-    virtual void clearTurns() {};
-    //virtual void addPossibleMoveCords(int row, int column) {};
+    virtual void setMoves();
+    virtual void showMoves(QGraphicsScene* scene);
+    virtual bool isValidMove(int row, int column);
+    virtual void clearTurns();
     
     int row;
     int column;
     Color color; 
     QPixmap image;
-
-
     bool isTarget = false;
 
     // Pawn and King feature 
@@ -33,7 +31,7 @@ public:
     // Rook feature
     bool castlingAvailable = false;
 
-    //std::vector<Coordinates> possibleMovesCoords;
+    std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;
 };
 

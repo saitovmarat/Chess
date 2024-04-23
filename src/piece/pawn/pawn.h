@@ -8,16 +8,16 @@ class Pawn:public Piece{
 public:
     Pawn(int row, int column, Color color);
 
-    void set_BottomPlayerMoves(QGraphicsScene* scene);
-    void set_TopPlayerMoves(QGraphicsScene* scene);
+    void set_BottomPlayerMoves();
+    void set_TopPlayerMoves();
 
-    void setMoves(QGraphicsScene* scene) override;
+    void setMoves() override;
+    void showMoves(QGraphicsScene* scene) override;
     bool isValidMove(int row, int column) override;
-    //void addPossibleMoveCords(int row, int column) override;
     void clearTurns() override;
 
 
-    //std::vector<Coordinates> possibleMovesCoords;
+    std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;
 };
 

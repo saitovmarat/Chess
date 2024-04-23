@@ -23,15 +23,19 @@ public:
     void outputFen();
     char getFenPieceSymbol(const char* pieceName, Color pieceColor);
 
-    void clearPrevPressedSquare();
+    bool isValidMove(Square* fromSquare, Square* toSquare);
+    bool isCheck();
+
+    void clearPrevPressedSquareTurns();
     
     Color currentMoveColor;
     Color firstTurnColor;
 
-    bool isAnySquarePressed;
+    Square* whiteKingSquare;
+    Square* blackKingSquare;
 
-    bool isCheck = false;
-    Square* prevPressedSquare;
+    bool Check = false;
+    Square* prevPressedSquare = nullptr;
     QGraphicsScene* scene;
     Square* squares[8][8];
 };

@@ -13,7 +13,6 @@
 #include <QStackedWidget>
 #include <iostream>
 
-
 enum Color { white, black, nonExistent};
 
 #endif  // MAIN_H

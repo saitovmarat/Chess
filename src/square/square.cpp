@@ -40,8 +40,8 @@ void Square::turnMarkerPressEvent(){
 }
 
 void Square::consumeTarget() {
-    Piece* targetPiece = board->prevPressedSquare->piece;
-    setPiece(targetPiece);
+    Piece* prevPressedPiece = board->prevPressedSquare->piece;
+    setPiece(prevPressedPiece);
     piece->firstMove = false;
     piece->isTarget = false;
 }
@@ -70,45 +70,19 @@ void Square::performCastling(){
 
 void Square::endTurn(){
     isPressed = false;
-    if(checkExists()){
-        blockPieces();
-    }
+
+    board->prevPressedSquare->clearSquare();
     board->clearTurns();
-    board->clearPrevPressedSquare();
+    
     board->currentMoveColor = (board->currentMoveColor == Color::white)?
         Color::black : Color::white;
     board->outputFen();
 }
 
-bool Square::checkExists(){
-    // Отрисовка всех ходов
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
-            if(board->squares[i][j]->piece->color == board->currentMoveColor){
-                board->squares[i][j]->piece->setMoves(board->scene);
-            }
-        }
-    }
-    // Поиск Короля
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
-            if(dynamic_cast<King*>(board->squares[i][j]->piece) 
-            && board->squares[i][j]->piece->color != board->currentMoveColor
-            && board->squares[i][j]->piece->isTarget){
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-void Square::blockPieces(){
-    std::cout << "CHECK!\n";
-}
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     // Нажатие на маркер хода
-    if(turnMarker != nullptr){
+    if(turnMarker){
         turnMarkerPressEvent();
         endTurn();
     }
@@ -124,19 +98,15 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     }
     // Нажатие на фигуру
     else if(!isPressed && !image.isNull() && piece->color == board->currentMoveColor) {
-        if(board->isAnySquarePressed) board->clearTurns();
-        board->isAnySquarePressed = true;
+        if(board->prevPressedSquare) board->clearPrevPressedSquareTurns();
         isPressed = true;
         board->prevPressedSquare = this;
     }
     // Повторное нажатие на прошлую нажатую фигуру
-    else if(isPressed && board->isAnySquarePressed){
-        board->clearTurns();
-        isPressed = false;
+    else if(isPressed && board->prevPressedSquare == this){
+        board->clearPrevPressedSquareTurns();
     } 
     update();
-
-    QGraphicsItem::mousePressEvent(event); // Возможно не надо
 }
 
 void Square::paint(QPainter *painter, 
@@ -146,7 +116,8 @@ void Square::paint(QPainter *painter,
     QColor temp_backgroundColor;
     if(isPressed){
         temp_backgroundColor = QColor(0, 174, 88);
-        piece->setMoves(board->scene);
+        piece->setMoves();
+        piece->showMoves(board->scene);
     }
     else{
         if(piece->isTarget)

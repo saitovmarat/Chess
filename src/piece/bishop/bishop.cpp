@@ -15,7 +15,7 @@ bool Bishop::isValidMove(int row, int column){
         return false;
     return true;
 }
-void Bishop::setDiagonalMoves(QGraphicsScene* scene){
+void Bishop::setDiagonalMoves(){
     int new_row = row;
     int new_column = column;
 
@@ -23,16 +23,11 @@ void Bishop::setDiagonalMoves(QGraphicsScene* scene){
     new_row = row-1;
     new_column = column-1;
     while(isValidMove(new_row, new_column)){
+        if(board->squares[new_row][new_column]->piece->color == color)
+            break;
         Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
-        if(currentMovePiece->color == color) break;
-        else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+new_row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[new_row][new_column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+        if(currentMovePiece->color == Color::nonExistent){
+            possibleMovesCoords.push_back({new_row, new_column});
             new_row--;
             new_column--;
         }
@@ -50,13 +45,7 @@ void Bishop::setDiagonalMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+new_row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[new_row][new_column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({new_row, new_column});
             new_row++;
             new_column--;
         }
@@ -74,13 +63,7 @@ void Bishop::setDiagonalMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+new_row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[new_row][new_column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({new_row, new_column});
             new_row--;
             new_column++;
         }
@@ -98,13 +81,7 @@ void Bishop::setDiagonalMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+new_row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[new_row][new_column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({new_row, new_column});
             new_row++;
             new_column++;
         }
@@ -116,8 +93,20 @@ void Bishop::setDiagonalMoves(QGraphicsScene* scene){
     }
 }
 
-void Bishop::setMoves(QGraphicsScene* scene){
-    setDiagonalMoves(scene);
+void Bishop::setMoves(){
+    setDiagonalMoves();
+}
+
+void Bishop::showMoves(QGraphicsScene* scene){
+    for(Coordinates move : possibleMovesCoords){
+        QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
+            88+move.column*100, 88+move.row*100, 25, 25);
+        turn->setBrush(QColor(0, 174, 88));
+        turn->setPen(Qt::NoPen);
+        board->squares[move.row][move.column]->turnMarker = turn;
+        turns.append(turn);
+        scene->addItem(turn);
+    }
 }
 
 void Bishop::clearTurns(){
@@ -125,4 +114,8 @@ void Bishop::clearTurns(){
         delete turns.at(0);
         turns.removeAt(0);
     }
+    for(Coordinates move : possibleMovesCoords){
+        board->squares[move.row][move.column]->turnMarker = nullptr;
+    }
+    possibleMovesCoords.clear();
 }

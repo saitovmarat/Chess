@@ -15,7 +15,7 @@ bool Rook::isValidMove(int row, int column){
         return false;
     return true;
 }
-void Rook::setLineMoves(QGraphicsScene* scene){
+void Rook::setLineMoves(){
     int new_row = row;
     int new_column = column;
 
@@ -25,13 +25,7 @@ void Rook::setLineMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[new_row][column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+column*100, 88+new_row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[new_row][column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({new_row, column});
             new_row++;
         }
         else{
@@ -47,13 +41,7 @@ void Rook::setLineMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[new_row][column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+column*100, 88+new_row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[new_row][column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({new_row, column});
             new_row--;
         }
         else{
@@ -68,13 +56,7 @@ void Rook::setLineMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[row][new_column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[row][new_column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({row, new_column});
             new_column++;
         }
         else{
@@ -90,13 +72,7 @@ void Rook::setLineMoves(QGraphicsScene* scene){
         Piece* currentMovePiece = board->squares[row][new_column]->piece;
         if(currentMovePiece->color == color) break;
         else if(currentMovePiece->color == Color::nonExistent){
-            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+new_column*100, 88+row*100, 25, 25);
-            turn->setBrush(QColor(0, 174, 88));
-            turn->setPen(Qt::NoPen);
-            board->squares[row][new_column]->turnMarker = turn;
-            turns.append(turn);
-            scene->addItem(turn);
+            possibleMovesCoords.push_back({row, new_column});
             new_column--;
         }
         else{
@@ -107,13 +83,28 @@ void Rook::setLineMoves(QGraphicsScene* scene){
     }
 }
 
-void Rook::setMoves(QGraphicsScene* scene){
-    setLineMoves(scene);
+void Rook::setMoves(){
+    setLineMoves();
 }
 
+void Rook::showMoves(QGraphicsScene* scene){
+    for(Coordinates move : possibleMovesCoords){
+        QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
+            88+move.column*100, 88+move.row*100, 25, 25);
+        turn->setBrush(QColor(0, 174, 88));
+        turn->setPen(Qt::NoPen);
+        board->squares[move.row][move.column]->turnMarker = turn;
+        turns.append(turn);
+        scene->addItem(turn);
+    }
+}
 void Rook::clearTurns(){
     while(!turns.isEmpty()) {
         delete turns.at(0);
         turns.removeAt(0);
     }
+    for(Coordinates move : possibleMovesCoords){
+        board->squares[move.row][move.column]->turnMarker = nullptr;
+    }
+    possibleMovesCoords.clear();
 }

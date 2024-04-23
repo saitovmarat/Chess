@@ -15,7 +15,7 @@ bool Knight::isValidMove(int row, int column){
         return false;
     return true;
 }
-void Knight::setMoves(QGraphicsScene* scene){
+void Knight::setMoves(){
     int dx[8] = { -2, -1, 1, 2, -2, -1, 1, 2 };
     int dy[8] = { -1, -2, -2, -1, 1, 2, 2, 1 };
 
@@ -25,28 +25,34 @@ void Knight::setMoves(QGraphicsScene* scene){
         if(isValidMove(new_row, new_column)){
             Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
             if(currentMovePiece->color == Color::nonExistent){
-                QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                    88+new_column*100, 88+new_row*100, 25, 25);
-                turn->setBrush(QColor(0, 174, 88));
-                turn->setPen(Qt::NoPen);
-                board->squares[new_row][new_column]->turnMarker = turn;
-                turns.append(turn);
-                scene->addItem(turn);
+                possibleMovesCoords.push_back({new_row, new_column});
             }
             else if (currentMovePiece->color != color){
                 currentMovePiece->isTarget = true;
                 board->squares[new_row][new_column]->update();
             }
             
-            
-        }
-        
+        } 
     }
 }
-
+void Knight::showMoves(QGraphicsScene* scene){
+    for(Coordinates move : possibleMovesCoords){
+        QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
+            88+move.column*100, 88+move.row*100, 25, 25);
+        turn->setBrush(QColor(0, 174, 88));
+        turn->setPen(Qt::NoPen);
+        board->squares[move.row][move.column]->turnMarker = turn;
+        turns.append(turn);
+        scene->addItem(turn);
+    }
+}
 void Knight::clearTurns(){
     while(!turns.isEmpty()) {
         delete turns.at(0);
         turns.removeAt(0);
     }
+    for(Coordinates move : possibleMovesCoords){
+        board->squares[move.row][move.column]->turnMarker = nullptr;
+    }
+    possibleMovesCoords.clear();
 }

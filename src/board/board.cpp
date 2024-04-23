@@ -12,12 +12,12 @@ Board::Board(QGraphicsScene* scene, Color firstTurnColor){
     this->scene = scene;
     currentMoveColor = firstTurnColor;
     this->firstTurnColor = firstTurnColor;
-    isAnySquarePressed = false;
 }
 
 void Board::setUpBoard(){
     Color bottom_playerColor = currentMoveColor;
     Color top_playerColor = (currentMoveColor == Color::white)? Color::black: Color::white; 
+    
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             Square* square = new Square(column, row);
@@ -44,6 +44,8 @@ void Board::setUpBoard(){
             }
             else if((column == 4) && (row == 7)) {
                 King* king_w = new King(row, column, bottom_playerColor);
+                if(bottom_playerColor == Color::white) whiteKingSquare = square;
+                else blackKingSquare = square;
                 square->setPiece(king_w);
             }
             // Ячейки для черных фигур
@@ -69,6 +71,8 @@ void Board::setUpBoard(){
             }
             else if((column == 4) && (row == 0)) {
                 King* king_b = new King(row, column, top_playerColor);
+                if(top_playerColor == Color::white) whiteKingSquare = square;
+                else blackKingSquare = square;
                 square->setPiece(king_b);
             }
             else{
@@ -100,11 +104,39 @@ void Board::clearTurns(){
 
         }
     }
-    isAnySquarePressed = false;
 }
 
-void Board::clearPrevPressedSquare(){
-    prevPressedSquare->clearSquare();
+void Board::clearPrevPressedSquareTurns(){
+    prevPressedSquare->isPressed = false;
+    prevPressedSquare->piece->clearTurns();
+    prevPressedSquare->update();
+}
+
+bool Board::isCheck(){
+    // Отрисовка всех ходов
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(squares[i][j]->piece->color == currentMoveColor){
+                squares[i][j]->piece->setMoves();
+            }
+        }
+    }
+    
+    
+    return false;
+}
+bool Board::isValidMove(Square* fromSquare, Square* toSquare){
+    bool result = true;
+
+    Color tempColor = toSquare->piece->color;
+    fromSquare->piece->color = Color::nonExistent;
+    toSquare->piece->color = currentMoveColor;
+    if(isCheck())
+        result = false;
+
+    fromSquare->piece->color = currentMoveColor;
+    toSquare->piece->color = tempColor;
+    return result;
 }
 
 void Board::outputFen(){

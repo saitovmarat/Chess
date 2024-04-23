@@ -16,7 +16,7 @@ bool Pawn::isValidMove(int row, int column){
         return false;
     return true;
 }
-void Pawn::set_BottomPlayerMoves(QGraphicsScene* scene){
+void Pawn::set_BottomPlayerMoves(){
     Color enemyColor = (board->currentMoveColor == Color::white)? Color::black : Color::white;
     if(row-1 < 0) return;
 
@@ -38,17 +38,11 @@ void Pawn::set_BottomPlayerMoves(QGraphicsScene* scene){
         if(board->squares[row-i][column]->piece->color != Color::nonExistent)
             break;
         
-        QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-        88+column*100, 88+(row-i)*100, 25, 25);
-        turn->setBrush(QColor(0, 174, 88));
-        turn->setPen(Qt::NoPen);
-        board->squares[row-i][column]->turnMarker = turn;
-        turns.append(turn);
-        scene->addItem(turn);
+        possibleMovesCoords.push_back({row-i, column});
     }
 }
 
-void Pawn::set_TopPlayerMoves(QGraphicsScene* scene){
+void Pawn::set_TopPlayerMoves(){
     Color enemyColor = (board->currentMoveColor == Color::white)? Color::black : Color::white;
     if(row+1 > 7) return;
 
@@ -68,35 +62,38 @@ void Pawn::set_TopPlayerMoves(QGraphicsScene* scene){
     for(int i = 1; i <= moves; i++){
         if(board->squares[row+i][column]->piece->color != Color::nonExistent)
             break;
+        possibleMovesCoords.push_back({row+i, column});
+    }
+}
+
+void Pawn::setMoves(){
+    if(board->currentMoveColor == board->firstTurnColor){
+        set_BottomPlayerMoves();
+    }
+    else{
+        set_TopPlayerMoves();
+    }
+}
+
+void Pawn::showMoves(QGraphicsScene* scene){
+    for(Coordinates move : possibleMovesCoords){
         QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-        88+column*100, 88+(row+i)*100, 25, 25);
+            88+move.column*100, 88+move.row*100, 25, 25);
         turn->setBrush(QColor(0, 174, 88));
         turn->setPen(Qt::NoPen);
-        board->squares[row+i][column]->turnMarker = turn;
+        board->squares[move.row][move.column]->turnMarker = turn;
         turns.append(turn);
         scene->addItem(turn);
     }
 }
-
-void Pawn::setMoves(QGraphicsScene* scene){
-    if(board->currentMoveColor == board->firstTurnColor){
-        set_BottomPlayerMoves(scene);
-    }
-    else{
-        set_TopPlayerMoves(scene);
-    }
-}
-
-// void Pawn::addPossibleMoveCords(int row, int column){
-//     Coordinates coords;
-//     coords.row = row;
-//     coords.column = column;
-//     possibleMovesCoords.emplace_back(coords);
-// }
 
 void Pawn::clearTurns(){
     while(!turns.isEmpty()) {
         delete turns.at(0);
         turns.removeAt(0);
     }
+    for(Coordinates move : possibleMovesCoords){
+        board->squares[move.row][move.column]->turnMarker = nullptr;
+    }
+    possibleMovesCoords.clear();
 }
