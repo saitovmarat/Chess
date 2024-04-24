@@ -14,7 +14,7 @@ Square::Square(int column, int row, QGraphicsItem* parent)
 
 void Square::setPiece(Piece* newPiece){
     piece = newPiece;
-    image = newPiece->image;
+    image = piece->image;
     piece->row = row;
     piece->column = column;
 }
@@ -73,7 +73,6 @@ void Square::endTurn(){
 
     board->prevPressedSquare->clearSquare();
     board->clearTurns();
-    
     board->currentMoveColor = (board->currentMoveColor == Color::white)?
         Color::black : Color::white;
     board->outputFen();

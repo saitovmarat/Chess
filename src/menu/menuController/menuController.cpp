@@ -44,7 +44,7 @@ void MenuController::btn_OpenGameWithFriend_PressEvent(){
 }
 void MenuController::makeGameWindow(Color color){
     QGraphicsScene* scene = new QGraphicsScene();
-    scene->setBackgroundBrush(QBrush(QColor("lightblue")));
+    scene->setBackgroundBrush(QBrush(QColor(55, 189, 128)));
     board = new Board(scene, color);
     board->setUpBoard();
     board->outputFen();
@@ -69,14 +69,14 @@ void MenuController::btn_BlackPieceColor_PressEvent(){
 void MenuController::makeDesignForWindowChooseMode(){
     QGraphicsScene* scene = new QGraphicsScene();
     QGraphicsRectItem* rectLeft = new QGraphicsRectItem(0, 0, 600, 500);
-    rectLeft->setBrush(QBrush(QColor(255, 255, 255)));
+    rectLeft->setBrush(QBrush(QColor(189,236,182)));
     scene->addItem(rectLeft);
     windowChooseMode->setScene(scene);
 }
 void MenuController::makeDesignForWindowChooseColor(){
     QGraphicsScene* scene = new QGraphicsScene();
     QGraphicsRectItem* rectLeft = new QGraphicsRectItem(0, 0, 600, 500);
-    rectLeft->setBrush(QBrush(QColor(255, 255, 255)));
+    rectLeft->setBrush(QBrush(QColor(189,236,182)));
     scene->addItem(rectLeft);
     windowChooseColor->setScene(scene);
 }

@@ -22,6 +22,30 @@
 Board* board;
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
+
+    // QProcess process(&app);
+    // QStringList arguments;
+    // process.start("stockfish", arguments);
+    // process.waitForReadyRead();
+    // qDebug() << process.readAll();
+    
+    // process.write("uci\n");
+    // process.waitForBytesWritten();
+    // process.waitForReadyRead();
+    // qDebug() << process.readAll();
+
+    // process.write("isready\n");
+    // process.waitForBytesWritten();
+    // process.waitForReadyRead();
+    // qDebug() << process.readAll();
+
+    // process.write("quit\n");
+    // process.waitForBytesWritten();
+    // process.waitForReadyRead();
+    // qDebug() << process.readAll();
+    // process.waitForFinished();
+    // qDebug() << process.exitCode();
+
     MenuController menuController;
     return app.exec();
 }

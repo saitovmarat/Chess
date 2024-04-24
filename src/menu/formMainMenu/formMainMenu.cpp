@@ -6,7 +6,7 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget){
     if (Widget->objectName().isEmpty())
         Widget->setObjectName(QString::fromUtf8("Widget"));
     Widget->resize(463, 381);
-    Widget->setStyleSheet(QString::fromUtf8("background-color: rgb(173, 217, 230);"));
+    Widget->setStyleSheet(QString::fromUtf8("background-color: rgb(55, 189, 128);"));
     btnPlayWithFriend = new QPushButton(Widget);
     btnPlayWithFriend->setObjectName(QString::fromUtf8("btnPlayWithFriend"));
     btnPlayWithFriend->setGeometry(QRect(980, 530, 220, 61));

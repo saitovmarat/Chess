@@ -24,26 +24,30 @@ void Knight::setMoves(){
         int new_column = column + dy[i];
         if(isValidMove(new_row, new_column)){
             Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
-            if(currentMovePiece->color == Color::nonExistent){
-                possibleMovesCoords.push_back({new_row, new_column});
+            if(currentMovePiece->color != color){
+                possibleMovesCoords.push_back({new_row, new_column});      
+                if(currentMovePiece->color != Color::nonExistent){
+                    currentMovePiece->isTarget = true;
+                }
             }
-            else if (currentMovePiece->color != color){
-                currentMovePiece->isTarget = true;
-                board->squares[new_row][new_column]->update();
-            }
-            
         } 
     }
 }
 void Knight::showMoves(QGraphicsScene* scene){
     for(Coordinates move : possibleMovesCoords){
-        QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-            88+move.column*100, 88+move.row*100, 25, 25);
-        turn->setBrush(QColor(0, 174, 88));
-        turn->setPen(Qt::NoPen);
-        board->squares[move.row][move.column]->turnMarker = turn;
-        turns.append(turn);
-        scene->addItem(turn);
+        if(board->squares[move.row][move.column]->piece->color != Color::nonExistent){
+            board->squares[move.row][move.column]->update();
+        }
+        else{
+            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
+                88+move.column*100, 88+move.row*100, 25, 25);
+            turn->setBrush(QColor(0, 174, 88));
+            turn->setPen(Qt::NoPen);
+            board->squares[move.row][move.column]->turnMarker = turn;
+            turns.append(turn);
+            scene->addItem(turn);
+        }
+        
     }
 }
 void Knight::clearTurns(){
@@ -53,6 +57,8 @@ void Knight::clearTurns(){
     }
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
+        board->squares[move.row][move.column]->piece->isTarget = false;
+        board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
 }

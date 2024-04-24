@@ -21,7 +21,6 @@ void Board::setUpBoard(){
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             Square* square = new Square(column, row);
-            // Ячейки для белых фигур
             if(row == 6) {
                 Pawn* pawn_w = new Pawn(row, column, bottom_playerColor);
                 square->setPiece(pawn_w);
@@ -44,11 +43,8 @@ void Board::setUpBoard(){
             }
             else if((column == 4) && (row == 7)) {
                 King* king_w = new King(row, column, bottom_playerColor);
-                if(bottom_playerColor == Color::white) whiteKingSquare = square;
-                else blackKingSquare = square;
                 square->setPiece(king_w);
             }
-            // Ячейки для черных фигур
             else if(row == 1) {
                 Pawn* pawn_b = new Pawn(row, column, top_playerColor);
                 square->setPiece(pawn_b);
@@ -71,8 +67,6 @@ void Board::setUpBoard(){
             }
             else if((column == 4) && (row == 0)) {
                 King* king_b = new King(row, column, top_playerColor);
-                if(top_playerColor == Color::white) whiteKingSquare = square;
-                else blackKingSquare = square;
                 square->setPiece(king_b);
             }
             else{
@@ -101,7 +95,6 @@ void Board::clearTurns(){
             squares[row][column]->piece->castlingAvailable = false;
             squares[row][column]->piece->clearTurns();
             squares[row][column]->update();
-
         }
     }
 }
@@ -113,29 +106,49 @@ void Board::clearPrevPressedSquareTurns(){
 }
 
 bool Board::isCheck(){
-    // Отрисовка всех ходов
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
-            if(squares[i][j]->piece->color == currentMoveColor){
-                squares[i][j]->piece->setMoves();
+    Square* kingSquare = getKing(currentMoveColor);
+    if(!kingSquare) return false;
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            Piece* piece = squares[row][col]->piece;
+            if (piece->color != currentMoveColor &&
+                piece->color != Color::nonExistent) {
+                piece->setMoves();
+                if(kingSquare->piece->isTarget){
+                    piece->clearTurns();
+                    std::cout << "Check\n";
+                    return true;
+                } 
+                piece->clearTurns();
             }
         }
     }
-    
-    
     return false;
 }
-bool Board::isValidMove(Square* fromSquare, Square* toSquare){
+Square* Board::getKing(Color color){
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            Piece* piece = squares[row][col]->piece;
+            if (piece->color == color && dynamic_cast<King*>(piece)) {
+                Square* kingSquare = squares[row][col];
+                return kingSquare;
+            }
+        }
+    }
+    return nullptr;
+}
+bool Board::isPossibleMove(Square* fromSquare, Square* toSquare){
     bool result = true;
+    const Color tempfromSquareColor = fromSquare->piece->color;
+    const Color temptoSquareColor  = toSquare->piece->color;
 
-    Color tempColor = toSquare->piece->color;
     fromSquare->piece->color = Color::nonExistent;
-    toSquare->piece->color = currentMoveColor;
-    if(isCheck())
+    toSquare->piece->color = tempfromSquareColor;
+    if(isCheck()){
         result = false;
-
-    fromSquare->piece->color = currentMoveColor;
-    toSquare->piece->color = tempColor;
+    }
+    fromSquare->piece->color = tempfromSquareColor;
+    toSquare->piece->color = temptoSquareColor;
     return result;
 }
 

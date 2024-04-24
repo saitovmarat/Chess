@@ -5,7 +5,7 @@ void Ui_FormMenuChooseColor::setupUi(QWidget *FormChooseColor)
         if (FormChooseColor->objectName().isEmpty())
             FormChooseColor->setObjectName(QString::fromUtf8("FormChooseColor"));
         FormChooseColor->resize(400, 300);
-        FormChooseColor->setStyleSheet(QString::fromUtf8("background-color: rgb(173, 217, 230);"));
+        FormChooseColor->setStyleSheet(QString::fromUtf8("background-color: rgb(55, 189, 128);"));
         btnChooseRandomColor = new QPushButton(FormChooseColor);
         btnChooseRandomColor->setObjectName(QString::fromUtf8("btnChooseRandomColor"));
         btnChooseRandomColor->setGeometry(QRect(900, 530, 111, 81));
@@ -17,14 +17,14 @@ void Ui_FormMenuChooseColor::setupUi(QWidget *FormChooseColor)
         btnChooseBlackColor->setObjectName(QString::fromUtf8("btnChooseBlackColor"));
         btnChooseBlackColor->setGeometry(QRect(800, 540, 91, 61));
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/Chess/images/bK.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QString::fromUtf8(":/Chess/images/Black_King.png"), QSize(), QIcon::Normal, QIcon::Off);
         btnChooseBlackColor->setIcon(icon1);
         btnChooseBlackColor->setIconSize(QSize(55, 55));
         btnChooseWhiteColor = new QPushButton(FormChooseColor);
         btnChooseWhiteColor->setObjectName(QString::fromUtf8("btnChooseWhiteColor"));
         btnChooseWhiteColor->setGeometry(QRect(1020, 540, 101, 61));
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/Chess/images/wK.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QString::fromUtf8(":/Chess/images/White_King.png"), QSize(), QIcon::Normal, QIcon::Off);
         btnChooseWhiteColor->setIcon(icon2);
         btnChooseWhiteColor->setIconSize(QSize(55, 55));
         lblChooseColor = new QLabel(FormChooseColor);

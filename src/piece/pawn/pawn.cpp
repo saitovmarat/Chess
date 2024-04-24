@@ -17,19 +17,19 @@ bool Pawn::isValidMove(int row, int column){
     return true;
 }
 void Pawn::set_BottomPlayerMoves(){
-    Color enemyColor = (board->currentMoveColor == Color::white)? Color::black : Color::white;
+    Color enemyColor = (board->firstTurnColor == Color::white)? Color::black : Color::white;
     if(row-1 < 0) return;
 
     if(isValidMove(row-1, column+1)){
         if(board->squares[row-1][column+1]->piece->color == enemyColor){
+            possibleMovesCoords.push_back({row-1, column+1});
             board->squares[row-1][column+1]->piece->isTarget = true;
-            board->squares[row-1][column+1]->update();
         }
     }
     if(isValidMove(row-1, column-1)){
         if(board->squares[row-1][column-1]->piece->color == enemyColor){
+            possibleMovesCoords.push_back({row-1, column-1});
             board->squares[row-1][column-1]->piece->isTarget = true;
-            board->squares[row-1][column-1]->update();
         }
     }
 
@@ -43,19 +43,19 @@ void Pawn::set_BottomPlayerMoves(){
 }
 
 void Pawn::set_TopPlayerMoves(){
-    Color enemyColor = (board->currentMoveColor == Color::white)? Color::black : Color::white;
+    Color enemyColor = (board->firstTurnColor == Color::white)? Color::white : Color::black;
     if(row+1 > 7) return;
 
     if(isValidMove(row, column+1)){
         if(board->squares[row+1][column+1]->piece->color == enemyColor){
+            possibleMovesCoords.push_back({row+1, column+1});
             board->squares[row+1][column+1]->piece->isTarget = true;
-            board->squares[row+1][column+1]->update();
         }
     }
     if(isValidMove(row, column-1)){
         if(board->squares[row+1][column-1]->piece->color == enemyColor){
+            possibleMovesCoords.push_back({row+1, column-1});
             board->squares[row+1][column-1]->piece->isTarget = true;
-            board->squares[row+1][column-1]->update();
         }
     }
     int moves = firstMove? 2: 1;
@@ -67,7 +67,7 @@ void Pawn::set_TopPlayerMoves(){
 }
 
 void Pawn::setMoves(){
-    if(board->currentMoveColor == board->firstTurnColor){
+    if(board->firstTurnColor == color){
         set_BottomPlayerMoves();
     }
     else{
@@ -77,13 +77,19 @@ void Pawn::setMoves(){
 
 void Pawn::showMoves(QGraphicsScene* scene){
     for(Coordinates move : possibleMovesCoords){
-        QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-            88+move.column*100, 88+move.row*100, 25, 25);
-        turn->setBrush(QColor(0, 174, 88));
-        turn->setPen(Qt::NoPen);
-        board->squares[move.row][move.column]->turnMarker = turn;
-        turns.append(turn);
-        scene->addItem(turn);
+        if(board->squares[move.row][move.column]->piece->color != Color::nonExistent){
+            board->squares[move.row][move.column]->update();
+        }
+        else{
+            QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
+                88+move.column*100, 88+move.row*100, 25, 25);
+            turn->setBrush(QColor(0, 174, 88));
+            turn->setPen(Qt::NoPen);
+            board->squares[move.row][move.column]->turnMarker = turn;
+            turns.append(turn);
+            scene->addItem(turn);
+        }
+        
     }
 }
 
@@ -94,6 +100,8 @@ void Pawn::clearTurns(){
     }
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
+        board->squares[move.row][move.column]->piece->isTarget = false;
+        board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
 }
