@@ -76,7 +76,7 @@ void Board::setUpBoard(){
             }
             // Цвет квадратиков
             if((row+column)%2 == 0){
-                square->setBackColor(255, 250, 250);
+                square->setBackColor(240, 217, 181);
             }
             else{
                 square->setBackColor(138, 98, 74);

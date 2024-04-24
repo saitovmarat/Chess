@@ -10,7 +10,8 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget){
     btnPlayWithFriend = new QPushButton(Widget);
     btnPlayWithFriend->setObjectName(QString::fromUtf8("btnPlayWithFriend"));
     btnPlayWithFriend->setGeometry(QRect(980, 530, 220, 61));
-     
+    btnPlayWithFriend->setStyleSheet("background-color: rgb(255, 255, 255);");
+
     QFont font;
     font.setPointSize(12);
     font.setItalic(true);
@@ -19,6 +20,7 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget){
     btnPlayWithComputer->setObjectName(QString::fromUtf8("btnPlayWithComputer"));
     btnPlayWithComputer->setGeometry(QRect(710, 530, 220, 61));
     btnPlayWithComputer->setFont(font);
+    btnPlayWithComputer->setStyleSheet("background-color: rgb(255, 255, 255);");
     labelGameName = new QLabel(Widget);
     labelGameName->setObjectName(QString::fromUtf8("label"));
     labelGameName->setGeometry(QRect(850, 324, 71, 75));
