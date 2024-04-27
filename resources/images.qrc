@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/Chess">
+        <file>images/Black_Bishop.png</file>
+        <file>images/Black_King.png</file>
+        <file>images/Black_Knight.png</file>
+        <file>images/Black_Pawn.png</file>
+        <file>images/Black_Queen.png</file>
+        <file>images/Black_Rook.png</file>
+        <file>images/White_Bishop.png</file>
+        <file>images/White_King.png</file>
+        <file>images/White_Knight.png</file>
+        <file>images/White_Pawn.png</file>
+        <file>images/White_Queen.png</file>
+        <file>images/White_Rook.png</file>
+        <file>images/ChessLogo.png</file>
+        <file>images/bK.svg</file>
+        <file>images/wbK.svg</file>
+        <file>images/wK.svg</file>
+        <file>images/NewWbk.png</file>
+    </qresource>
+</RCC>
