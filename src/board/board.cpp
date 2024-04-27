@@ -1,5 +1,4 @@
 #include "board.h"
-#include <cxxabi.h>
 
 #define shift 100
 
@@ -116,7 +115,7 @@ bool Board::isCheck(){
                 piece->setMoves();
                 if(kingSquare->piece->isTarget){
                     piece->clearTurns();
-                    std::cout << "Check\n";
+                    //std::cout << "Check\n";
                     return true;
                 } 
                 piece->clearTurns();

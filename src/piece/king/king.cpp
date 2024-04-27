@@ -26,7 +26,7 @@ void King::setCastlingMoves(){
         && dynamic_cast<Rook*>(board->squares[7][7]->piece) != nullptr)
         {
             board->squares[7][7]->piece->castlingAvailable = true;
-            board->squares[7][7]->update();
+            possibleMovesCoords.push_back({7, 7});
         }
         // long castling
         if(board->squares[7][3]->piece->color == Color::nonExistent
@@ -37,7 +37,7 @@ void King::setCastlingMoves(){
         && dynamic_cast<Rook*>(board->squares[7][0]->piece) != nullptr)
         {
             board->squares[7][0]->piece->castlingAvailable = true;
-            board->squares[7][0]->update();
+            possibleMovesCoords.push_back({7, 0});
         }
     }
     else{
@@ -49,7 +49,7 @@ void King::setCastlingMoves(){
         && dynamic_cast<Rook*>(board->squares[0][7]->piece) != nullptr)
         {
             board->squares[0][7]->piece->castlingAvailable = true;
-            board->squares[0][7]->update();
+            possibleMovesCoords.push_back({0, 7});
         }
         // long castling
         if(board->squares[0][3]->piece->color == Color::nonExistent
@@ -60,7 +60,7 @@ void King::setCastlingMoves(){
         && dynamic_cast<Rook*>(board->squares[0][0]->piece) != nullptr)
         {
             board->squares[0][0]->piece->castlingAvailable = true;
-            board->squares[0][0]->update();
+            possibleMovesCoords.push_back({0, 0});
         }
     }
 }
@@ -91,6 +91,9 @@ void King::showMoves(QGraphicsScene* scene){
         if(board->squares[move.row][move.column]->piece->color != Color::nonExistent){
             board->squares[move.row][move.column]->update();
         }
+        else if(board->squares[move.row][move.column]->piece->castlingAvailable){
+            board->squares[move.row][move.column]->update();
+        }
         else{
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
                 88+move.column*100, 88+move.row*100, 25, 25);
@@ -109,8 +112,10 @@ void King::clearTurns(){
         turns.removeAt(0);
     }
     for(Coordinates move : possibleMovesCoords){
+
         board->squares[move.row][move.column]->turnMarker = nullptr;
         board->squares[move.row][move.column]->piece->isTarget = false;
+        board->squares[move.row][move.column]->piece->castlingAvailable = false;
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
