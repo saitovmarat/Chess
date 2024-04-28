@@ -10,29 +10,23 @@ Queen::Queen(int row, int column, Color color) : Piece(row, column, color){
         image = QPixmap(":/Chess/images/Black_Queen.png");
 }   
 
-bool Queen::isValidMove(int _row, int _column){
-    if(_row < 0 || _row > 7 || _column < 0 || _column > 7)
-        return false;
-    return true;
-}
 void Queen::setDiagonalMoves(){
     int new_row = row;
     int new_column = column;
-    
+
     // Налево, вверх    
     new_row = row-1;
     new_column = column-1;
-    while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, new_column)){
+        Square* currentMoveSquare = board->squares[new_row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, new_column});
             new_row--;
             new_column--;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
@@ -41,17 +35,16 @@ void Queen::setDiagonalMoves(){
     // Налево, Вниз
     new_row = row+1;
     new_column = column-1;
-    while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, new_column)){
+        Square* currentMoveSquare = board->squares[new_row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, new_column});
             new_row++;
             new_column--;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
@@ -60,17 +53,16 @@ void Queen::setDiagonalMoves(){
     // Направо, вверх
     new_row = row-1;
     new_column = column+1;
-    while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, new_column)){
+        Square* currentMoveSquare = board->squares[new_row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, new_column});
             new_row--;
             new_column++;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
@@ -79,17 +71,16 @@ void Queen::setDiagonalMoves(){
     // Направо, Вниз
     new_row = row+1;
     new_column = column+1;
-    while(isValidMove(new_row, new_column)){
-        Piece* currentMovePiece = board->squares[new_row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, new_column)){
+        Square* currentMoveSquare = board->squares[new_row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, new_column});
             new_row++;
             new_column++;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
@@ -102,71 +93,69 @@ void Queen::setLineMoves(){
 
     // Вниз    
     new_row = row+1;
-    while(isValidMove(new_row, column)){
-        Piece* currentMovePiece = board->squares[new_row][column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, column)){
+        Square* currentMoveSquare = board->squares[new_row][column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, column});
             new_row++;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
+        
     }
 
     // Вверх
     new_row = row-1;
-    while(isValidMove(new_row, column)){
-        Piece* currentMovePiece = board->squares[new_row][column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, column)){
+        Square* currentMoveSquare = board->squares[new_row][column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, column});
             new_row--;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
-
+        
     }
-
     // Направо
     new_column = column+1;
-    while(isValidMove(row, new_column)){
-        Piece* currentMovePiece = board->squares[row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(row, new_column)){
+        Square* currentMoveSquare = board->squares[row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({row, new_column});
             new_column++;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
+        
     }
 
     // Налево
     new_column = column-1;
-    while(isValidMove(row, new_column)){
-        Piece* currentMovePiece = board->squares[row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(row, new_column)){
+        Square* currentMoveSquare = board->squares[row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({row, new_column});
             new_column--;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
+        
     }
 }
 
@@ -177,19 +166,19 @@ void Queen::setMoves(){
 
 void Queen::showMoves(QGraphicsScene* scene){
     for(Coordinates move : possibleMovesCoords){
-        if(board->squares[move.row][move.column]->piece->color != Color::nonExistent){
+        if(board->squares[move.row][move.column]->piece){
+            board->squares[move.row][move.column]->piece->isTarget = true;
             board->squares[move.row][move.column]->update();
         }
         else{
             QGraphicsEllipseItem* turn = new QGraphicsEllipseItem(
-                88+move.column*100, 88+move.row*100, 25, 25);
+                move.column * 100 + 88, move.row * 100 + 88, 25, 25);
             turn->setBrush(QColor(0, 174, 88));
             turn->setPen(Qt::NoPen);
             board->squares[move.row][move.column]->turnMarker = turn;
             turns.append(turn);
             scene->addItem(turn);
         }
-        
     }
 }
 void Queen::clearTurns(){
@@ -199,7 +188,8 @@ void Queen::clearTurns(){
     }
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
-        board->squares[move.row][move.column]->piece->isTarget = false;
+        if(board->squares[move.row][move.column]->piece)
+            board->squares[move.row][move.column]->piece->isTarget = false;
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();

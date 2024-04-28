@@ -16,9 +16,7 @@ class Square;
 class Board{
 public:
     Board(QGraphicsScene* scene, Color firstTurnColor);
-
     void setUpBoard();
-    void clearTurns();
 
     void outputFen();
     char getFenPieceSymbol(Piece* piece, Color pieceColor);
@@ -32,7 +30,6 @@ public:
     Color currentMoveColor;
     Color firstTurnColor;
 
-    bool Check = false;
     Square* prevPressedSquare = nullptr;
     QGraphicsScene* scene = nullptr;
     Square* squares[8][8];

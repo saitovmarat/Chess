@@ -2,9 +2,6 @@
 #include "board.h"
 
 extern Board* board;
-Piece::Piece(){
-    color = Color::nonExistent; 
-}
 
 Piece::Piece(int row, int column, Color color){
     this->row = row;
@@ -13,5 +10,9 @@ Piece::Piece(int row, int column, Color color){
 }
 void Piece::setMoves() {}
 void Piece::showMoves(QGraphicsScene* scene) {}
-bool Piece::isValidMove(int row, int column) {return true;}
+bool Piece::outOfBounds(int _row, int _column) {
+    if(_row < 0 || _row > 7 || _column < 0 || _column > 7)
+        return true;
+    return false;
+}
 void Piece::clearTurns() {}

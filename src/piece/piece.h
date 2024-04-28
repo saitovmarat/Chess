@@ -11,13 +11,12 @@ struct Coordinates{
 class Piece 
 {
 public:
-    Piece();
     Piece(int row, int column, Color color);
 
     virtual void setMoves();
     virtual void showMoves(QGraphicsScene* scene);
-    virtual bool isValidMove(int row, int column);
     virtual void clearTurns();
+    bool outOfBounds(int _row, int _column);
     
     int row;
     int column;
@@ -29,7 +28,7 @@ public:
     bool firstMove = true; 
 
     // Rook feature
-    bool castlingAvailable = false;
+    bool isCastlingAvailable = false;
 
     std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;

@@ -12,7 +12,6 @@ public:
 
     void setMoves() override;
     void showMoves(QGraphicsScene* scene) override;
-    bool isValidMove(int _row, int _column) override;
     void clearTurns() override;
 
     std::vector<Coordinates> possibleMovesCoords;

@@ -9,7 +9,6 @@ public:
 private:
     void makeGameWindow(Color color);
     void start();
-    void makeDesignForWindowGame();
     void makeDesignForWindowChooseMode();
     void makeDesignForWindowChooseColor();
     QStackedWidget *stackedWidget;
