@@ -13,9 +13,6 @@
         <file>images/White_Queen.png</file>
         <file>images/White_Rook.png</file>
         <file>images/ChessLogo.png</file>
-        <file>images/bK.svg</file>
-        <file>images/wbK.svg</file>
-        <file>images/wK.svg</file>
-        <file>images/NewWbk.png</file>
+        <file>images/Wbk.png</file>
     </qresource>
 </RCC>
