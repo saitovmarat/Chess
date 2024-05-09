@@ -90,8 +90,16 @@ void Bishop::setDiagonalMoves(){
     }
 }
 
-void Bishop::setMoves(){
+void Bishop::setMoves() {
     setDiagonalMoves();
+    // // Remove invalid moves
+    // for (auto it = possibleMovesCoords.begin(); it != possibleMovesCoords.end(); ) {
+    //     if (!board->isPossibleMove(board->squares[row][column], board->squares[it->row][it->column])) {
+    //         it = possibleMovesCoords.erase(it);
+    //     } else {
+    //         ++it;
+    //     }
+    // }
 }
 
 void Bishop::showMoves(QGraphicsScene* scene){

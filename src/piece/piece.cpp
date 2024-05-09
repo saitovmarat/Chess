@@ -7,12 +7,12 @@ Piece::Piece(int row, int column, Color color){
     this->row = row;
     this->column = column;
     this->color = color;
+    isTarget = false;
+    firstMove = true;
+    isCastlingAvailable = false;
 }
-void Piece::setMoves() {}
-void Piece::showMoves(QGraphicsScene* scene) {}
-bool Piece::outOfBounds(int _row, int _column) {
-    if(_row < 0 || _row > 7 || _column < 0 || _column > 7)
+bool Piece::outOfBounds(int row, int column) {
+    if(row < 0 || row > 7 || column < 0 || column > 7)
         return true;
     return false;
 }
-void Piece::clearTurns() {}

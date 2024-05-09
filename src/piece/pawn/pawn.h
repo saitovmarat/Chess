@@ -15,6 +15,7 @@ public:
     void showMoves(QGraphicsScene* scene) override;
     void clearTurns() override;
 
+    bool madeFirstMove;
 
     std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;

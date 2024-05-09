@@ -1,25 +1,34 @@
 #include "board.h"
+#include "fenProcessing.h"
+
+#include <QProcess>
+#include <QDebug>
 
 #define shift 100
 
-Board::Board(QGraphicsScene* scene, Color firstTurnColor){
+FEN* fen;
+Board::Board(QGraphicsScene* scene, Color bottomPlayerColor, bool isOpponentComputer){
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             squares[row][column] = new Square(row, column);
         }
     }
     this->scene = scene;
-    currentMoveColor = firstTurnColor;
-    this->firstTurnColor = firstTurnColor;
+    this->isOpponentComputer = isOpponentComputer;
+    currentMoveColor = Color::white;
+    this->bottomPlayerColor = bottomPlayerColor;
+    prevPressedSquare = nullptr;
+    fen = new FEN();
+    
 }
 
 void Board::setUpBoard(){
-    Color bottom_playerColor = currentMoveColor;
-    Color top_playerColor = (currentMoveColor == Color::white)? Color::black: Color::white; 
+    Color bottom_playerColor = bottomPlayerColor;
+    Color top_playerColor = (bottom_playerColor == Color::white)? Color::black: Color::white; 
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             Square* square = new Square(column, row);
-            // Ходы нижнего игрока
+            // Фигуры нижнего игрока 
             if(row == 6) 
                 square->setPiece(new Pawn(row, column, bottom_playerColor));
             else if((column == 0 || column == 7) && (row == 7)) 
@@ -32,7 +41,7 @@ void Board::setUpBoard(){
                 square->setPiece(new Queen(row, column, bottom_playerColor));            
             else if((column == 4) && (row == 7)) 
                 square->setPiece(new King(row, column, bottom_playerColor));
-            // Ходы верхнего игрока          
+            // Фигуры верхнего игрока         
             else if(row == 1) 
                 square->setPiece(new Pawn(row, column, top_playerColor));
             else if((column == 0 || column == 7) && (row == 0)) 
@@ -66,14 +75,19 @@ void Board::clearPrevPressedSquareTurns(){
 
 bool Board::isCheck(){
     Square* kingSquare = getKing(currentMoveColor);
-    if(!kingSquare) return false;
+    if(!kingSquare) {
+        std::cout << "Как так?)\n";
+        return false;
+    }
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             if(squares[row][col]->piece && squares[row][col]->piece->color != currentMoveColor){
                 squares[row][col]->piece->setMoves();
                 for(Coordinates move : squares[row][col]->piece->possibleMovesCoords){
-                    if(move.row == kingSquare->row && move.column == kingSquare->column)
+                    if(move.row == kingSquare->row && move.column == kingSquare->column){
+                        std::cout << "CHECK!\n";
                         return true;
+                    }
                 }
             }
         }
@@ -84,9 +98,9 @@ Square* Board::getKing(Color color){
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             Piece* piece = squares[row][col]->piece;
-            if (piece->color == color && dynamic_cast<King*>(piece)) {
+            if (piece && piece->color == color && dynamic_cast<King*>(piece)) {
                 Square* kingSquare = squares[row][col];
-                return kingSquare;
+                return squares[row][col];
             }
         }
     }
@@ -94,61 +108,53 @@ Square* Board::getKing(Color color){
 }
 bool Board::isPossibleMove(Square* fromSquare, Square* toSquare){
     bool result = true;
-    
-    if(isCheck()){
+    // Piece* temp = std::move(toSquare->piece);
+    // toSquare->piece = new Pawn(0, 0, fromSquare->piece->color);
+    if(isCheck()) {
         result = false;
     }
+    // toSquare->piece = nullptr;
+    // toSquare->piece = std::move(temp);
     return result;
 }
 
-void Board::outputFen(){
-    std::string fen;
-    for(int i = 0; i < 8; i++){
-        int emptyCount = 0;
-        for(int j = 0; j < 8; j++){
-            if(!squares[i][j]->piece){
-                emptyCount++;
-            }
-            else{
-                if(emptyCount > 0){
-                    fen += std::to_string(emptyCount);
-                    emptyCount = 0;
-                }
-                fen += getFenPieceSymbol(squares[i][j]->piece,
-                                        squares[i][j]->piece->color);   
-            }
+
+std::pair<Coordinates, Coordinates> getBestMove(QString processOutput) {
+    std::pair<Coordinates, Coordinates> bestMove = std::make_pair(Coordinates{}, Coordinates{});
+    QList<QString> list = processOutput.split(" ");
+    for (int i = 0; i < list.size(); i++) {
+        if (list[i] == "pv") {
+            int columnFrom = fen->getColumnFromChar(QString(list[i + 1][0]));
+            int rowFrom = 8 - QString(list[i + 1][1]).toInt();
+            int columnTo = fen->getColumnFromChar(QString(list[i + 1][2]));
+            int rowTo = 8 - QString(list[i + 1][3]).toInt();
+            bestMove = std::make_pair(Coordinates{rowFrom, columnFrom}, Coordinates{rowTo, columnTo});
+            break;
         }
-        if(emptyCount > 0){
-            fen += std::to_string(emptyCount);
-        }
-        fen += '/';
     }
-    fen.pop_back();
-    fen += ' ';
-
-    char currentTurnColor_symb = (currentMoveColor == Color::white)? 'w': 'b';
-    fen += currentTurnColor_symb;
-
-    // Доделать этот момент
-    fen += " KQkq - 0 1";
-
-    std::cout << fen << std::endl;
+    return bestMove;
 }
 
-char Board::getFenPieceSymbol(Piece* piece, Color pieceColor){
-    char pieceSymb;
-    if(dynamic_cast<Bishop*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'B' : 'b';
-    else if(dynamic_cast<King*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'K' : 'k';
-    else if(dynamic_cast<Knight*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'N' : 'n';
-    else if(dynamic_cast<Pawn*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'P' : 'p';
-    else if(dynamic_cast<Queen*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'Q' : 'q';
-    else if(dynamic_cast<Rook*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'R' : 'r';
 
-    return pieceSymb;
+std::pair<Coordinates, Coordinates> Board::getComputerMove(int depth){
+    QProcess process;
+    QStringList arguments;
+    process.start("stockfish", arguments);
+    process.waitForStarted();
+
+    QByteArray data = QByteArray("position fen ") + fen->getCurrentFen().toUtf8() + "\n";
+    // Вывод fen
+    process.write(data);
+    process.waitForBytesWritten();
+    process.waitForReadyRead();
+    QString output;
+    for(int i = 0; i < depth; i++){
+        process.write("go\n");
+        process.waitForBytesWritten();
+        process.waitForReadyRead();
+        output = process.readAll();
+    }
+    process.terminate();
+    process.waitForFinished(); 
+    return getBestMove(output);
 }

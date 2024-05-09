@@ -9,10 +9,11 @@ Pawn::Pawn(int row, int column, Color color) : Piece(row, column, color){
         image = QPixmap(":/Chess/images/White_Pawn.png");
     else 
         image = QPixmap(":/Chess/images/Black_Pawn.png");
+    madeFirstMove = false;
 }   
 
 void Pawn::set_BottomPlayerMoves(){
-    Color enemyColor = (board->firstTurnColor == Color::white)? Color::black : Color::white;
+    Color enemyColor = (board->bottomPlayerColor == Color::white)? Color::black : Color::white;
     // Случай когда пешка дошла до конца доски (надо будет по другому обработать)
     if(row-1 < 0) return;
 
@@ -39,7 +40,7 @@ void Pawn::set_BottomPlayerMoves(){
 }
 
 void Pawn::set_TopPlayerMoves(){
-    Color enemyColor = (board->firstTurnColor == Color::white)? Color::white : Color::black;
+    Color enemyColor = (board->bottomPlayerColor == Color::white)? Color::white : Color::black;
     if(row+1 > 7) return;
 
     if(!outOfBounds(row, column+1)){
@@ -64,7 +65,7 @@ void Pawn::set_TopPlayerMoves(){
 }
 
 void Pawn::setMoves(){
-    if(board->firstTurnColor == color)
+    if(board->bottomPlayerColor == color)
         set_BottomPlayerMoves();
     else
         set_TopPlayerMoves();

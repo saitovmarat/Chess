@@ -11,7 +11,7 @@ King::King(int row, int column, Color color) : Piece(row, column, color){
 }   
 
 void King::setCastlingMoves(){
-    if(board->currentMoveColor == board->firstTurnColor){
+    if(board->currentMoveColor == board->bottomPlayerColor){
         // short castling
         if(!board->squares[7][5]->piece
         && !board->squares[7][6]->piece

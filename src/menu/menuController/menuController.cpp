@@ -45,14 +45,12 @@ void MenuController::btn_OpenGameWithFriend_PressEvent(){
 void MenuController::makeGameWindow(Color color){
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor(55, 189, 128)));
-    board = new Board(scene, color);
+    board = new Board(scene, color, true);
     board->setUpBoard();
-    board->outputFen();
     BoardRenderer::render(board, scene);
     windowGame->setScene(scene);
 }
-void MenuController::btn_WhitePieceColor_PressEvent()
-{
+void MenuController::btn_WhitePieceColor_PressEvent(){
     makeGameWindow(Color::white);
     stackedWidget->setCurrentWidget(windowGame);
 }

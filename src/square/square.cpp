@@ -1,10 +1,13 @@
+#include <unistd.h>
+
 #include "square.h"
 #include "board.h"
+#include "fenProcessing.h"
 
 #define shift 100
 
 extern Board *board;
-
+extern FEN* fen;
 Square::Square(int column, int row, QGraphicsItem* parent) 
 : QGraphicsItem(parent){
     this->column = column;
@@ -15,12 +18,17 @@ Square::Square(int column, int row, QGraphicsItem* parent)
 }
 
 void Square::setPiece(Piece* newPiece) {
-    if(piece) piece = nullptr;
-    newPiece->clearTurns();
-    piece = newPiece;
-    image = piece->image;
-    piece->row = row;
-    piece->column = column;
+    if(piece){
+        piece = nullptr;
+        image = {};
+    } 
+    if(newPiece){
+        newPiece->clearTurns();
+        piece = newPiece;
+        image = piece->image;
+        piece->row = row;
+        piece->column = column;
+    } 
     update();
 }
 
@@ -39,6 +47,18 @@ QRectF Square::boundingRect() const{
 }
 
 void Square::turnMarkerPressEvent(){
+    Pawn *pawn = dynamic_cast<Pawn*>(board->prevPressedSquare->piece);
+    if(pawn){
+        fen->halfmoveClock = 0;
+        if(abs(row - board->prevPressedSquare->row) == 2){
+            fen->enPassantTargetSquare = this;
+        }
+        else fen->enPassantTargetSquare = nullptr;
+    }
+    else{
+        fen->halfmoveClock++;
+        fen->enPassantTargetSquare = nullptr;
+    }
     setPiece(board->prevPressedSquare->piece);
     piece->firstMove = false;
     turnMarker = nullptr;
@@ -48,9 +68,13 @@ void Square::consumeTarget() {
     setPiece(board->prevPressedSquare->piece);
     piece->firstMove = false;
     piece->isTarget = false;
+
+    fen->halfmoveClock = 0;
+    fen->enPassantTargetSquare = nullptr;
 }
 
 void Square::performCastling(){
+    fen->halfmoveClock++;
     int rookDestColumn = (column == 7)? 5 : 3;
     int kingDestColumn = (column == 7)? 6 : 2;
     // rook
@@ -66,14 +90,36 @@ void Square::performCastling(){
 
 void Square::endTurn(){
     isPressed = false;
-
     board->prevPressedSquare->clearSquare();
     board->prevPressedSquare->update();
 
-    board->currentMoveColor = (board->currentMoveColor == Color::white)?
-        Color::black : Color::white;
-    board->outputFen();
-    //if(board->isCheck()) std::cout << "CHECK" << std::endl;
+    if(board->currentMoveColor == Color::black) fen->fullmoveNumber++;
+    
+    if(board->isOpponentComputer){
+        board->currentMoveColor = (board->currentMoveColor == Color::white)?
+            Color::black : Color::white;
+        if(board->currentMoveColor == Color::black) fen->fullmoveNumber++;
+        std::pair<Coordinates, Coordinates> computerMove = board->getComputerMove(15);
+        Coordinates fromSquareCords = computerMove.first;
+        Coordinates toSquareCords = computerMove.second;
+        
+        std::cout << "Ход компьютера: \n";
+        std::cout << fromSquareCords.row << fromSquareCords.column << " -> "  << toSquareCords.row << toSquareCords.column << "\n";
+        
+        Square* fromSquare = board->squares[fromSquareCords.row][fromSquareCords.column];
+        Square* toSquare = board->squares[toSquareCords.row][toSquareCords.column];
+        toSquare->setPiece(fromSquare->piece);
+        if(fromSquare->piece) fromSquare->clearSquare();
+        fromSquare->update();
+        board->currentMoveColor = (board->currentMoveColor == Color::white)?
+            Color::black : Color::white;
+
+    }   
+    else{
+        board->currentMoveColor = (board->currentMoveColor == Color::white)?
+            Color::black : Color::white;
+    }
+    //std::cout << fen->getCurrentFen().toStdString() << std::endl;
 }
 
 
