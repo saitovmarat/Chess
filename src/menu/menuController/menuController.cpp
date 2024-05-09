@@ -32,14 +32,19 @@ void MenuController::start(){
 
     // Установка начального окна для отображения
     stackedWidget->setCurrentWidget(windowChooseMode);
-    stackedWidget->showMaximized();
+    stackedWidget->setFixedSize(1920, 1080);
+    stackedWidget->show();
     QObject::connect(windowChooseMode->findChild<QPushButton*>("btnPlayWithFriend"), &QPushButton::clicked, [&](){slots btn_OpenGameWithFriend_PressEvent();});
+    QObject::connect(windowChooseMode->findChild<QPushButton*>("btnPlayWithComputer"), &QPushButton::clicked, [&](){slots btn_OpenGameWithComputer_PressEvent();});
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseBlackColor"), &QPushButton::clicked, [&](){slots btn_BlackPieceColor_PressEvent();});
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseWhiteColor"), &QPushButton::clicked, [&](){slots btn_WhitePieceColor_PressEvent();});
     QObject::connect(windowChooseColor->findChild<QPushButton*>("btnChooseRandomColor"), &QPushButton::clicked, [&](){slots btn_RandomPieceColor_PressEvent();});
 }
 
 void MenuController::btn_OpenGameWithFriend_PressEvent(){
+    stackedWidget->setCurrentWidget(windowChooseColor);
+}
+void MenuController::btn_OpenGameWithComputer_PressEvent(){
     stackedWidget->setCurrentWidget(windowChooseColor);
 }
 void MenuController::makeGameWindow(Color color){
