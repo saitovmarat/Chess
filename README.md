@@ -9,7 +9,7 @@
 ## MacOS:
 > ---
 ## Linux:
-To build the project, required to download stockfish and QT5. Here are the commands:
+To build the project, required to download stockfish and Qt5. Here are the commands:
 ```
 sudo apt install stockfish
 sudo apt install qt5-default
