@@ -1,9 +1,9 @@
 **while project in progress main code will be in "develop" branch**
 # Chess
 
-> Chess on C++ using Qt
+Chess on C++ using Qt
 
-# Как собрать проект:
+# How to build the project:
 ## Windows:
 > ---
 ## MacOS:
