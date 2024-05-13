@@ -50,7 +50,7 @@ void MenuController::btn_OpenGameWithComputer_PressEvent(){
 void MenuController::makeGameWindow(Color color){
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor(55, 189, 128)));
-    board = new Board(scene, color, true);
+    board = new Board(scene, color, false);
     board->setUpBoard();
     BoardRenderer::render(board, scene);
     windowGame->setScene(scene);

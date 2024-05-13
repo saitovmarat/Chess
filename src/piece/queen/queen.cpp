@@ -159,7 +159,14 @@ void Queen::setLineMoves(){
     }
 }
 
+void Queen::setAllMoves(){
+    clearMoves();
+    setDiagonalMoves();
+    setLineMoves();
+}
+
 void Queen::setMoves(){
+    clearMoves();
     setDiagonalMoves();
     setLineMoves();
 }
@@ -182,10 +189,11 @@ void Queen::showMoves(QGraphicsScene* scene){
     }
 }
 void Queen::clearTurns(){
-    while(!turns.isEmpty()) {
-        delete turns.at(0);
-        turns.removeAt(0);
-    }
+    clearMoves();
+    clearTurnMarkers();
+}
+
+void Queen::clearMoves(){
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
         if(board->squares[move.row][move.column]->piece)
@@ -193,4 +201,10 @@ void Queen::clearTurns(){
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
+}
+void Queen::clearTurnMarkers(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }

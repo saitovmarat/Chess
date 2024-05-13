@@ -55,7 +55,29 @@ void King::setCastlingMoves(){
     }
 }
 
+void King::setAllMoves(){
+    clearMoves();
+    int dx[8] = { -1, -1, -1, 1, 1, 1, 0, 0 };
+    int dy[8] = { -1, 0, 1, -1, 0, 1, -1, 1 };
+
+    for(int i = 0; i < 8; i++){
+        int new_row = row + dx[i];
+        int new_column = column + dy[i];
+        if(!outOfBounds(new_row, new_column)){
+            Square* currentMoveSquare = board->squares[new_row][new_column];
+            if(currentMoveSquare->piece){
+                if(currentMoveSquare->piece->color != color)
+                    possibleMovesCoords.push_back({new_row, new_column});
+            }
+            else
+                possibleMovesCoords.push_back({new_row, new_column});
+        } 
+    }
+    // При возможности показывает ходы для рокировки
+    setCastlingMoves();
+}
 void King::setMoves(){
+    clearMoves();
     int dx[8] = { -1, -1, -1, 1, 1, 1, 0, 0 };
     int dy[8] = { -1, 0, 1, -1, 0, 1, -1, 1 };
 
@@ -99,10 +121,11 @@ void King::showMoves(QGraphicsScene* scene){
     }
 }
 void King::clearTurns(){
-    while(!turns.isEmpty()) {
-        delete turns.at(0);
-        turns.removeAt(0);
-    }
+    clearMoves();
+    clearTurnMarkers();
+}
+
+void King::clearMoves(){
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
         if(board->squares[move.row][move.column]->piece){
@@ -112,4 +135,10 @@ void King::clearTurns(){
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
+}
+void King::clearTurnMarkers(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }

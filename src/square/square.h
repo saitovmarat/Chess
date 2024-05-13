@@ -12,7 +12,7 @@ public:
   void setBackColor(int r, int g, int b);
 
   void setPiece(Piece* newPiece);
-  void clearSquare();
+  void clearPieceInSquare();
 
   void turnMarkerPressEvent();
   void consumeTarget();

@@ -83,8 +83,12 @@ void Rook::setLineMoves(){
     }
 }
 
+void Rook::setAllMoves(){
+    clearMoves();
+    setLineMoves();
+}
 void Rook::setMoves(){
-    clearTurns();
+    clearMoves();
     setLineMoves();
 }
 
@@ -107,10 +111,11 @@ void Rook::showMoves(QGraphicsScene* scene){
     }
 }
 void Rook::clearTurns(){
-    while(!turns.isEmpty()) {
-        delete turns.at(0);
-        turns.removeAt(0);
-    }
+    clearMoves();
+    clearTurnMarkers();
+}
+
+void Rook::clearMoves(){
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
         if(board->squares[move.row][move.column]->piece)
@@ -118,4 +123,10 @@ void Rook::clearTurns(){
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
+}
+void Rook::clearTurnMarkers(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }

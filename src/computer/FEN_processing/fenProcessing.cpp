@@ -45,8 +45,7 @@ void FEN::updateFen(){
     fen.pop_back();
     fen += ' ';
 
-    char currentTurnColor_symb = board->currentMoveColor;
-    //(board->currentMoveColor == Color::white)? 'b' : 'w';
+    char currentTurnColor_symb = (board->currentMoveColor == Color::white)? 'w' : 'b';
     fen += currentTurnColor_symb;
 
     // Add castling rights

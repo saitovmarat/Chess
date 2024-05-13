@@ -14,8 +14,13 @@ public:
     Piece(int row, int column, Color color);
 
     virtual void setMoves() = 0;
+    virtual void setAllMoves() = 0;
     virtual void showMoves(QGraphicsScene* scene) = 0;
+
+    virtual void clearMoves() = 0;
+    virtual void clearTurnMarkers() = 0;
     virtual void clearTurns() = 0;
+    
     static bool outOfBounds(int row, int column);
     
     int row;

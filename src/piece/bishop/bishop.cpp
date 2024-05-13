@@ -83,23 +83,26 @@ void Bishop::setDiagonalMoves(){
         else{
             if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, new_column});
-                
             }
             break;
         }
     }
 }
-
-void Bishop::setMoves() {
+void Bishop::setAllMoves(){
+    possibleMovesCoords.clear();
     setDiagonalMoves();
-    // // Remove invalid moves
-    // for (auto it = possibleMovesCoords.begin(); it != possibleMovesCoords.end(); ) {
-    //     if (!board->isPossibleMove(board->squares[row][column], board->squares[it->row][it->column])) {
-    //         it = possibleMovesCoords.erase(it);
-    //     } else {
-    //         ++it;
-    //     }
-    // }
+}
+void Bishop::setMoves() {
+    clearMoves();
+    setDiagonalMoves();
+    // Remove invalid moves
+    for (auto it = possibleMovesCoords.begin(); it != possibleMovesCoords.end(); ) {
+        if (!board->isPossibleMove(board->squares[row][column], board->squares[it->row][it->column])) {
+            it = possibleMovesCoords.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 void Bishop::showMoves(QGraphicsScene* scene){
@@ -122,10 +125,11 @@ void Bishop::showMoves(QGraphicsScene* scene){
 }
 
 void Bishop::clearTurns(){
-    while(!turns.isEmpty()) {
-        delete turns.at(0);
-        turns.removeAt(0);
-    }
+    clearMoves();
+    clearTurnMarkers();
+}
+
+void Bishop::clearMoves(){
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
         if(board->squares[move.row][move.column]->piece)
@@ -133,4 +137,10 @@ void Bishop::clearTurns(){
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
+}
+void Bishop::clearTurnMarkers(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }
