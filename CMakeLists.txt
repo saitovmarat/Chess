@@ -23,8 +23,11 @@ set(PROJECT_SOURCES
 
     src/board/board.cpp
     src/board/board.h
-    src/boardRenderer/boardRenderer.cpp
-    src/boardRenderer/boardRenderer.h
+    src/board/boardRenderer/boardRenderer.cpp
+    src/board/boardRenderer/boardRenderer.h
+
+    src/board/FEN_processing/fenProcessing.cpp
+    src/board/FEN_processing/fenProcessing.h
 
     src/piece/piece.cpp
     src/piece/piece.h
@@ -49,6 +52,9 @@ set(PROJECT_SOURCES
     src/menu/formEndGame/formEndGame.h
     src/menu/menuController/menuController.cpp
     src/menu/menuController/menuController.h
+    src/menu/formChooseFigure/formChooseFigure.cpp
+    src/menu/formChooseFigure/formChooseFigure.h
+
 
     resources/images.qrc
 )
@@ -63,7 +69,8 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/board
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/boardRenderer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/board/boardRenderer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/board/FEN_processing
     ${CMAKE_CURRENT_SOURCE_DIR}/src/square
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/bishop
@@ -77,6 +84,7 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMainMenu
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMenuChooseColor
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formEndGame
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formChooseFigure
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/menuController
     
 )

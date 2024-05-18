@@ -14,11 +14,11 @@
 // Узнать начсет структуры и как сделать адекватно взятие на проходе
 
 Board* board;
+MenuController* menuController;
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    
-    MenuController menuController;
+    menuController = new MenuController();
     return app.exec();
     
 }

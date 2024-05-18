@@ -158,3 +158,19 @@ std::pair<Coordinates, Coordinates> Board::getComputerMove(int depth){
     process.waitForFinished(); 
     return getBestMove(output);
 }
+
+void Board::falsePressSquare(){
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            squares[row][col]->m_mousePressEventEnabled = false;
+        }
+    }
+}
+void Board::truePressSquare(){
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            squares[row][col]->m_mousePressEventEnabled = true;
+        }
+    }
+    fen->updateFen();
+}

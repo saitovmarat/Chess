@@ -30,12 +30,14 @@ public:
 
   // Поля
   bool isPressed;
-  Piece* piece;
-  QGraphicsEllipseItem* turnMarker;
+  Piece *piece;
+  QGraphicsEllipseItem *turnMarker;
   int row;
   int column;
   const int w = 100;
   const int h = 100;
+
+  bool m_mousePressEventEnabled;
 
   QColor backgroundColor;
   QPixmap image;

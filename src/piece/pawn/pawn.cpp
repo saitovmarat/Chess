@@ -1,8 +1,9 @@
 #include "pawn.h"
 #include "board.h"
+#include "menuController.h"
 
 extern Board* board;
-
+extern MenuController *menuController;
 Pawn::Pawn(int row, int column, Color color) : Piece(row, column, color){
     firstMove = true;
     if(color == Color::white) 
@@ -15,7 +16,11 @@ Pawn::Pawn(int row, int column, Color color) : Piece(row, column, color){
 void Pawn::set_BottomPlayerMoves(){
     Color enemyColor = (board->bottomPlayerColor == Color::white)? Color::black : Color::white;
     // Случай когда пешка дошла до конца доски (надо будет по другому обработать)
-    if(row-1 < 0) return;
+    if(row-1 < 0){
+        // menuController->сhangePawn();
+        // board->falsePressSquare();
+        return;
+    }
 
     if(!outOfBounds(row-1, column+1)){
         if(board->squares[row-1][column+1]->piece 
