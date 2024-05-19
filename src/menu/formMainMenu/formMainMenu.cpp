@@ -2,6 +2,8 @@
 #include <QObject>
 #include <QDesktopWidget>
 
+
+
 void Ui_FormMenuChooseMode::setupUi(QWidget *Widget){
     if (Widget->objectName().isEmpty())
         Widget->setObjectName(QString::fromUtf8("Widget"));
@@ -11,7 +13,6 @@ void Ui_FormMenuChooseMode::setupUi(QWidget *Widget){
     btnPlayWithFriend->setGeometry(QRect(980, 530, 220, 61));
     // btnPlayWithFriend->setStyleSheet("background-color: rgb(255, 255, 255);");
     btnPlayWithFriend->setStyleSheet("QPushButton { background-color: rgb(255, 255, 255); } QPushButton:hover { background-color: rgb(169, 169, 169); }");
-
     QFont font;
     font.setPointSize(12);
     font.setItalic(true);

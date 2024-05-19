@@ -69,7 +69,6 @@ void Bishop::setDiagonalMoves(){
             break;
         }
     }
-
     // Направо, Вниз
     new_row = row+1;
     new_column = column+1;

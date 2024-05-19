@@ -3,12 +3,16 @@
 #include "square.h"
 #include "board.h"
 #include "fenProcessing.h"
+#include "formChooseFigure.h"
+#include "menuController.h"
 #include "computerOpponent.h"
 
 #define shift 100
 
 extern Board *board;
 extern FEN* fen;
+extern MenuController *menuController;
+
 Square::Square(int column, int row, QGraphicsItem* parent) 
 : QGraphicsItem(parent){
     this->column = column;
@@ -16,6 +20,7 @@ Square::Square(int column, int row, QGraphicsItem* parent)
     isPressed = false;
     piece = nullptr;
     turnMarker = nullptr;
+    m_mousePressEventEnabled = true;
 }
 
 void Square::setPiece(Piece* newPiece) {
@@ -111,9 +116,17 @@ void Square::endTurn(){
 
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
+    if (!m_mousePressEventEnabled){
+        return;
+    }
+
     if(!piece){
+
         // Нажатие на маркер хода
         if(turnMarker){
+            if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
+            menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
+            }
             turnMarkerPressEvent();
             endTurn();
         }
@@ -121,20 +134,27 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
     else{
         // Нажатие на ячейку с красным фоном
         if(piece->isTarget){
+            if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
+            menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
+            }
             consumeTarget();
             endTurn();
         }
+
         // Нажатие на ячейку с желтым фоном
         else if(piece->isCastlingAvailable){
             performCastling();
             endTurn();
         }
+
         // Нажатие на фигуру
         else if(!isPressed && !image.isNull() && piece->color == board->currentMoveColor) {
             if(board->prevPressedSquare) board->clearPrevPressedSquareTurns();
+
             isPressed = true;
             board->prevPressedSquare = this;
         }
+
         // Повторное нажатие на прошлую нажатую фигуру
         else if(isPressed && board->prevPressedSquare == this){
             board->clearPrevPressedSquareTurns();

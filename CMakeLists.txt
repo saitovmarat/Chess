@@ -25,7 +25,6 @@ set(PROJECT_SOURCES
     src/board/board.h
     src/board/boardRenderer/boardRenderer.cpp
     src/board/boardRenderer/boardRenderer.h
-    
     src/computer/FEN_processing/fenProcessing.cpp
     src/computer/FEN_processing/fenProcessing.h
     src/computer/computerOpponent.cpp
@@ -54,6 +53,9 @@ set(PROJECT_SOURCES
     src/menu/formEndGame/formEndGame.h
     src/menu/menuController/menuController.cpp
     src/menu/menuController/menuController.h
+    src/menu/formChooseFigure/formChooseFigure.cpp
+    src/menu/formChooseFigure/formChooseFigure.h
+
 
     resources/images.qrc
 )
@@ -85,6 +87,9 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/rook
     ${CMAKE_CURRENT_SOURCE_DIR}/resources
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/images
-    
-    
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMainMenu
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMenuChooseColor
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formEndGame
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formChooseFigure
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/menuController
 )

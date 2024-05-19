@@ -25,6 +25,10 @@ public:
     Coordinates getKing(Color color);
 
     void clearPrevPressedSquareTurns();
+
+    void truePressSquare();
+
+    void falsePressSquare();
     
     Color currentMoveColor;
     Color bottomPlayerColor;
