@@ -74,17 +74,17 @@ void Board::clearPrevPressedSquareTurns(){
 }
 
 bool Board::isCheck(){
-    Square* kingSquare = getKing(currentMoveColor);
-    if(!kingSquare) {
+    Coordinates king = getKing(currentMoveColor);
+    if(king.row == -1 && king.column == -1){
         std::cout << "Как так?)\n";
         return false;
     }
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             if(squares[row][col]->piece && squares[row][col]->piece->color != currentMoveColor){
-                squares[row][col]->piece->setMoves();
+                squares[row][col]->piece->setAllMoves();
                 for(Coordinates move : squares[row][col]->piece->possibleMovesCoords){
-                    if(move.row == kingSquare->row && move.column == kingSquare->column){
+                    if(move.row == king.row && move.column == king.column){
                         std::cout << "CHECK!\n";
                         return true;
                     }
@@ -94,27 +94,31 @@ bool Board::isCheck(){
     }
     return false;
 }
-Square* Board::getKing(Color color){
+Coordinates Board::getKing(Color color){
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             Piece* piece = squares[row][col]->piece;
-            if (piece && piece->color == color && dynamic_cast<King*>(piece)) {
-                Square* kingSquare = squares[row][col];
-                return squares[row][col];
+            if (piece && piece->color == color){
+                if(dynamic_cast<King*>(piece)) {
+                    return Coordinates{row, col};
+                }
             }
         }
     }
-    return nullptr;
+    return Coordinates{-1, -1};
 }
 bool Board::isPossibleMove(Square* fromSquare, Square* toSquare){
     bool result = true;
-    // Piece* temp = std::move(toSquare->piece);
-    // toSquare->piece = new Pawn(0, 0, fromSquare->piece->color);
+    Piece* temp_toSquarePiece = std::move(toSquare->piece);
+    Piece* temp_fromSquarePiece = std::move(fromSquare->piece);
+
+    toSquare->piece = new Pawn(toSquare->row, toSquare->column, fromSquare->piece->color);
+    fromSquare->piece = nullptr;
     if(isCheck()) {
         result = false;
     }
-    // toSquare->piece = nullptr;
-    // toSquare->piece = std::move(temp);
+    toSquare->piece = std::move(temp_toSquarePiece);
+    fromSquare->piece = std::move(temp_fromSquarePiece);
     return result;
 }
 
@@ -141,9 +145,7 @@ std::pair<Coordinates, Coordinates> Board::getComputerMove(int depth){
     QStringList arguments;
     process.start("stockfish", arguments);
     process.waitForStarted();
-
     QByteArray data = QByteArray("position fen ") + fen->getCurrentFen().toUtf8() + "\n";
-    // Вывод fen
     process.write(data);
     process.waitForBytesWritten();
     process.waitForReadyRead();

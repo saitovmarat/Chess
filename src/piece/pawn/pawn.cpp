@@ -1,9 +1,12 @@
 #include "pawn.h"
 #include "board.h"
 #include "menuController.h"
+#include "fenProcessing.h"
 
 extern Board* board;
 extern MenuController *menuController;
+extern FEN* fen;
+
 Pawn::Pawn(int row, int column, Color color) : Piece(row, column, color){
     firstMove = true;
     if(color == Color::white) 
@@ -34,7 +37,18 @@ void Pawn::set_BottomPlayerMoves(){
             possibleMovesCoords.push_back({row-1, column-1});
         }
     }
-
+    // enPassant
+    if(!outOfBounds(row, column+1)){
+       if(fen->enPassantTargetSquare == board->squares[row][column+1]){
+            possibleMovesCoords.push_back({row, column+1});
+       } 
+    }
+    if(!outOfBounds(row, column-1)){
+        if(fen->enPassantTargetSquare == board->squares[row][column-1]){
+            possibleMovesCoords.push_back({row, column-1});
+        }
+    }
+    //
     int moves = firstMove? 2: 1;
     for(int i = 1; i <= moves; i++){
         if(!board->squares[row-i][column]->piece)
@@ -48,18 +62,30 @@ void Pawn::set_TopPlayerMoves(){
     Color enemyColor = (board->bottomPlayerColor == Color::white)? Color::white : Color::black;
     if(row+1 > 7) return;
 
-    if(!outOfBounds(row, column+1)){
+    if(!outOfBounds(row+1, column+1)){
         if(board->squares[row+1][column+1]->piece 
         && board->squares[row+1][column+1]->piece->color == enemyColor){
             possibleMovesCoords.push_back({row+1, column+1});
         }
     }
-    if(!outOfBounds(row, column-1)){
+    if(!outOfBounds(row+1, column-1)){
         if(board->squares[row+1][column-1]->piece
         && board->squares[row+1][column-1]->piece->color == enemyColor){
             possibleMovesCoords.push_back({row+1, column-1});
         }
     }
+    // enPassant
+    if(!outOfBounds(row, column+1)){
+       if(fen->enPassantTargetSquare == board->squares[row][column+1]){
+            possibleMovesCoords.push_back({row, column+1});
+       } 
+    }
+    if(!outOfBounds(row, column-1)){
+        if(fen->enPassantTargetSquare == board->squares[row][column-1]){
+            possibleMovesCoords.push_back({row, column-1});
+        }
+    }
+    //
     int moves = firstMove? 2: 1;
     for(int i = 1; i <= moves; i++){
         if(!board->squares[row+i][column]->piece)
@@ -69,11 +95,22 @@ void Pawn::set_TopPlayerMoves(){
     }
 }
 
-void Pawn::setMoves(){
+void Pawn::setAllMoves(){
+    clearMoves();
+    
     if(board->bottomPlayerColor == color)
         set_BottomPlayerMoves();
     else
         set_TopPlayerMoves();
+}
+void Pawn::setMoves(){
+    clearMoves();
+    if(board->bottomPlayerColor == color){
+        set_BottomPlayerMoves();
+    }
+    else{
+        set_TopPlayerMoves();
+    }
 }
 
 void Pawn::showMoves(QGraphicsScene* scene){
@@ -96,10 +133,11 @@ void Pawn::showMoves(QGraphicsScene* scene){
 }
 
 void Pawn::clearTurns(){
-    while(!turns.isEmpty()) {
-        delete turns.at(0);
-        turns.removeAt(0);
-    }
+    clearMoves();
+    clearTurnMarkers();
+}
+
+void Pawn::clearMoves(){
     for(Coordinates move : possibleMovesCoords){
         board->squares[move.row][move.column]->turnMarker = nullptr;
         if(board->squares[move.row][move.column]->piece)
@@ -107,4 +145,10 @@ void Pawn::clearTurns(){
         board->squares[move.row][move.column]->update();
     }
     possibleMovesCoords.clear();
+}
+void Pawn::clearTurnMarkers(){
+    while(!turns.isEmpty()) {
+        delete turns.at(0);
+        turns.removeAt(0);
+    }
 }

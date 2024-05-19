@@ -11,8 +11,13 @@ public:
     void set_BottomPlayerMoves();
     void set_TopPlayerMoves();
 
+    void setAllMoves() override;
     void setMoves() override;
+    
     void showMoves(QGraphicsScene* scene) override;
+    
+    void clearMoves() override;
+    void clearTurnMarkers() override;
     void clearTurns() override;
 
     bool madeFirstMove;

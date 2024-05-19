@@ -18,12 +18,11 @@ public:
     Board(QGraphicsScene* scene, Color firstTurnColor, bool isOpponentComputer);
     void setUpBoard();
 
-    std::string getCurrentFen();
     std::pair<Coordinates, Coordinates> getComputerMove(int depth);
 
     bool isPossibleMove(Square* fromSquare, Square* toSquare);
     bool isCheck();
-    Square* getKing(Color color);
+    Coordinates getKing(Color color);
 
     void clearPrevPressedSquareTurns();
 
@@ -34,7 +33,6 @@ public:
     Color currentMoveColor;
     Color bottomPlayerColor;
 
-    int turnsCounter = 1;
     bool isOpponentComputer;
 
     Square* prevPressedSquare;

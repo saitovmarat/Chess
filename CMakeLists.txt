@@ -25,9 +25,10 @@ set(PROJECT_SOURCES
     src/board/board.h
     src/board/boardRenderer/boardRenderer.cpp
     src/board/boardRenderer/boardRenderer.h
-
-    src/board/FEN_processing/fenProcessing.cpp
-    src/board/FEN_processing/fenProcessing.h
+    src/computer/FEN_processing/fenProcessing.cpp
+    src/computer/FEN_processing/fenProcessing.h
+    src/computer/computerOpponent.cpp
+    src/computer/computerOpponent.h
 
     src/piece/piece.cpp
     src/piece/piece.h
@@ -68,9 +69,14 @@ target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Widgets)
 target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMainMenu
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formMenuChooseColor
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formEndGame
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/menuController
     ${CMAKE_CURRENT_SOURCE_DIR}/src/board
     ${CMAKE_CURRENT_SOURCE_DIR}/src/board/boardRenderer
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/board/FEN_processing
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/computer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/computer/FEN_processing
     ${CMAKE_CURRENT_SOURCE_DIR}/src/square
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece
     ${CMAKE_CURRENT_SOURCE_DIR}/src/piece/bishop
@@ -86,5 +92,4 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formEndGame
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/formChooseFigure
     ${CMAKE_CURRENT_SOURCE_DIR}/src/menu/menuController
-    
 )
