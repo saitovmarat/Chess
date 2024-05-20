@@ -22,6 +22,7 @@ private:
     int row;
     int column;
     Color color;
+    bool isOpponentComputer;
 
 
 private slots:

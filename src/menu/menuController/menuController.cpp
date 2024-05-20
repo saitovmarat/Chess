@@ -48,15 +48,17 @@ void MenuController::start(){
 }
 
 void MenuController::btn_OpenGameWithFriend_PressEvent(){
+    isOpponentComputer = false;
     stackedWidget->setCurrentWidget(windowChooseColor);
 }
 void MenuController::btn_OpenGameWithComputer_PressEvent(){
+    isOpponentComputer = true;
     stackedWidget->setCurrentWidget(windowChooseColor);
 }
 void MenuController::makeGameWindow(Color color){
     QGraphicsScene* scene = new QGraphicsScene();
     scene->setBackgroundBrush(QBrush(QColor(55, 189, 128)));
-    board = new Board(scene, color, false);
+    board = new Board(scene, color, isOpponentComputer);
     board->setUpBoard();
     BoardRenderer::render(board, scene);
     windowGame->setScene(scene);
