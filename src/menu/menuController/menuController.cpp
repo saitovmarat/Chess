@@ -53,7 +53,8 @@ void MenuController::btn_OpenGameWithFriend_PressEvent(){
 }
 void MenuController::btn_OpenGameWithComputer_PressEvent(){
     isOpponentComputer = true;
-    stackedWidget->setCurrentWidget(windowChooseColor);
+    makeGameWindow(Color::white);
+    stackedWidget->setCurrentWidget(windowGame);
 }
 void MenuController::makeGameWindow(Color color){
     QGraphicsScene* scene = new QGraphicsScene();
