@@ -161,17 +161,17 @@ std::pair<Coordinates, Coordinates> Board::getComputerMove(int depth){
     return getBestMove(output);
 }
 
-void Board::falsePressSquare(){
+void Board::unlockAllPieces(){
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
-            squares[row][col]->m_mousePressEventEnabled = false;
+            squares[row][col]->figureChooseModeEnabled = false;
         }
     }
 }
-void Board::truePressSquare(){
+void Board::lockAllPieces(){
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
-            squares[row][col]->m_mousePressEventEnabled = true;
+            squares[row][col]->figureChooseModeEnabled = true;
         }
     }
     fen->updateFen();

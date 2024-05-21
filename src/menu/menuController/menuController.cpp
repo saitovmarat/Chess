@@ -108,27 +108,27 @@ void MenuController::сhangePawn(Color color, int row, int column){
     QObject::connect(windowGame->findChild<QPushButton*>("btnChooseRook"), &QPushButton::clicked, [&](){slots btn_ChooseRook_PressEvent();});
     QObject::connect(windowGame->findChild<QPushButton*>("btnChooseKnight"), &QPushButton::clicked, [&](){slots btn_ChooseKnight_PressEvent();});
     QObject::connect(windowGame->findChild<QPushButton*>("btnChooseQueen"), &QPushButton::clicked, [&](){slots btn_ChooseQueen_PressEvent();});
-    board->falsePressSquare();
+    board->lockAllPieces();
 }
 void MenuController::btn_ChooseBishop_PressEvent(){
     board->squares[row][column]->setPiece(new Bishop(row, column, color));
-    board->truePressSquare();
+    board->unlockAllPieces();
     deleteButtons();
 }
 
 void MenuController::btn_ChooseRook_PressEvent(){
     board->squares[row][column]->setPiece(new Rook(row, column, color));
-    board->truePressSquare();
+    board->unlockAllPieces();
     deleteButtons();
 }
 void MenuController::btn_ChooseKnight_PressEvent(){
     board->squares[row][column]->setPiece(new Knight(row, column, color));
-    board->truePressSquare();
+    board->unlockAllPieces();
     deleteButtons();
 }
 void MenuController::btn_ChooseQueen_PressEvent(){
     board->squares[row][column]->setPiece(new Queen(row, column, color));
-    board->truePressSquare();
+    board->unlockAllPieces();
     deleteButtons();
 }
 void MenuController::deleteButtons(){

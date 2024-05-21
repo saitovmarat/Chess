@@ -26,9 +26,8 @@ public:
 
     void clearPrevPressedSquareTurns();
 
-    void truePressSquare();
-
-    void falsePressSquare();
+    void lockAllPieces();
+    void unlockAllPieces();
     
     Color currentMoveColor;
     Color bottomPlayerColor;

@@ -37,7 +37,7 @@ public:
   const int w = 100;
   const int h = 100;
 
-  bool m_mousePressEventEnabled;
+  bool figureChooseModeEnabled;
 
   QColor backgroundColor;
   QPixmap image;

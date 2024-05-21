@@ -20,7 +20,7 @@ Square::Square(int column, int row, QGraphicsItem* parent)
     isPressed = false;
     piece = nullptr;
     turnMarker = nullptr;
-    m_mousePressEventEnabled = true;
+    figureChooseModeEnabled = false;
 }
 
 void Square::setPiece(Piece* newPiece) {
@@ -116,12 +116,10 @@ void Square::endTurn(){
 
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    if (!m_mousePressEventEnabled){
+    if (figureChooseModeEnabled){
         return;
     }
-
     if(!piece){
-
         // Нажатие на маркер хода
         if(turnMarker){
             if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
