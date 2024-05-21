@@ -123,7 +123,7 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
         // Нажатие на маркер хода
         if(turnMarker){
             if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
-            menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
+                menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
             }
             turnMarkerPressEvent();
             endTurn();
@@ -133,7 +133,7 @@ void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
         // Нажатие на ячейку с красным фоном
         if(piece->isTarget){
             if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
-            menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
+                menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
             }
             consumeTarget();
             endTurn();

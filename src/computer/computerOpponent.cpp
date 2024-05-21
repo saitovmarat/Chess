@@ -14,6 +14,15 @@ void ComputerOpponent::makeMove(Board* board){
     
     Square* fromSquare = board->squares[fromSquareCords.row][fromSquareCords.column];
     Square* toSquare = board->squares[toSquareCords.row][toSquareCords.column];
+    if(fromSquare->piece){
+        if(dynamic_cast<Pawn*>(fromSquare->piece)){
+            if(abs(toSquareCords.row - fromSquareCords.row) == 2){
+                fen->enPassantTargetSquare = toSquare;
+            }
+            else fen->enPassantTargetSquare = nullptr;
+        }
+        else fen->enPassantTargetSquare = nullptr;
+    }
     toSquare->setPiece(fromSquare->piece);
     if(fromSquare->piece) fromSquare->clearPieceInSquare();
     fromSquare->update();

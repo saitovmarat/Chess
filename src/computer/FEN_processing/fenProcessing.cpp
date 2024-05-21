@@ -66,7 +66,7 @@ void FEN::updateFen(){
 
     _fen = QString::fromStdString(fen);
     
-    std::cout << fen << "\n";
+    //std::cout << fen << "\n";
 }
 
 void FEN::updatePossibilitiesToCastle(){
