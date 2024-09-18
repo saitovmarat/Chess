@@ -15,26 +15,27 @@ class Square;
 
 class Board{
 public:
-    Board(QGraphicsScene* scene, Color firstTurnColor);
-
+    Board(QGraphicsScene* scene, Color firstTurnColor, bool isOpponentComputer);
     void setUpBoard();
-    void clearTurns();
 
-    void outputFen();
-    char getFenPieceSymbol(Piece* piece, Color pieceColor);
+    std::pair<Coordinates, Coordinates> getComputerMove(int depth);
 
     bool isPossibleMove(Square* fromSquare, Square* toSquare);
     bool isCheck();
-    Square* getKing(Color color);
+    Coordinates getKing(Color color);
 
     void clearPrevPressedSquareTurns();
+
+    void lockAllPieces();
+    void unlockAllPieces();
     
     Color currentMoveColor;
-    Color firstTurnColor;
+    Color bottomPlayerColor;
 
-    bool Check = false;
-    Square* prevPressedSquare = nullptr;
-    QGraphicsScene* scene = nullptr;
+    bool isOpponentComputer;
+
+    Square* prevPressedSquare;
+    QGraphicsScene* scene;
     Square* squares[8][8];
 };
 

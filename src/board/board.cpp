@@ -1,78 +1,59 @@
 #include "board.h"
+#include "fenProcessing.h"
+
+#include <QProcess>
+#include <QDebug>
 
 #define shift 100
 
-Board::Board(QGraphicsScene* scene, Color firstTurnColor){
+FEN* fen;
+Board::Board(QGraphicsScene* scene, Color bottomPlayerColor, bool isOpponentComputer){
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             squares[row][column] = new Square(row, column);
         }
     }
     this->scene = scene;
-    currentMoveColor = firstTurnColor;
-    this->firstTurnColor = firstTurnColor;
+    this->isOpponentComputer = isOpponentComputer;
+    currentMoveColor = Color::white;
+    this->bottomPlayerColor = bottomPlayerColor;
+    prevPressedSquare = nullptr;
+    fen = new FEN();
+    
 }
 
 void Board::setUpBoard(){
-    Color bottom_playerColor = currentMoveColor;
-    Color top_playerColor = (currentMoveColor == Color::white)? Color::black: Color::white; 
-    
+    Color bottom_playerColor = bottomPlayerColor;
+    Color top_playerColor = (bottom_playerColor == Color::white)? Color::black: Color::white; 
     for(int row = 0; row < 8; row++){
         for(int column = 0; column < 8; column++){
             Square* square = new Square(column, row);
-            if(row == 6) {
-                Pawn* pawn_w = new Pawn(row, column, bottom_playerColor);
-                square->setPiece(pawn_w);
-            }
-            else if((column == 0 || column == 7) && (row == 7)) {
-                Rook* rook_w = new Rook(row, column, bottom_playerColor);
-                square->setPiece(rook_w);
-            }
-            else if((column == 1 || column == 6) && (row == 7)) {
-                Knight* knight_w = new Knight(row, column, bottom_playerColor);
-                square->setPiece(knight_w);
-            }
-            else if((column == 2 || column == 5) && (row == 7)) {
-                Bishop* bishop_w = new Bishop(row, column, bottom_playerColor);
-                square->setPiece(bishop_w);
-            }
-            else if((column == 3) && (row == 7)) {
-                Queen* queen_w = new Queen(row, column, bottom_playerColor);
-                square->setPiece(queen_w);
-            }
-            else if((column == 4) && (row == 7)) {
-                King* king_w = new King(row, column, bottom_playerColor);
-                square->setPiece(king_w);
-            }
-            else if(row == 1) {
-                Pawn* pawn_b = new Pawn(row, column, top_playerColor);
-                square->setPiece(pawn_b);
-            }
-            else if((column == 0 || column == 7) && (row == 0)) {
-                Rook* rook_b = new Rook(row, column, top_playerColor);
-                square->setPiece(rook_b);
-            }
-            else if((column == 1 || column == 6) && (row == 0)) {
-                Knight* knight_b = new Knight(row, column, top_playerColor);
-                square->setPiece(knight_b);
-            }
-            else if((column == 2 || column == 5) && (row == 0)) {
-                Bishop* bishop_b = new Bishop(row, column, top_playerColor);
-                square->setPiece(bishop_b);
-            }
-            else if((column == 3) && (row == 0)) {
-                Queen* queen_b = new Queen(row, column, top_playerColor);
-                square->setPiece(queen_b);
-            }
-            else if((column == 4) && (row == 0)) {
-                King* king_b = new King(row, column, top_playerColor);
-                square->setPiece(king_b);
-            }
-            else{
-                // Костыль для обработки фигур у ф-ии setMoves();
-                Piece* piece = new Piece();  
-                square->setPiece(piece);
-            }
+            // Фигуры нижнего игрока 
+            if(row == 6) 
+                square->setPiece(new Pawn(row, column, bottom_playerColor));
+            else if((column == 0 || column == 7) && (row == 7)) 
+                square->setPiece(new Rook(row, column, bottom_playerColor));           
+            else if((column == 1 || column == 6) && (row == 7)) 
+                square->setPiece(new Knight(row, column, bottom_playerColor));            
+            else if((column == 2 || column == 5) && (row == 7)) 
+                square->setPiece(new Bishop(row, column, bottom_playerColor));            
+            else if((column == 3) && (row == 7)) 
+                square->setPiece(new Queen(row, column, bottom_playerColor));            
+            else if((column == 4) && (row == 7)) 
+                square->setPiece(new King(row, column, bottom_playerColor));
+            // Фигуры верхнего игрока         
+            else if(row == 1) 
+                square->setPiece(new Pawn(row, column, top_playerColor));
+            else if((column == 0 || column == 7) && (row == 0)) 
+                square->setPiece(new Rook(row, column, top_playerColor));
+            else if((column == 1 || column == 6) && (row == 0)) 
+                square->setPiece(new Knight(row, column, top_playerColor));
+            else if((column == 2 || column == 5) && (row == 0)) 
+                square->setPiece(new Bishop(row, column, top_playerColor));
+            else if((column == 3) && (row == 0)) 
+                square->setPiece(new Queen(row, column, top_playerColor));
+            else if((column == 4) && (row == 0)) 
+                square->setPiece(new King(row, column, top_playerColor));
             // Цвет квадратиков
             if((row+column)%2 == 0){
                 square->setBackColor(240, 217, 181);
@@ -85,120 +66,113 @@ void Board::setUpBoard(){
     }
 }
 
-void Board::clearTurns(){
-    for(int row = 0; row < 8; row++){
-        for(int column = 0; column < 8; column++){
-            squares[row][column]->isPressed = false;
-            squares[row][column]->turnMarker = nullptr;
-            squares[row][column]->piece->isTarget = false;
-            squares[row][column]->piece->castlingAvailable = false;
-            squares[row][column]->piece->clearTurns();
-            squares[row][column]->update();
-        }
-    }
-}
-
 void Board::clearPrevPressedSquareTurns(){
     prevPressedSquare->isPressed = false;
-    prevPressedSquare->piece->clearTurns();
+    if(prevPressedSquare->piece)
+        prevPressedSquare->piece->clearTurns();
     prevPressedSquare->update();
 }
 
 bool Board::isCheck(){
-    Square* kingSquare = getKing(currentMoveColor);
-    if(!kingSquare) return false;
+    Coordinates king = getKing(currentMoveColor);
+    if(king.row == -1 && king.column == -1){
+        std::cout << "Как так?)\n";
+        return false;
+    }
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
-            Piece* piece = squares[row][col]->piece;
-            if (piece->color != currentMoveColor &&
-                piece->color != Color::nonExistent) {
-                piece->setMoves();
-                if(kingSquare->piece->isTarget){
-                    piece->clearTurns();
-                    //std::cout << "Check\n";
-                    return true;
-                } 
-                piece->clearTurns();
+            if(squares[row][col]->piece && squares[row][col]->piece->color != currentMoveColor){
+                squares[row][col]->piece->setAllMoves();
+                for(Coordinates move : squares[row][col]->piece->possibleMovesCoords){
+                    if(move.row == king.row && move.column == king.column){
+                        std::cout << "CHECK!\n";
+                        return true;
+                    }
+                }
             }
         }
     }
     return false;
 }
-Square* Board::getKing(Color color){
+Coordinates Board::getKing(Color color){
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             Piece* piece = squares[row][col]->piece;
-            if (piece->color == color && dynamic_cast<King*>(piece)) {
-                Square* kingSquare = squares[row][col];
-                return kingSquare;
+            if (piece && piece->color == color){
+                if(dynamic_cast<King*>(piece)) {
+                    return Coordinates{row, col};
+                }
             }
         }
     }
-    return nullptr;
+    return Coordinates{-1, -1};
 }
 bool Board::isPossibleMove(Square* fromSquare, Square* toSquare){
     bool result = true;
-    const Color tempfromSquareColor = fromSquare->piece->color;
-    const Color temptoSquareColor  = toSquare->piece->color;
+    Piece* temp_toSquarePiece = std::move(toSquare->piece);
+    Piece* temp_fromSquarePiece = std::move(fromSquare->piece);
 
-    fromSquare->piece->color = Color::nonExistent;
-    toSquare->piece->color = tempfromSquareColor;
-    if(isCheck()){
+    toSquare->piece = new Pawn(toSquare->row, toSquare->column, fromSquare->piece->color);
+    fromSquare->piece = nullptr;
+    if(isCheck()) {
         result = false;
     }
-    fromSquare->piece->color = tempfromSquareColor;
-    toSquare->piece->color = temptoSquareColor;
+    toSquare->piece = std::move(temp_toSquarePiece);
+    fromSquare->piece = std::move(temp_fromSquarePiece);
     return result;
 }
 
-void Board::outputFen(){
-    std::string fen;
-    for(int i = 0; i < 8; i++){
-        int emptyCount = 0;
-        for(int j = 0; j < 8; j++){
-            if(squares[i][j]->piece->color == Color::nonExistent){
-                emptyCount++;
-            }
-            else{
-                if(emptyCount > 0){
-                    fen += std::to_string(emptyCount);
-                    emptyCount = 0;
-                }
-                fen += getFenPieceSymbol(squares[i][j]->piece,
-                                        squares[i][j]->piece->color);   
-            }
+
+std::pair<Coordinates, Coordinates> getBestMove(QString processOutput) {
+    std::pair<Coordinates, Coordinates> bestMove = std::make_pair(Coordinates{}, Coordinates{});
+    QList<QString> list = processOutput.split(" ");
+    for (int i = 0; i < list.size(); i++) {
+        if (list[i] == "pv") {
+            int columnFrom = fen->getColumnFromChar(QString(list[i + 1][0]));
+            int rowFrom = 8 - QString(list[i + 1][1]).toInt();
+            int columnTo = fen->getColumnFromChar(QString(list[i + 1][2]));
+            int rowTo = 8 - QString(list[i + 1][3]).toInt();
+            bestMove = std::make_pair(Coordinates{rowFrom, columnFrom}, Coordinates{rowTo, columnTo});
+            break;
         }
-        if(emptyCount > 0){
-            fen += std::to_string(emptyCount);
-        }
-        fen += '/';
     }
-    fen.pop_back();
-    fen += ' ';
-
-    char currentTurnColor_symb = (currentMoveColor == Color::white)? 'w': 'b';
-    fen += currentTurnColor_symb;
-
-    // Доделать этот момент
-    fen += " KQkq - 0 1";
-
-    std::cout << fen << std::endl;
+    return bestMove;
 }
 
-char Board::getFenPieceSymbol(Piece* piece, Color pieceColor){
-    char pieceSymb;
-    if(dynamic_cast<Bishop*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'B' : 'b';
-    else if(dynamic_cast<King*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'K' : 'k';
-    else if(dynamic_cast<Knight*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'N' : 'n';
-    else if(dynamic_cast<Pawn*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'P' : 'p';
-    else if(dynamic_cast<Queen*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'Q' : 'q';
-    else if(dynamic_cast<Rook*>(piece))
-        pieceSymb = (pieceColor == Color::white)? 'R' : 'r';
 
-    return pieceSymb;
+std::pair<Coordinates, Coordinates> Board::getComputerMove(int depth){
+    QProcess process;
+    QStringList arguments;
+    process.start("stockfish", arguments);
+    process.waitForStarted();
+    QByteArray data = QByteArray("position fen ") + fen->getCurrentFen().toUtf8() + "\n";
+    process.write(data);
+    process.waitForBytesWritten();
+    process.waitForReadyRead();
+    QString output;
+    for(int i = 0; i < depth; i++){
+        process.write("go\n");
+        process.waitForBytesWritten();
+        process.waitForReadyRead();
+        output = process.readAll();
+    }
+    process.terminate();
+    process.waitForFinished(); 
+    return getBestMove(output);
+}
+
+void Board::unlockAllPieces(){
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            squares[row][col]->figureChooseModeEnabled = false;
+        }
+    }
+}
+void Board::lockAllPieces(){
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            squares[row][col]->figureChooseModeEnabled = true;
+        }
+    }
+    fen->updateFen();
 }

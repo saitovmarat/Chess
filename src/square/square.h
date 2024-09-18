@@ -11,8 +11,8 @@ public:
 
   void setBackColor(int r, int g, int b);
 
-  void setPiece(Piece* piece);
-  void clearSquare();
+  void setPiece(Piece* newPiece);
+  void clearPieceInSquare();
 
   void turnMarkerPressEvent();
   void consumeTarget();
@@ -22,24 +22,25 @@ public:
 
   void drawImage(QPainter *painter);
 
-  // Поля
-  bool isPressed;
-  Piece* piece = nullptr;
-  QGraphicsEllipseItem* turnMarker = nullptr;
-  int row;
-  int column;
-  const int w = 100;
-  const int h = 100;
-
-  QColor backgroundColor;
-  QPixmap image;
-
-protected:
   void paint(QPainter *painter, 
             const QStyleOptionGraphicsItem *option,
             QWidget *widget) override;
   QRectF boundingRect() const override;
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
+  // Поля
+  bool isPressed;
+  Piece *piece;
+  QGraphicsEllipseItem *turnMarker;
+  int row;
+  int column;
+  const int w = 100;
+  const int h = 100;
+
+  bool figureChooseModeEnabled;
+
+  QColor backgroundColor;
+  QPixmap image;
 };
 
 #endif

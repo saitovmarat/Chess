@@ -11,9 +11,13 @@ public:
     void setDiagonalMoves();
     void setLineMoves();
 
+    void setAllMoves() override;
     void setMoves() override;
+    
     void showMoves(QGraphicsScene* scene) override;
-    bool isValidMove(int row, int column) override;
+    
+    void clearMoves() override;
+    void clearTurnMarkers() override;
     void clearTurns() override;
 
     std::vector<Coordinates> possibleMovesCoords;

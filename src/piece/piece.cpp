@@ -2,16 +2,17 @@
 #include "board.h"
 
 extern Board* board;
-Piece::Piece(){
-    color = Color::nonExistent; 
-}
 
 Piece::Piece(int row, int column, Color color){
     this->row = row;
     this->column = column;
     this->color = color;
+    isTarget = false;
+    firstMove = true;
+    isCastlingAvailable = false;
 }
-void Piece::setMoves() {}
-void Piece::showMoves(QGraphicsScene* scene) {}
-bool Piece::isValidMove(int row, int column) {return true;}
-void Piece::clearTurns() {}
+bool Piece::outOfBounds(int row, int column) {
+    if(row < 0 || row > 7 || column < 0 || column > 7)
+        return true;
+    return false;
+}

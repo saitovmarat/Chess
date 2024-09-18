@@ -11,25 +11,29 @@ struct Coordinates{
 class Piece 
 {
 public:
-    Piece();
     Piece(int row, int column, Color color);
 
-    virtual void setMoves();
-    virtual void showMoves(QGraphicsScene* scene);
-    virtual bool isValidMove(int row, int column);
-    virtual void clearTurns();
+    virtual void setMoves() = 0;
+    virtual void setAllMoves() = 0;
+    virtual void showMoves(QGraphicsScene* scene) = 0;
+
+    virtual void clearMoves() = 0;
+    virtual void clearTurnMarkers() = 0;
+    virtual void clearTurns() = 0;
+    
+    static bool outOfBounds(int row, int column);
     
     int row;
     int column;
     Color color; 
     QPixmap image;
-    bool isTarget = false;
+    bool isTarget;
 
     // Pawn and King feature 
-    bool firstMove = true; 
+    bool firstMove; 
 
     // Rook feature
-    bool castlingAvailable = false;
+    bool isCastlingAvailable = false;
 
     std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;

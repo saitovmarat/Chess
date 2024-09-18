@@ -1,4 +1,3 @@
-**while project in progress main code will be in "develop" branch**
 # Chess
 
 Chess on C++ using Qt

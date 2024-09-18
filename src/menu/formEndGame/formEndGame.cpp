@@ -4,7 +4,7 @@ void Ui_FormEndGame::setupUi(QWidget *Form)
     {
         if (Form->objectName().isEmpty())
             Form->setObjectName(QString::fromUtf8("Form"));
-        Form->resize(400, 300);
+        Form->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
         Form->setStyleSheet(QString::fromUtf8("background-color: rgb(173, 217, 230);"));
         btnGoToMainMenu = new QPushButton(Form);
         btnGoToMainMenu->setObjectName(QString::fromUtf8("btnGoToMainMenu"));

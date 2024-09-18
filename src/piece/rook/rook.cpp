@@ -10,90 +10,92 @@ Rook::Rook(int row, int column, Color color) : Piece(row, column, color){
         image = QPixmap(":/Chess/images/Black_Rook.png");
 }   
 
-bool Rook::isValidMove(int row, int column){
-    if(row < 0 || row > 7 || column < 0 || column > 7)
-        return false;
-    return true;
-}
 void Rook::setLineMoves(){
     int new_row = row;
     int new_column = column;
 
     // Вниз    
     new_row = row+1;
-    while(isValidMove(new_row, column)){
-        Piece* currentMovePiece = board->squares[new_row][column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, column)){
+        Square* currentMoveSquare = board->squares[new_row][column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, column});
             new_row++;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
+        
     }
 
     // Вверх
     new_row = row-1;
-    while(isValidMove(new_row, column)){
-        Piece* currentMovePiece = board->squares[new_row][column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(new_row, column)){
+        Square* currentMoveSquare = board->squares[new_row][column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({new_row, column});
             new_row--;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({new_row, column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
+        
     }
     // Направо
     new_column = column+1;
-    while(isValidMove(row, new_column)){
-        Piece* currentMovePiece = board->squares[row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(row, new_column)){
+        Square* currentMoveSquare = board->squares[row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({row, new_column});
             new_column++;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
         }
+        
     }
 
     // Налево
     new_column = column-1;
-    while(isValidMove(row, new_column)){
-        Piece* currentMovePiece = board->squares[row][new_column]->piece;
-        if(currentMovePiece->color == Color::nonExistent){
+    while(!outOfBounds(row, new_column)){
+        Square* currentMoveSquare = board->squares[row][new_column];
+        if(!currentMoveSquare->piece){
             possibleMovesCoords.push_back({row, new_column});
             new_column--;
         }
         else{
-            if(currentMovePiece->color != color){
+            if(currentMoveSquare->piece->color != color){
                 possibleMovesCoords.push_back({row, new_column});
-                currentMovePiece->isTarget = true;
             }
             break;
+
         }
+        
     }
 }
 
+void Rook::setAllMoves(){
+    clearMoves();
+    setLineMoves();
+}
 void Rook::setMoves(){
+    clearMoves();
     setLineMoves();
 }
 
 void Rook::showMoves(QGraphicsScene* scene){
     for(Coordinates move : possibleMovesCoords){
-        if(board->squares[move.row][move.column]->piece->color != Color::nonExistent){
+        if(board->squares[move.row][move.column]->piece){
+            board->squares[move.row][move.column]->piece->isTarget = true;
             board->squares[move.row][move.column]->update();
         }
         else{
@@ -109,14 +111,22 @@ void Rook::showMoves(QGraphicsScene* scene){
     }
 }
 void Rook::clearTurns(){
+    clearMoves();
+    clearTurnMarkers();
+}
+
+void Rook::clearMoves(){
+    for(Coordinates move : possibleMovesCoords){
+        board->squares[move.row][move.column]->turnMarker = nullptr;
+        if(board->squares[move.row][move.column]->piece)
+            board->squares[move.row][move.column]->piece->isTarget = false;
+        board->squares[move.row][move.column]->update();
+    }
+    possibleMovesCoords.clear();
+}
+void Rook::clearTurnMarkers(){
     while(!turns.isEmpty()) {
         delete turns.at(0);
         turns.removeAt(0);
     }
-    for(Coordinates move : possibleMovesCoords){
-        board->squares[move.row][move.column]->turnMarker = nullptr;
-        board->squares[move.row][move.column]->piece->isTarget = false;
-        board->squares[move.row][move.column]->update();
-    }
-    possibleMovesCoords.clear();
 }

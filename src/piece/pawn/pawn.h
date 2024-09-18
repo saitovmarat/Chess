@@ -11,11 +11,16 @@ public:
     void set_BottomPlayerMoves();
     void set_TopPlayerMoves();
 
+    void setAllMoves() override;
     void setMoves() override;
+    
     void showMoves(QGraphicsScene* scene) override;
-    bool isValidMove(int row, int column) override;
+    
+    void clearMoves() override;
+    void clearTurnMarkers() override;
     void clearTurns() override;
 
+    bool madeFirstMove;
 
     std::vector<Coordinates> possibleMovesCoords;
     QList<QGraphicsEllipseItem*> turns;

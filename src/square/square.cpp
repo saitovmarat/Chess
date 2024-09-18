@@ -1,26 +1,47 @@
+#include <unistd.h>
+
 #include "square.h"
 #include "board.h"
+#include "fenProcessing.h"
+#include "formChooseFigure.h"
+#include "menuController.h"
+#include "computerOpponent.h"
 
 #define shift 100
 
 extern Board *board;
+extern FEN* fen;
+extern MenuController *menuController;
 
 Square::Square(int column, int row, QGraphicsItem* parent) 
 : QGraphicsItem(parent){
     this->column = column;
     this->row = row;
     isPressed = false;
+    piece = nullptr;
+    turnMarker = nullptr;
+    figureChooseModeEnabled = false;
 }
 
-void Square::setPiece(Piece* newPiece){
-    piece = newPiece;
-    image = piece->image;
-    piece->row = row;
-    piece->column = column;
+void Square::setPiece(Piece* newPiece) {
+    if(piece){
+        piece = nullptr;
+        image = {};
+    } 
+    if(newPiece){
+        newPiece->clearTurns();
+        piece = newPiece;
+        image = piece->image;
+        piece->row = row;
+        piece->column = column;
+    } 
+    update();
 }
 
-void Square::clearSquare(){
-    setPiece(new Piece());
+void Square::clearPieceInSquare(){
+    piece = nullptr;
+    image = {};
+    update();
 }
 
 void Square::setBackColor(int r, int g, int b){
@@ -33,78 +54,110 @@ QRectF Square::boundingRect() const{
 }
 
 void Square::turnMarkerPressEvent(){
-    Piece* prevPressedPiece = board->prevPressedSquare->piece;
-    setPiece(prevPressedPiece);
+    Pawn *pawn = dynamic_cast<Pawn*>(board->prevPressedSquare->piece);
+    if(pawn){
+        fen->halfmoveClock = 0;
+        if(abs(row - board->prevPressedSquare->row) == 2){
+            fen->enPassantTargetSquare = this;
+        }
+        else fen->enPassantTargetSquare = nullptr;
+    }
+    else{
+        fen->halfmoveClock++;
+        fen->enPassantTargetSquare = nullptr;
+    }
+    setPiece(board->prevPressedSquare->piece);
     piece->firstMove = false;
     turnMarker = nullptr;
 }
 
-void Square::consumeTarget() {
-    Piece* prevPressedPiece = board->prevPressedSquare->piece;
-    setPiece(prevPressedPiece);
-    piece->firstMove = false;
-    piece->isTarget = false;
+void Square::consumeTarget(){    
+    Square* endOfTurn_piecePositionSquare = this;
+    if(fen->enPassantTargetSquare == this && dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && row == board->prevPressedSquare->row){
+        endOfTurn_piecePositionSquare = board->squares[row + (board->bottomPlayerColor == board->currentMoveColor? -1 : 1)][column];
+        clearPieceInSquare();
+    }
+    endOfTurn_piecePositionSquare->setPiece(board->prevPressedSquare->piece);
+    endOfTurn_piecePositionSquare->piece->firstMove = false;
+    endOfTurn_piecePositionSquare->piece->isTarget = false;
+
+    fen->halfmoveClock = 0;
+    fen->enPassantTargetSquare = nullptr;
+    endOfTurn_piecePositionSquare->update();
 }
 
 void Square::performCastling(){
-    const int rookColumn = (column == 7) ? 5 : 3;
-    const int kingDestColumn = (column == 7) ? 6 : 2;
-    const int kingSourceColumn = 4;
+    fen->halfmoveClock++;
+    int rookDestColumn = (column == 7)? 5 : 3;
+    int kingDestColumn = (column == 7)? 6 : 2;
+    // rook
+    board->squares[row][rookDestColumn]->setPiece(piece);
+    board->squares[row][rookDestColumn]->piece->firstMove = false;
+    clearPieceInSquare();
+    // king
+    board->squares[row][kingDestColumn]->setPiece(board->squares[row][4]->piece);
+    board->squares[row][kingDestColumn]->piece->firstMove = false;
+    board->squares[row][4]->clearPieceInSquare();
 
-    Square* rookSquare = board->squares[row][rookColumn];
-    Square* kingSquare = board->squares[row][kingDestColumn];
-    Piece* rook = rookSquare->piece;
-    Piece* king = board->squares[row][kingSourceColumn]->piece;
-    
-    rookSquare->setPiece(piece);
-    rook->column = rookColumn;
-    rook->firstMove = false;
-    clearSquare();
-
-    kingSquare->setPiece(king);
-    king->column = kingDestColumn;
-    king->firstMove = false;
-    board->squares[row][kingSourceColumn]->clearSquare();
+    fen->enPassantTargetSquare = nullptr;
 }
 
 
 void Square::endTurn(){
     isPressed = false;
-
-    board->prevPressedSquare->clearSquare();
-    board->clearTurns();
+    board->prevPressedSquare->clearPieceInSquare();
+    if(board->currentMoveColor == Color::black) fen->fullmoveNumber++;
     board->currentMoveColor = (board->currentMoveColor == Color::white)?
-        Color::black : Color::white;
-    board->outputFen();
+            Color::black : Color::white;
+    if(board->isOpponentComputer){
+        ComputerOpponent::makeMove(board);
+    }
 }
 
 
 void Square::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    // Нажатие на маркер хода
-    if(turnMarker){
-        turnMarkerPressEvent();
-        endTurn();
+    if (figureChooseModeEnabled){
+        return;
     }
-    // Нажатие на ячейку с красным фоном
-    else if(piece->isTarget){
-        consumeTarget();
-        endTurn();
+    if(!piece){
+        // Нажатие на маркер хода
+        if(turnMarker){
+            if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
+                menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
+            }
+            turnMarkerPressEvent();
+            endTurn();
+        }
     }
-    // Нажатие на ячейку с желтым фоном
-    else if(piece->castlingAvailable){
-        performCastling();
-        endTurn();
+    else{
+        // Нажатие на ячейку с красным фоном
+        if(piece->isTarget){
+            if (dynamic_cast<Pawn*>(board->prevPressedSquare->piece) && (row == 0 || row == 7)) {
+                menuController->сhangePawn(board->prevPressedSquare->piece->color, row, column);
+            }
+            consumeTarget();
+            endTurn();
+        }
+
+        // Нажатие на ячейку с желтым фоном
+        else if(piece->isCastlingAvailable){
+            performCastling();
+            endTurn();
+        }
+
+        // Нажатие на фигуру
+        else if(!isPressed && !image.isNull() && piece->color == board->currentMoveColor) {
+            if(board->prevPressedSquare) board->clearPrevPressedSquareTurns();
+
+            isPressed = true;
+            board->prevPressedSquare = this;
+        }
+
+        // Повторное нажатие на прошлую нажатую фигуру
+        else if(isPressed && board->prevPressedSquare == this){
+            board->clearPrevPressedSquareTurns();
+        }
     }
-    // Нажатие на фигуру
-    else if(!isPressed && !image.isNull() && piece->color == board->currentMoveColor) {
-        if(board->prevPressedSquare) board->clearPrevPressedSquareTurns();
-        isPressed = true;
-        board->prevPressedSquare = this;
-    }
-    // Повторное нажатие на прошлую нажатую фигуру
-    else if(isPressed && board->prevPressedSquare == this){
-        board->clearPrevPressedSquareTurns();
-    } 
     update();
 }
 
@@ -112,19 +165,19 @@ void Square::paint(QPainter *painter,
     const QStyleOptionGraphicsItem *option, 
     QWidget *widget)
 {  
-    QColor temp_backgroundColor;
-    if(isPressed){
-        temp_backgroundColor = QColor(0, 174, 88);
-        piece->setMoves();
-        piece->showMoves(board->scene);
-    }
-    else{
-        if(piece->isTarget)
-            temp_backgroundColor = QColor(155, 17, 30);
-        else if(piece->castlingAvailable)
-            temp_backgroundColor = QColor(255, 255, 58);
-        else
-            temp_backgroundColor = backgroundColor;
+    QColor temp_backgroundColor = backgroundColor;
+    if(piece){
+        if(isPressed){
+            temp_backgroundColor = QColor(0, 174, 88);
+            piece->setMoves();
+            piece->showMoves(board->scene);
+        }
+        else{
+            if(piece->isTarget)
+                temp_backgroundColor = QColor(155, 17, 30);
+            else if(piece->isCastlingAvailable)
+                temp_backgroundColor = QColor(255, 255, 58);
+        }
     }
     painter->setBrush(temp_backgroundColor);
     painter->setPen(Qt::NoPen);
